@@ -1,0 +1,102 @@
+.slot-btn {
+  width: 57px;
+  height: 57px;
+}
+.slots__background {
+  background: #f4f5f6;
+  height: 97vh;
+}
+.slots {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  flex-wrap: wrap;
+}
+
+.slots__upper-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.slots__upper-container input {
+  flex-basis: 50%;
+  border-radius: 16px;
+  border: 1px solid #d7d7d7;
+  padding-left: 10px;
+}
+
+.slots__btns {
+  display: flex;
+}
+
+.slots__edit-btn {
+  margin-right: 15px;
+  background-color: #4fa4fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.slots__edit-btn::after {
+  content: "";
+  display: block;
+  background: url("../../services/img/Group78.png") 40% no-repeat;
+  width: 53px;
+  height: 53px;
+}
+
+.slots__delete-btn {
+  background-color: #ffd6e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.slots__delete-btn::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 30px;
+  background: url("../../services/img/trash.svg") no-repeat;
+}
+.slots__add-item {
+  border-radius: 20px;
+  border: 1px solid #d7d7d7;
+  width: 327px;
+  height: 185px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.slots__plus {
+  font-size: 35px;
+  color: #d7d7d7;
+}
+
+.slots__add-text {
+  color: #b6b6b6;
+  font-size: 20px;
+  font-family: Inter;
+  line-height: 140%;
+  text-transform: uppercase;
+  padding-top: 6px;
+  padding-left: 5px;
+}
+
+.slots__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slots__down-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

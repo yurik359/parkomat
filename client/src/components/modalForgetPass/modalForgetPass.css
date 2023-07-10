@@ -1,0 +1,40 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  background-color: aliceblue;
+  height: 150px;
+  width: 270px;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.background-forget {
+  justify-content: center;
+}
+.modal-forget {
+  position: relative;
+  top: 60px;
+}
+.modal-forget input {
+  border-radius: 22px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  height: 44px;
+  width: 80%;
+  margin: 10px;
+}
+.modal-forget span:first-child {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal__send-btn {
+  padding: 15px;
+  background-color: rgb(145, 203, 243);
+  border-radius: 15px;
+  width: 70px;
+  cursor: pointer;
+  color: white;
+  text-align: center;
+}

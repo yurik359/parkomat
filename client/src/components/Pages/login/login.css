@@ -1,0 +1,339 @@
+.login-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.form-login {
+  flex-basis: 40%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  min-width: 350px;
+}
+.form-login form {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+.form-login form input,
+.form-login form button {
+  width: 100%;
+}
+.form__name {
+  color: rgb(0, 0, 0);
+}
+.form__name {
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 44px;
+  line-height: 140%;
+}
+.form-login form input {
+  border-radius: 22px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  height: 44px;
+}
+.form-login form input:nth-child(2),
+.form__forgot-password {
+  margin-bottom: 24px;
+  margin-top: 10px;
+}
+.form__forgot-password {
+  align-self: flex-end;
+  color: #8f8f8f;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  border-bottom: 1px solid #8f8f8f;
+}
+
+.form-login button,
+.form-register button {
+  border: none;
+  background: #333333;
+  border-radius: 30px;
+  color: white;
+  padding: 10px 10px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left-arrow::before,
+.right-arrow::before,
+.left-arrow::after,
+.right-arrow::after {
+  display: inline-flex;
+  position: absolute;
+  content: "";
+}
+.left-arrow,
+.right-arrow {
+  display: inline-flex;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.left-arrow::before,
+.right-arrow::before {
+  top: 8px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background-color: white;
+}
+
+.left-arrow::after,
+.right-arrow::after {
+  width: 10px;
+  height: 10px;
+  top: 2px;
+}
+
+.left-arrow::after {
+  left: 0;
+  border-top: 3px solid white;
+  border-left: 3px solid white;
+  transform: rotate(-45deg);
+}
+
+.right-arrow::after {
+  right: 0;
+  border-top: 3px solid white;
+  border-right: 3px solid white;
+  transform: rotate(45deg);
+}
+.left-arrow:hover::before,
+.right-arrow:hover::before {
+  background-color: black;
+}
+
+.left-arrow:hover::after {
+  border-top: 3px solid black;
+  border-left: 3px solid black;
+}
+
+.right-arrow:hover::after {
+  border-top: 3px solid black;
+  border-right: 3px solid black;
+}
+
+.form__forgot-password {
+  align-self: flex-end;
+  color: #8f8f8f;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  border-bottom: 1px solid #8f8f8f;
+  cursor: pointer;
+}
+.blur {
+  height: 200px;
+  width: 400px;
+  border-radius: 352.077px;
+  opacity: 0.5;
+  background: #37ff9f;
+  filter: blur(75px);
+  position: absolute;
+  top: 0;
+  left: -30px;
+}
+.blur-blue {
+  position: absolute;
+  top: 20%;
+  width: 100px;
+  height: 150px;
+  border-radius: 266.725px;
+  opacity: 0.5;
+  background: #50a0ff;
+  filter: blur(60.5985870361328px);
+}
+.login-pic {
+  max-height: 100vh;
+  flex-basis: 40%;
+}
+.login-pic img {
+  max-width: 100%;
+  height: auto;
+}
+/* form {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 15px;
+    height: 300px;
+   
+    
+    justify-content: center;
+  }
+  .form-login{
+    flex-basis: 40%;
+    display: flex;
+  justify-content: center;
+  }
+  .form-login input,.form-login button{
+    width: 50%;
+  }
+  
+  .form-login input {
+    padding: 10px;
+    outline: none;
+    border-radius: 15px;
+    border: 1px solid #E8E8E8;
+    background: white;
+    margin-bottom: 30px;
+    color: #8F8F8F
+  }
+  .form-login button,.form-register button {
+    border: none;
+    background: #333333;
+    border-radius: 30px;
+    color: white;
+    padding: 10px 10px;
+    cursor: pointer;
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    
+  } */
+/* body {
+      background-color: rgba(122, 120, 240, 0.231);
+  }
+  
+
+  
+  
+  .form__have-account span,
+  .form__name {
+    color: rgba(128, 128, 128, 0.942);
+  }
+  .form__name {
+    margin-bottom: 15px;
+   
+    font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 44px;
+line-height: 140%;
+
+
+text-transform: uppercase;
+color: #333333;
+align-self: start;
+  }
+  
+  input:focus::placeholder {
+    opacity: 0;
+  }
+  .left-arrow, 
+.right-arrow {
+  display: inline-flex;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.left-arrow::before,
+.right-arrow::before,
+.left-arrow::after,
+.right-arrow::after {
+  display: inline-flex;
+  position: absolute;
+  content: '';
+}
+
+
+.left-arrow::before,
+.right-arrow::before {
+  top: 8px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background-color:white; 
+}
+
+.left-arrow::after,
+.right-arrow::after {
+  width: 10px;
+  height: 10px;
+  top: 2px;
+}
+
+.left-arrow::after {
+  left: 0;
+  border-top: 3px solid white;
+  border-left: 3px solid white;
+  transform: rotate(-45deg);
+}
+
+.right-arrow::after {
+  right: 0;
+  border-top: 3px solid white;
+  border-right: 3px solid white;
+  transform: rotate(45deg);
+}
+
+
+.left-arrow:hover::before,
+.right-arrow:hover::before {
+  background-color: black; 
+}
+
+.left-arrow:hover::after {
+  border-top: 3px solid black;
+  border-left: 3px solid black;
+}
+
+.right-arrow:hover::after {
+  border-top: 3px solid black;
+  border-right: 3px solid black;
+}
+  .form__forgot-password {
+    align-self: flex-end;
+    color: #8F8F8F;
+    font-family: 'Inter';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 140%;
+border-bottom: 1px solid #8F8F8F;
+margin-right: 40px;
+  }
+
+
+  .login-page {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .login-page {
+    
+  } */
+.form__have-account {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(128, 128, 128, 0.942);
+}
+.form__have-account span {
+  color: rgba(128, 128, 128, 0.942);
+}

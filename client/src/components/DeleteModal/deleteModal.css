@@ -1,0 +1,36 @@
+.modal-background {
+  padding-top: 10%;
+}
+
+.modal-window {
+  background-color: aliceblue;
+  height: fit-content;
+  padding: 50px 70px 50px 70px;
+  border-radius: 15px;
+}
+.modal-question {
+  text-align: center;
+}
+
+.modal-btns {
+  display: flex;
+  margin-top: 15px;
+}
+
+.modal-yes {
+  margin-right: 40px;
+}
+
+.modal-yes,
+.modal-no {
+  background-color: #4fa4fb;
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-yes:hover,
+.modal-no:hover {
+  background-color: #0a75e0;
+}

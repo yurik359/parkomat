@@ -1,0 +1,78 @@
+.form-register {
+  display: flex;
+
+  flex-direction: column;
+  margin-left: 200px;
+  padding-top: 50px;
+  justify-self: flex-end;
+  align-self: center;
+  flex-basis: 30%;
+}
+
+.form-name {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 140%;
+  /* identical to box height, or 62px */
+
+  text-transform: uppercase;
+
+  color: #333333;
+}
+
+.form-register input {
+  width: 80%;
+  margin-bottom: 15px;
+  border-radius: 15px;
+  border: 1px solid #e8e8e8;
+  padding: 10px;
+}
+
+.policy span {
+  color: #4fa4fb;
+}
+
+.validation {
+  color: #f04b6c;
+}
+
+.register-page {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: #f4f5f6;
+}
+
+.register-blur {
+  position: absolute;
+  width: 30%;
+  height: 60%;
+  opacity: 0.5;
+  background: #37ff9f;
+  filter: blur(75px);
+  right: 0;
+  bottom: -30px;
+  z-index: 0;
+}
+.register-page img {
+  position: relative;
+  z-index: 1;
+  max-height: 100vh;
+}
+.form-register button {
+  max-width: 85%;
+}
+
+.policy {
+  margin: 10px 0;
+  max-width: 300px;
+}
+
+.form__have-account {
+  justify-content: start;
+}
+.form__have-account span {
+  margin-left: 15px;
+}

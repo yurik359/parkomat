@@ -1,0 +1,154 @@
+.file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 15px 0;
+  border-radius: 15px;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 100px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.file-label {
+  font-size: 16px;
+}
+
+.add-parkomat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #25252566;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
+  align-items: start;
+}
+.add-parkomat form {
+  /* padding: 70px 0; */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: fit-content;
+  flex-basis: 35%;
+  border-radius: 15px;
+}
+.add-parkomat__address-list {
+  box-sizing: border-box;
+  height: fit-content;
+  width: 380px;
+  overflow: auto;
+  position: absolute;
+  z-index: 15000;
+  top: 230px;
+  background-color: #f0f0f0;
+  max-height: 400px;
+  border-radius: 10px;
+}
+.add-parkomat__list-item:hover {
+  background-color: #adacac;
+}
+.add-parkomat__list-item {
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-parkomat__name-input,
+.add-parkoma__location-section input,
+select {
+  box-sizing: border-box;
+  height: 37px;
+  padding-left: 15px;
+}
+.add-parkoma__location-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 70%;
+}
+
+.add-parkoma__location-section input {
+  width: 100%;
+}
+.add-parkomat__list-item {
+  margin: 10px;
+}
+
+.add-parkomat__name-input,
+textarea,
+select,
+label {
+  width: 70%;
+}
+textarea {
+  box-sizing: border-box;
+  padding-left: 15px;
+  height: 50px;
+}
+.add-parkomat__name-input,
+select {
+  margin: 15px 0;
+  border-radius: 22px;
+  border: 1px solid #e8e8e8;
+}
+
+/* .add-parkomat__name-input, .add-parkoma__location-section input, select {
+  height: 44px;
+} */
+.add-parkoma__location-section input,
+label,
+textarea {
+  margin-bottom: 15px;
+  border-radius: 22px;
+  border: 1px solid #e8e8e8;
+}
+
+.add-parkomat__ico img:last-child {
+  position: relative;
+  width: 30px;
+  height: 35px;
+  top: -50px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.add-parkomat form button {
+  color: #fff;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 163.023%;
+  text-transform: capitalize;
+  border-radius: 30px;
+  background: #4fa4fb;
+  border: none;
+  padding: 7px 12px;
+  position: relative;
+  top: 15px;
+}
+
+.add-parkomat__close {
+  border-bottom: 1px solid white;
+  position: relative;
+  bottom: 30px;
+  color: white;
+  cursor: pointer;
+}

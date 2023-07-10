@@ -1,0 +1,73 @@
+.name-payment {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+}
+
+.slot-item {
+  cursor: pointer;
+  overflow: hidden;
+}
+.slot-item__location::before {
+  content: " ";
+  background: url("../../services/img/Group2.png") no-repeat center;
+  padding: 10px 15px 10px 0px;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+}
+
+.slot-item__location {
+  color: #333;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  padding: 0 5px;
+}
+.slot__payment {
+  color: #333;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 140%;
+  margin-right: 5px;
+}
+
+.slot-item {
+  width: 327px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 15px;
+}
+.slot-item img {
+  width: 100%;
+  height: 57px;
+}
+
+.slot-item__line {
+  height: 1px;
+  width: 56px;
+  background-color: #dedede;
+
+  align-self: center;
+  margin: 10px 0;
+}
+
+.slot-item__location {
+  max-width: 300px;
+}
+
+.slot-item__description {
+  color: #333;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  padding: 0 5px 5px 5px;
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./deleteModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteParkomat } from "../Slots/slotsSlice";
+import { deleteItemAPI } from "../../services/requests";
 import { useHandlePOST } from "../../services/requests";
 import {
   addIndexParkomat,
@@ -23,8 +24,8 @@ const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
 
   const handleDeleteItem = async () => {
     const accessToken = localStorage.getItem("accessToken");
-    const url = "http://176.117.76.79:4001/deleteParkomat";
-    const { status } = await handlePOST(url, { accessToken, indexOfParkomat });
+    
+    const { status } = await handlePOST(deleteItemAPI, { accessToken, indexOfParkomat });
     if (status === "deleted") {
       dispatch(deleteParkomat(indexOfParkomat));
       dispatch(addIndexParkomat(null));

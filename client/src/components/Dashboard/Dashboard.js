@@ -41,7 +41,21 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="grapchics-main__main-graphic"></div>
+              <div className="grapchics-main__main-graphic">
+              <div  className='grapchics-main__xnumber'>
+                <ul>
+                  <li>400</li>
+                  <li>300</li>
+                  <li>200</li>
+                  <li>100</li>
+                  <li>0</li>
+                 
+                </ul>
+              </div>
+              <div className="grapchics-main__columns">
+
+              </div>
+              </div>
             </div>
           </div>
           <div className="dashboard__middle">
@@ -58,7 +72,7 @@ const Dashboard = () => {
                 <div className="dashboard__indicator"></div>
                 <div className="dashboard__indicator-description">lorem</div>
               </div>
-              <div className="dashboard__statistic-number">100$</div>
+              <div className="dashboard__statistic-number">24</div>
               <div className="dashboard__loader"></div>
             </div>
             <div className="dashboard__middle-item">
@@ -66,7 +80,7 @@ const Dashboard = () => {
                 <div className="dashboard__indicator"></div>
                 <div className="dashboard__indicator-description">lorem</div>
               </div>
-              <div className="dashboard__statistic-number">100$</div>
+              <div className="dashboard__statistic-number">32%</div>
               <div className="dashboard__loader"></div>
             </div>
           </div>

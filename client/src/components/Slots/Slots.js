@@ -13,6 +13,7 @@ import {
   clearForm,
   setDeleteIco,
 } from "../AddParkomat/addParkomatSlice";
+import { getListAPI } from "../../services/requests";
 
 const Slots = () => {
   const handlePOST = useHandlePOST();
@@ -28,10 +29,13 @@ const Slots = () => {
   const { indexOfParkomat, typeOfmodal } = useSelector(
     (state) => state.slotItemSlice
   );
+  console.log(parkomatArray)
   const getParkomatList = async (accessToken) => {
-    const response = await handlePOST("http://176.117.76.79:4001/getParkomatList", {
+
+    const response = await handlePOST(getListAPI, {
       accessToken,
     });
+    console.log(response)
     if (
       response &&
       response.parkomatList &&
@@ -58,7 +62,7 @@ const Slots = () => {
     const debounce = setTimeout(async () => {
       const accessToken = localStorage.getItem("accessToken");
 
-      const res = await handlePOST("http://176.117.76.79:4001/getParkomatList", {
+      const res = await handlePOST(getListAPI, {
         accessToken,
       });
       if (res && res.parkomatList) {
@@ -114,7 +118,7 @@ const Slots = () => {
             type="text"
             value={searchTerm}
             placeholder="Search"
-            style={{ background: "#F4F5F6" }}
+        
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="slots__btns">

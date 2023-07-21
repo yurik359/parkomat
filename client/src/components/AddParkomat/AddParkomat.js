@@ -15,6 +15,7 @@ import { updateParkomat } from "../Slots/slotsSlice";
 import Map from "../map/map";
 import deleteIco from "../../services/img/DeleteButton.png";
 import { v4 as uuidv4 } from "uuid";
+import { baseUrl } from "../../services/requests";
 const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const uniqueId = uuidv4();
   const handlePOST = useHandlePOST();
@@ -32,7 +33,8 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const { indexOfParkomat } = useSelector((state) => state.slotItemSlice);
   const { accessToken } = useSelector((state) => state.mainSlice);
   const dispatch = useDispatch();
-  const url = `http://176.117.76.79:4001/${
+
+  const addModalAPI = baseUrl+`${
     typeOfmodal == "update" ? "updateParkomat" : "addParkomat"
   }`;
 
@@ -57,6 +59,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
     const adressSuggesti = await handleGET(url);
 
     if (adressSuggesti.length > 0) {
+      console.log(adressSuggesti)
       setAddressSuggestion(adressSuggesti);
      
     } else {
@@ -65,10 +68,15 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   };
 
   useEffect(() => {
-    if (onFocusInput) {
-      setCloseAddressesList(false);
-      handleGeoCode();
-    }
+    const geoTimeOut = setTimeout(()=>{
+      if (onFocusInput) {
+        console.log('hop')
+        setCloseAddressesList(false);
+        handleGeoCode();
+      }
+    },500)
+    
+    return () => clearTimeout(geoTimeOut);
   }, [formValues.locationValue.address]);
 
   const handleSubmit = async (e) => {
@@ -87,7 +95,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
 
    
 
-    const { lastObject } = await handlePOST(url, {
+    const { lastObject } = await handlePOST(addModalAPI, {
       nameOfslot,
       location,
       payment,
@@ -105,7 +113,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const handleEditParkomat = async (e) => {
     e.preventDefault();
 
-    const { updatedParkomat } = await handlePOST(url, {
+    const { updatedParkomat } = await handlePOST(addModalAPI, {
       formValues,
       accessToken,
       indexOfParkomat,
@@ -166,7 +174,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
           onChange={(e) => dispatch(changeNameOfslotValue(e.target.value))}
           type="text"
           required
-          placeholder="name of the slots"
+          placeholder="Name of the slots"
         />
         <div className="add-parkoma__location-section">
           <input
@@ -174,7 +182,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
             value={formValues.locationValue.address}
             onFocus={() => setOnFocusInput(true)}
             onBlur={() => setOnFocusInput(false)}
-            placeholder="location"
+            placeholder="Location"
             required
             onChange={(e) => dispatch(changeLocationValue(e.target.value))}
           />
@@ -195,7 +203,9 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
                 );
               })}
           </div>
+          <div className="" style={{width:'90%'}}>
           <Map checkedAddress={checkedAddress} />
+          </div>
         </div>
         <select
           value={formValues.paymentValue}
@@ -211,7 +221,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
         </label>
         <div
           className="add-parkomat__ico"
-          style={{ display: deleteIcon ? "block" : "none" }}
+          style={{ display: deleteIcon ? "block" : "none" ,display:formValues.picValue?'block':'none'}}
         >
           <img
             src={formValues.picValue}
@@ -228,7 +238,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
           id=""
           cols="30"
           rows="10"
-          placeholder="notes"
+          placeholder="Notes"
         ></textarea>
         <button> {typeOfmodal}</button>
       </form>

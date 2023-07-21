@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAccessToken } from "./mainSlice";
 import { useEffect } from "react";
 const Main = () => {
+  
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {

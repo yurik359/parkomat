@@ -2,12 +2,17 @@ import { useState } from "react";
 import "./register.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useHandlePOST } from "../../../services/requests";
+import { setAccessToken } from "../main/mainSlice";
+import { useDispatch } from "react-redux";
+import { registerAPI } from "../../../services/requests";
 import parkomatPic from "../../../services/img/Frame2.png";
 const Register = () => {
+  const dispatch=useDispatch();
   const navigate = useNavigate();
   const handlePOST = useHandlePOST();
   const [valid, setValid] = useState(null);
-  const url = "http://176.117.76.79:4001/register";
+  const [response,setResponse] = useState(null)
+  
 
   const formValidate = (e) => {
     if (e.target[0].value.trim().length < 2) {
@@ -29,13 +34,17 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formValidate(e)) {
-      const { message, token } = await handlePOST(url, {
+      const res = await handlePOST(registerAPI, {
         organizationName: e.target[0].value,
         email: e.target[1].value,
         password: e.target[2].value,
       });
-
-      localStorage.setItem("accessToken", token);
+      if(res&&res.status&&res.status=="401"){
+        return setResponse(res.message)
+      }
+      setResponse(null)
+      dispatch(setAccessToken(res.token))
+      localStorage.setItem("accessToken", res.token);
       navigate("/dashboard");
     }
   };
@@ -53,6 +62,7 @@ const Register = () => {
             {" "}
             By signing up you are agree to our <span>Terms and Services</span>
           </div>
+          {response&&<span>{response}</span>}
           <button>
             Sign Up <div class="right-arrow"></div>
           </button>
@@ -63,7 +73,8 @@ const Register = () => {
             </Link>
           </div>
         </form>
-        <img src={parkomatPic} alt="" />
+        <div className='parkomatReg-pic'></div>
+        {/* <img src={parkomatPic} alt="" /> */}
         <div className="register-blur"></div>
       </div>
     </>

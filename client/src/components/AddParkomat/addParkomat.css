@@ -8,7 +8,15 @@
   cursor: pointer;
   background-color: #f0f0f0;
   padding: 15px 0;
-  border-radius: 15px;
+  border-radius: 18px;
+  height: 40px;
+  color: #333;
+text-align: center;
+font-family:'Inter';
+font-size: 12px;
+font-style: normal;
+font-weight: 500;
+line-height: 140%;
 }
 
 .file-input {
@@ -20,6 +28,14 @@
   font-size: 100px;
   cursor: pointer;
   opacity: 0;
+}
+.add-parkomat__title {
+  color: #333;
+font-family: 'Inter';
+font-size: 18px;
+font-style: normal;
+font-weight: 600;
+line-height: 140%; 
 }
 
 .file-label {
@@ -45,8 +61,10 @@
   flex-direction: column;
   align-items: center;
   max-height: fit-content;
-  flex-basis: 35%;
-  border-radius: 15px;
+ 
+  border-radius: 48px;
+  max-width: 561px;
+  min-width: 561px;
 }
 .add-parkomat__address-list {
   box-sizing: border-box;
@@ -55,7 +73,7 @@
   overflow: auto;
   position: absolute;
   z-index: 15000;
-  top: 230px;
+  top: 258px;
   background-color: #f0f0f0;
   max-height: 400px;
   border-radius: 10px;
@@ -69,11 +87,15 @@
   cursor: pointer;
 }
 
+.add-parkomat__name-input::placeholder,
+.add-parkoma__location-section input::placeholder {
+  color: #8F8F8F;
+}
 .add-parkomat__name-input,
 .add-parkoma__location-section input,
 select {
   box-sizing: border-box;
-  height: 37px;
+  height: 44px;
   padding-left: 15px;
 }
 .add-parkoma__location-section {
@@ -83,9 +105,12 @@ select {
   flex-direction: column;
   width: 70%;
 }
-
+.add-parkoma__location-section input::placeholder{
+  color: #333;
+}
 .add-parkoma__location-section input {
-  width: 100%;
+  width: 90%;
+  
 }
 .add-parkomat__list-item {
   margin: 10px;
@@ -95,18 +120,25 @@ select {
 textarea,
 select,
 label {
-  width: 70%;
+  
+  width: 63%;
 }
 textarea {
   box-sizing: border-box;
-  padding-left: 15px;
-  height: 50px;
+  padding-left: 25px;
+  height: 82px;
+  resize: none;
+  padding-top: 13px;
+  margin-top: 5px;
 }
 .add-parkomat__name-input,
 select {
-  margin: 15px 0;
+  margin: 20px 0;
   border-radius: 22px;
   border: 1px solid #e8e8e8;
+}
+select {
+  padding-right: 30px;
 }
 
 /* .add-parkomat__name-input, .add-parkoma__location-section input, select {

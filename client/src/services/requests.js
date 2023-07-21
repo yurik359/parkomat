@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 export const useHandlePOST = () => {
   const navigate = useNavigate();
@@ -28,6 +28,20 @@ export const useHandlePOST = () => {
 
   return handlePOST;
 };
+
+
+ export const baseUrl = 'http://176.117.76.79:4001/';
+    export  const deleteItemAPI  = baseUrl + 'deleteParkomat'
+    export  const recoverAPI     = baseUrl + 'sendEmail'
+    export  const changePassAPI  = baseUrl + 'changePassword'
+    export  const loginAPI       = baseUrl + 'login'
+    export  const registerAPI    = baseUrl + 'register'
+    export  const getListAPI     = baseUrl + 'getParkomatList'
+
+
+
+
+
 
 
 

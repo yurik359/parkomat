@@ -23,6 +23,7 @@
   height: 44px;
   width: 80%;
   margin: 10px;
+  padding-left: 15px;
 }
 .modal-forget span:first-child {
   font-size: 20px;
@@ -31,7 +32,7 @@
 
 .modal__send-btn {
   padding: 15px;
-  background-color: rgb(145, 203, 243);
+  background-color: rgb(81, 168, 226);
   border-radius: 15px;
   width: 70px;
   cursor: pointer;

@@ -3,7 +3,7 @@ import "./modalForgetPass.css";
 import { useHandlePOST } from "../../services/requests";
 import { useSelector, useDispatch } from "react-redux";
 import { setForgotPassword } from "../Pages/login/loginSlice";
-
+import { recoverAPI } from "../../services/requests";
 const ModalForgetPass = () => {
   const dispatch = useDispatch();
   const handlePOST = useHandlePOST();
@@ -25,7 +25,7 @@ const ModalForgetPass = () => {
     
   }, []);
   const sendEmail = async () => {
-    const res = await handlePOST("http://176.117.76.79:4001/sendEmail", {
+    const res = await handlePOST(recoverAPI, {
       emailRecover,
     });
     setEmailRecover("");

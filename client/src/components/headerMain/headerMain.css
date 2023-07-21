@@ -1,5 +1,5 @@
 .wrapper {
-  max-width: 1010px;
+  max-width: 1050px;
   margin: 0 auto;
 }
 .header__conainer {
@@ -24,10 +24,19 @@
   background: #4fa4fb;
   width: 134px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   color: white;
   height: 50px;
+  margin-right: 25px;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  color: #FFF;
+font-family: 'Inter';
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
 }
 
 .header__navigate ul {

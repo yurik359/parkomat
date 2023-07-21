@@ -3,13 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const slotsSlice = createSlice({
   name: "slotsSlice",
   initialState: {
-    parkomatArray: null,
+    parkomatArray: [],
     typeOfmodal: "",
   },
   reducers: {
     addParkomats: (state, action) => {
+      console.log(action.payload);
       state.parkomatArray = action.payload;
-      console.log(state.parkomatArray);
+      
     },
     addOneMore: (state, action) => {
       state.parkomatArray = [...state.parkomatArray, action.payload];

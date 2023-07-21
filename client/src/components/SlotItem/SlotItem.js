@@ -2,7 +2,7 @@ import "./slotItem.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addIndexParkomat, changeClickedParkomat } from "./slotItemSlice";
-
+import parking from '../../services/img/Rectangle28.png'
 
 const SlotItem = ({
   slotInfo: { nameOfslot, location, payment, formPic, notes, uid },
@@ -23,15 +23,18 @@ const SlotItem = ({
     }
   };
   return (
+    
     <div
       className="slot-item"
       onClick={selectParkomatItem}
       style={{
         background:
           indexOfParkomat == uid && clickedParkomat ? "#a3caf1" : null,
+        
       }}
     >
-      <img src={formPic} alt="" />
+      
+      <img src={formPic||parking} alt="" />
       <div className="name-payment">
         <div className="slot__name">{nameOfslot}</div>
         <div className="slot__payment">{payment}</div>

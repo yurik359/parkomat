@@ -22,11 +22,40 @@
   flex-basis: 50%;
   border-radius: 16px;
   border: 1px solid #d7d7d7;
-  padding-left: 10px;
+  padding-left: 50px;
+ padding-top: 5px;
+  
+  background-image: url("../../services/img/Group76.png"); 
+  background-position: 4% center; 
+  background-repeat: no-repeat; 
+  background-size: 20px 20px;
+
+  background-color: #F4F5F6;
 }
+.slots__upper-container input::before {
+  content: "dasd"; 
+
+  left: 10px; 
+  top: 50%;
+  
+  
+  background-image: url("../../services/img/Group76.png"); 
+  background-size: cover;
+  padding: 15px;
+}
+.slots__upper-container input::placeholder {
+  color: #ADADAD;
+  font-family: 'Inter';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
+ /* 25.2px */
 
 .slots__btns {
   display: flex;
+  margin-right: 25px;
 }
 
 .slots__edit-btn {
@@ -65,12 +94,12 @@
   border-radius: 20px;
   border: 1px solid #d7d7d7;
   width: 327px;
-  height: 185px;
+  height: 190px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  margin-top: 10px;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -98,5 +127,11 @@
 .slots__down-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  
+}
+
+@media (max-width:1015px){
+  .slots__down-container  {
+    justify-content: center;
+  }
 }

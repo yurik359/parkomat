@@ -1,15 +1,16 @@
 import { useState } from "react";
 import "./register.css";
 import { useNavigate, Link } from "react-router-dom";
-import { useHandlePOST } from "../../../services/requests";
+
 import { setAccessToken } from "../main/mainSlice";
 import { useDispatch } from "react-redux";
-import { registerAPI } from "../../../services/requests";
+
 import parkomatPic from "../../../services/img/Frame2.png";
+import { register } from "../../../services/requests";
 const Register = () => {
   const dispatch=useDispatch();
   const navigate = useNavigate();
-  const handlePOST = useHandlePOST();
+
   const [valid, setValid] = useState(null);
   const [response,setResponse] = useState(null)
   
@@ -32,20 +33,44 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
     if (formValidate(e)) {
-      const res = await handlePOST(registerAPI, {
+     try {
+      const res=  await register( {
         organizationName: e.target[0].value,
         email: e.target[1].value,
         password: e.target[2].value,
-      });
-      if(res&&res.status&&res.status=="401"){
-        return setResponse(res.message)
+      })
+      console.log(res)
+      
+      // if(res.data.status&&res.data.status=="401"){
+      //   return setResponse(res.data.message)
+      // }
+      if(res&&res.data) {
+        console.log(res)
+        const data = res.data
+        
+        
+       
+        localStorage.setItem("accessToken", data.token);
+        navigate("/dashboard");
+
       }
+      
       setResponse(null)
-      dispatch(setAccessToken(res.token))
-      localStorage.setItem("accessToken", res.token);
-      navigate("/dashboard");
+      
+     } catch (error) {
+      if(error.response.status&&error.response.status=="401"){
+        return setResponse(error.response.data.message)
+      }
+      console.log(error)
+     }
+      
+      
+      
+     
     }
   };
   return (

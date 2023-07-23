@@ -17,10 +17,10 @@ line-height: 140%;
   overflow: hidden;
   margin-bottom: 28px;
   margin-right: 20px;
-  height: 190px;
+  max-height: 210px;
   box-sizing: border-box;
   align-items:stretch;
- 
+ padding-bottom: 10px;
 }
 .slot-item__location::before {
   content: " ";
@@ -73,14 +73,19 @@ line-height: 140%;
   background-color: #dedede;
 
   align-self: center;
-  margin: 14px 0 8px 0;
+  margin: 10px 0 8px 0;
 }
 
 .slot-item__location {
-
-max-height: 20px;  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+max-height: 32px;  
+min-height: 31.7px;
 max-width: 300px;
-overflow: scroll;
+overflow: hidden;
+  text-overflow: ellipsis;
 color: #333;
 font-family: 'Inter';
 font-size: 13px;
@@ -92,6 +97,10 @@ line-height: 140%;
 
 
 .slot-item__description {
+ 
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
    color: #333; 
    padding: 0px 12px 0px 12px; 
    word-break: break-all;
@@ -101,9 +110,9 @@ font-size: 11px;
 font-style: normal;
 font-weight: 400;
 line-height: 140%;
-  overflow: scroll; 
+overflow: hidden;
   text-overflow: ellipsis;
-   white-space: normal;  
+
     height: 48px;
     opacity: 0.699999988079071;
   

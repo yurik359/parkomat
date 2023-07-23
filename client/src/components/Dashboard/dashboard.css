@@ -334,6 +334,7 @@ line-height: 18px;
 .down-section__nav select {
   flex-basis: 30%;
   height: 57px;
+  border: 1px solid #d7d7d7
 }
 .down-section__nav input {
   flex-basis: 40%;

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./changePassword.css";
-import { useHandlePOST } from "../../../services/requests";
-import { changePassAPI } from "../../../services/requests";
+
+
 import { useNavigate } from "react-router";
+import { changePassword } from "../../../services/requests";
 const ChangePassword = () => {
   const navigate = useNavigate();
-  const handlePOST = useHandlePOST();
+  
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
   const [password, setPassword] = useState("");
@@ -20,11 +21,11 @@ const [response,setResponse] = useState(false)
       setError("Password mismatch");
       console.log("dont");
     } else {
-      const res = await handlePOST(changePassAPI, { code, password });
-     
-      if(res&&res.message){
-        setResponse(res.message)
-        if(res.status=='ok') {
+      try {
+        const res = await changePassword({code,password})
+      if(res&&res.data.message){
+        setResponse(res.data.message)
+        if(res.data.status=='ok') {
           setTimeout(()=>{
             console.log('lyap')
             navigate('/login')},3000)
@@ -32,6 +33,10 @@ const [response,setResponse] = useState(false)
       }
       setConfirmPassword("");
       setPassword("");
+      } catch (error) {
+        console.log(error)
+      }
+      
       
       
     }

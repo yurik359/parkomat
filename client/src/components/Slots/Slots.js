@@ -5,7 +5,7 @@ import AddParkomat from "../AddParkomat/AddParkomat";
 import DeleteModal from "../DeleteModal/DeleteModal";
 
 import { useEffect, useState } from "react";
-import { handleGET, useHandlePOST } from "../../services/requests";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addParkomats, addOneMore, changeTypeOfModal } from "./slotsSlice";
 import {
@@ -13,10 +13,11 @@ import {
   clearForm,
   setDeleteIco,
 } from "../AddParkomat/addParkomatSlice";
-import { getListAPI } from "../../services/requests";
+import { getListItems } from "../../services/requests";
+
 
 const Slots = () => {
-  const handlePOST = useHandlePOST();
+
   const [closeModal, setCloseModal] = useState(true);
   const [closeDeleteModal, setCloseDeleteModal] = useState(true);
   
@@ -29,25 +30,28 @@ const Slots = () => {
   const { indexOfParkomat, typeOfmodal } = useSelector(
     (state) => state.slotItemSlice
   );
-  console.log(parkomatArray)
+  
   const getParkomatList = async (accessToken) => {
 
-    const response = await handlePOST(getListAPI, {
-      accessToken,
-    });
-    console.log(response)
+   try {
+    const response =await getListItems();
     if (
       response &&
-      response.parkomatList &&
-      response.parkomatList.parkomatItemsArray >= 1
+      response.data.parkomatList &&
+      response.data.parkomatList.parkomatItemsArray >= 1
     ) {
       const {
         parkomatList: { parkomatItemsArray },
-      } = response;
+      } = response.data;
+      console.log(parkomatItemsArray)
       dispatch(addParkomats(parkomatItemsArray));
     } else {
       return;
     }
+   } catch (error) {
+    console.log(error)
+   }
+
   };
 
   const filterSearch = (searchTerm, searchArr) => {
@@ -62,13 +66,13 @@ const Slots = () => {
     const debounce = setTimeout(async () => {
       const accessToken = localStorage.getItem("accessToken");
 
-      const res = await handlePOST(getListAPI, {
-        accessToken,
-      });
-      if (res && res.parkomatList) {
+      
+      const res = await getListItems()
+      console.log(res)
+      if (res && res.data.parkomatList) {
         const filteredArray = filterSearch(
           searchTerm,
-          res.parkomatList.parkomatItemsArray
+          res.data.parkomatList.parkomatItemsArray
         );
         dispatch(addParkomats(filteredArray));
       }

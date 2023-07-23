@@ -53,6 +53,7 @@ line-height: 140%;
   justify-content: center;
   padding-top: 80px;
   align-items: start;
+  min-height: 700px;
 }
 .add-parkomat form {
   /* padding: 70px 0; */

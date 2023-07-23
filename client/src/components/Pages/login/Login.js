@@ -1,6 +1,6 @@
 import "./login.css";
 import { useNavigate, Link } from "react-router-dom";
-import { useHandlePOST } from "../../../services/requests";
+
 import ModalForgetPass from "../../modalForgetPass/ModalForgetPass";
 import { useDispatch } from "react-redux";
 import { setForgotPassword } from "./loginSlice";
@@ -8,40 +8,53 @@ import { useState } from "react";
 import parking from "../../../services/img/Frame.png";
 import { setAccessToken } from "../main/mainSlice";
 import { useSelector } from "react-redux";
-import { loginAPI } from "../../../services/requests";
+
+import { login } from "../../../services/requests";
 const Login = () => {
   const {accessToken} =useSelector(state=>state.mainSlice)
   const dispatch = useDispatch();
-  const handlePOST = useHandlePOST();
+  
   
   const navigate = useNavigate();
   const [error,setError] = useState(null)
   console.log(accessToken)
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await handlePOST(loginAPI, {
-      email: e.target[0].value,
-      password: e.target[1].value,
-    });
-  
-    if(res.message&&res.message=='wrong password or email') {
-      setError(res.message)
-
-    }
-    if (res&&res.message&&res.token) {
+try {
+  const res= await login({
+    email: e.target[0].value,
+    password: e.target[1].value,
+  })
+  console.log(res)
+  if(res){
+    const data = res.data
+    
+    if (data.message&&data.token) {
       setError(null)
 
-      localStorage.setItem("accessToken", res.token);
-      // dispatch(setAccessToken(res.token))
+      localStorage.setItem("accessToken", data.token);
+  
       
      navigate("/dashboard")
       
     }
 
+  }
+  
+} catch (error) {
+  if(error.response.data.message&&error.response.data.message=='wrong password or email') {
+    setError(error.response.data.message)
+
+  }
+}
+
+   
+    
+    
+ 
     
   };
-console.log(error)
+
   const forgotPasswordClicked = () => {
     dispatch(setForgotPassword(true));
   };

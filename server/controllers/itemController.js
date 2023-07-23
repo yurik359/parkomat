@@ -2,6 +2,7 @@ const { parkomatItem } = require("../models/parkomatItem");
 const { Parkomat } = require("../models/parkomatItem");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
+const axios = require('axios');
 module.exports = {
   addParkomat: async (req, res) => {
     try {
@@ -14,6 +15,7 @@ module.exports = {
         uniqueId,
         accessToken,
       } = req.body;
+
 
       const { id } = req.decoded;
 
@@ -62,10 +64,10 @@ module.exports = {
           picValue,
           notesValue,
         },
-        accessToken,
+
         indexOfParkomat,
       } = req.body;
-      console.log(indexOfParkomat);
+      
       const { id } = req.decoded;
 
       const document = await Parkomat.findOneAndUpdate(
@@ -89,7 +91,7 @@ module.exports = {
           (item) => item.uid === indexOfParkomat
         );
 
-        console.log(updatedParkomat);
+        
         res.send({ updatedParkomat });
       }
     } catch (error) {
@@ -99,8 +101,9 @@ module.exports = {
   },
   deleteParkomat: async (req, res) => {
     try {
-      const { indexOfParkomat, accessToken } = req.body;
-
+    
+      const { indexOfParkomat, accessToken } = req.query;
+ 
       const { id } = req.decoded;
 
       await Parkomat.updateOne(
@@ -112,4 +115,38 @@ module.exports = {
       console.log(error);
     }
   },
+  getAddresses: async (req,res) => {
+    try {
+      // const {address} = req.body
+      const address = req.query.address;
+    
+  const response= await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(`${address}`)}&key=AIzaSyB1Odbx682gqH7bH9t74j9zH9hFeZKxoZQ`)
+  
+      res.send(response.data)
+
+   
+  
+
+    } catch (error) {
+      
+    }
+
+  },
+  getPlaceId:async (req,res) => {
+    
+      console.log(req.params)
+      const placeId = req.params.placeId; 
+      const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=AIzaSyB1Odbx682gqH7bH9t74j9zH9hFeZKxoZQ`;
+      axios.get(url)
+      .then(response => {
+        const placeData = response.data;
+    
+        res.send(placeData)
+        // Здесь вы можете обрабатывать полученные данные о месте
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  
+  } 
 };

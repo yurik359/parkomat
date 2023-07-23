@@ -65,6 +65,7 @@ const Parkomat = mongoose.model('parkomatItems', parkomatSchema,'parkomatItems')
 
 
 
+
 module.exports = {
     
      Parkomat    

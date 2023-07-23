@@ -1,6 +1,6 @@
 import "./addParkomat.css";
 import { useState, useEffect } from "react";
-import { useHandlePOST, handleGET } from "../../services/requests";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   changeNameOfslotValue,
@@ -12,13 +12,16 @@ import {
   changeCoordinate,
 } from "./addParkomatSlice";
 import { updateParkomat } from "../Slots/slotsSlice";
+import cheerio from 'cheerio';
 import Map from "../map/map";
 import deleteIco from "../../services/img/DeleteButton.png";
+import axios from 'axios';
+import { createParkomat,editParkomat,getPlaceId,getAddresses} from "../../services/requests";
 import { v4 as uuidv4 } from "uuid";
 import { baseUrl } from "../../services/requests";
 const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const uniqueId = uuidv4();
-  const handlePOST = useHandlePOST();
+
   const [addressSuggestion, setAddressSuggestion] = useState(null);
   const [checkedAddress, setCheckedAddress] = useState({
     lat: 50.456561,
@@ -34,7 +37,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const { accessToken } = useSelector((state) => state.mainSlice);
   const dispatch = useDispatch();
 
-  const addModalAPI = baseUrl+`${
+  const addModalAPI = 'http://localhost:4001/'+`${
     typeOfmodal == "update" ? "updateParkomat" : "addParkomat"
   }`;
 
@@ -52,19 +55,17 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   };
 
   const handleGeoCode = async () => {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-      `${formValues.locationValue.address}`
-    )}&format=json`;
-
-    const adressSuggesti = await handleGET(url);
-
-    if (adressSuggesti.length > 0) {
-      console.log(adressSuggesti)
-      setAddressSuggestion(adressSuggesti);
-     
-    } else {
-      console.log("Address not found");
-    }
+ try {
+  const res = await getAddresses(formValues.locationValue.address)
+ if (res&&res.data.predictions&&res.data.predictions.length>0) {
+  console.log(res)
+  setAddressSuggestion(res.data.predictions);
+ }
+ } catch (error) {
+  console.log(error)
+ }
+ 
+    
   };
 
   useEffect(() => {
@@ -81,46 +82,54 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+try {
+  const nameOfslot = formValues.nameOfslotValue;
+  const location = {
+    address: formValues.locationValue.address,
+    coordinate: formValues.locationValue.coordinate,
+  };
+  const payment = formValues.paymentValue;
 
-    const nameOfslot = formValues.nameOfslotValue;
-    const location = {
-      address: formValues.locationValue.address,
-      coordinate: formValues.locationValue.coordinate,
-    };
-    const payment = formValues.paymentValue;
+  const formPic = formValues.picValue;
 
-    const formPic = formValues.picValue;
+  const notes = formValues.notesValue;
 
-    const notes = formValues.notesValue;
+ 
+  const res = await createParkomat({nameOfslot,
+    location,
+    payment,
+    formPic,
+    notes,
+    uniqueId,})
+if(res&&res.data) {
+addOneMoreParkomat(res.data.lastObject)
+} 
+ 
 
+  setCloseModal(true);
+} catch (error) {
+  console.log(error)
+}
    
-
-    const { lastObject } = await handlePOST(addModalAPI, {
-      nameOfslot,
-      location,
-      payment,
-      formPic,
-      notes,
-      accessToken,
-      uniqueId,
-    });
-
-    addOneMoreParkomat(lastObject);
-
-    setCloseModal(true);
   };
 
   const handleEditParkomat = async (e) => {
     e.preventDefault();
 
-    const { updatedParkomat } = await handlePOST(addModalAPI, {
-      formValues,
-      accessToken,
-      indexOfParkomat,
-    });
-
-    dispatch(updateParkomat({ indexOfParkomat, updatedParkomat }));
-    setCloseModal(true);
+ try {
+  const res = await editParkomat({
+    formValues,
+  indexOfParkomat,
+  })
+  if (res&&res.data.updatedParkomat) {
+    dispatch(updateParkomat({ indexOfParkomat, updatedParkomat:res.data.updatedParkomat }));
+  }
+  
+  setCloseModal(true);
+ } catch (error) {
+  console.log(error)
+ }
+   
   };
 
   const handleClickOutside = (e) => {
@@ -141,11 +150,32 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
     });
   }, []);
 
-  const handleGetCoordinate = (e) => {
-    dispatch(changeLocationValue(e.display_name));
-    dispatch(changeCoordinate({ lat: e.lat, lon: e.lon }));
+  const handleGetCoordinate =async (e) => {
+    try {
+      const res = await getPlaceId(e.place_id)
+  
+      if(res&&res.status=='200') {
+        console.log('boba')
+        const $ = cheerio.load(res.data.result.adr_address);
+        
+           const street= $('.street-address').text().length>1?$('.street-address').text()+',':''
+         const  locality= $('.locality').text().length>1?$('.locality').text()+',':''
+           const region =$('.region').text().length>1?$('.region').text()+',':''
+  
+  const lat = res.data.result.geometry.location.lat
+  const lon = res.data.result.geometry.location.lng
+      
+      dispatch(changeLocationValue(`${street} ${locality} ${region} ${lat}, ${lon}`));
+      dispatch(changeCoordinate({ lat, lon}));
+      }
+     
+     
+      setCloseAddressesList(true);
+    } catch (error) {
+      console.log(error)
+    }
    
-    setCloseAddressesList(true);
+   
   };
 
   const handleDeleteIcon = () => {
@@ -198,7 +228,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
                     className="add-parkomat__list-item"
                     onClick={() => handleGetCoordinate(e)}
                   >
-                    {e.display_name}
+                    {e.description}
                   </div>
                 );
               })}

@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import "./deleteModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteParkomat } from "../Slots/slotsSlice";
-import { deleteItemAPI } from "../../services/requests";
-import { useHandlePOST } from "../../services/requests";
+
+
 import {
   addIndexParkomat,
   changeClickedParkomat,
 } from "../SlotItem/slotItemSlice";
+import { deleteParkomatItem } from "../../services/requests";
 const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
-  const handlePOST = useHandlePOST();
+
   const dispatch = useDispatch();
   const { indexOfParkomat } = useSelector((state) => state.slotItemSlice);
   useEffect(() => console.log(indexOfParkomat), [indexOfParkomat]);
@@ -24,13 +25,19 @@ const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
 
   const handleDeleteItem = async () => {
     const accessToken = localStorage.getItem("accessToken");
+    try {
+      const res=await deleteParkomatItem({  indexOfParkomat })
     
-    const { status } = await handlePOST(deleteItemAPI, { accessToken, indexOfParkomat });
-    if (status === "deleted") {
+   
+    if (res&&res.data.status === "deleted") {
       dispatch(deleteParkomat(indexOfParkomat));
       dispatch(addIndexParkomat(null));
       setCloseDeleteModal(true);
     }
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   const handleClearIndex = () => {

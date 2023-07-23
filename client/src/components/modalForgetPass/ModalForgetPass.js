@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import "./modalForgetPass.css";
-import { useHandlePOST } from "../../services/requests";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setForgotPassword } from "../Pages/login/loginSlice";
-import { recoverAPI } from "../../services/requests";
+
+import { recoverPassword } from "../../services/requests";
 const ModalForgetPass = () => {
   const dispatch = useDispatch();
-  const handlePOST = useHandlePOST();
+
   const [emailRecover, setEmailRecover] = useState("");
   const { forgotPassword } = useSelector((state) => state.loginSlice);
   const [resServer, setResServer] = useState(null);
@@ -25,14 +26,17 @@ const ModalForgetPass = () => {
     
   }, []);
   const sendEmail = async () => {
-    const res = await handlePOST(recoverAPI, {
-      emailRecover,
-    });
+    try {
+      const res =  await recoverPassword({emailRecover})
     setEmailRecover("");
 
-    if (res && res.message) {
-      setResServer(res.message);
+    if (res && res.data.message) {
+      setResServer(res.data.message);
     }
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   return (

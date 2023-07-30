@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 
 const User = new Schema({
-    organizationName:{type:String,unique:true,required:true},
+    organizationName:{type:String,required:true},
     password:{type:String,required:true},
     email:{type:String,unique:true,required:true}
 })
@@ -12,3 +12,4 @@ const User = new Schema({
 module.exports = {
     User:mongoose.model("users", User, "users"),
 }
+

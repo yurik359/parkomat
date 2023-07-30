@@ -32,19 +32,22 @@ const Slots = () => {
   );
   
   const getParkomatList = async (accessToken) => {
-
+    
    try {
     const response =await getListItems();
+ 
     if (
       response &&
       response.data.parkomatList &&
       response.data.parkomatList.parkomatItemsArray >= 1
     ) {
+  
       const {
         parkomatList: { parkomatItemsArray },
       } = response.data;
-      console.log(parkomatItemsArray)
+     
       dispatch(addParkomats(parkomatItemsArray));
+
     } else {
       return;
     }
@@ -53,6 +56,7 @@ const Slots = () => {
    }
 
   };
+  
 
   const filterSearch = (searchTerm, searchArr) => {
     if (!searchArr) return;
@@ -98,6 +102,7 @@ const Slots = () => {
     const editingParkomatItem = parkomatArray.filter((e) => {
       return e.uid == indexOfParkomat;
     });
+    console.log(editingParkomatItem[0])
     dispatch(editingParkomat(editingParkomatItem[0]));
 
     dispatch(setDeleteIco(true));
@@ -109,9 +114,10 @@ const Slots = () => {
   }, []);
 
   const handleOpenAddModal = () => {
+    dispatch(clearForm());
     dispatch(changeTypeOfModal("create"));
     setCloseModal(false);
-    dispatch(clearForm());
+   
     dispatch(setDeleteIco(false));
   };
   return (

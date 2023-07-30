@@ -24,12 +24,21 @@ module.exports = {
       const user = await User.create({ organizationName, password:hashPassword,email });
       
       const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-
+      // User.dropIndex({ organizationName: 1 }, (err, result) => {
+      //   if (err) {
+      //     console.error('Ошибка при удалении уникального индекса:', err);
+      //   } else {
+      //     console.log('Уникальный индекс успешно удален:', result);
+      //   }
+      // });
       return res.json({message:'User registered successfully',token})
     } catch (error) {
       res.status(401).json({ message: "Registration error" });
+      console.log(error)
+
     }
   },
+  
   login:async(req, res) =>{
     try {
         const { email, password } = req.body;
@@ -119,17 +128,19 @@ changePassword:async (req,res) => {
         }
     },
     getParkomatList:async (req,res) => {
-
+      
 
       try {
           
 
+          console.log(req.body)
+  
         const { id } = req.decoded;
              const parkomatList= await Parkomat.findOne(
               { ['userId']: id }, 
               { parkomatItemsArray: 1 }
              )
-            
+           
             res.send({parkomatList})
              
             

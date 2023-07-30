@@ -25,6 +25,20 @@ const locationSchema = new mongoose.Schema({
   },
 },{ _id: false } );
 
+const paymentSchema = new mongoose.Schema({
+  namePayment: {
+    type: String,
+    required: true,
+  },
+  secretKey: {
+    type: String,
+    
+  },
+  merchantId:{
+    type:String,
+  },
+},{ _id: false } );
+
 const parkomatItemSchema = new mongoose.Schema({
   nameOfslot: {
     type: String,
@@ -35,7 +49,8 @@ const parkomatItemSchema = new mongoose.Schema({
     required: true,
   },
   payment: {
-    type: String,
+    type: paymentSchema,
+    required:true,
     
   },
   formPic:{

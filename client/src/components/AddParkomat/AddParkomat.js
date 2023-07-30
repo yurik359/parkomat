@@ -10,6 +10,8 @@ import {
   changeNotesValue,
   setDeleteIco,
   changeCoordinate,
+  changePaymentSecretKey,
+  changeMerchantId
 } from "./addParkomatSlice";
 import { updateParkomat } from "../Slots/slotsSlice";
 import cheerio from 'cheerio';
@@ -29,6 +31,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   });
   const [closeAddressesList, setCloseAddressesList] = useState(false);
   const [onFocusInput, setOnFocusInput] = useState(false);
+  const [secretKey,setSecretKey] = useState('')
   const { typeOfmodal } = useSelector((state) => state.slotsSlice);
   const { formValues, deleteIcon } = useSelector(
     (state) => state.addParkomatSlice
@@ -58,7 +61,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
  try {
   const res = await getAddresses(formValues.locationValue.address)
  if (res&&res.data.predictions&&res.data.predictions.length>0) {
-  console.log(res)
+  
   setAddressSuggestion(res.data.predictions);
  }
  } catch (error) {
@@ -83,24 +86,26 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 try {
-  const nameOfslot = formValues.nameOfslotValue;
-  const location = {
-    address: formValues.locationValue.address,
-    coordinate: formValues.locationValue.coordinate,
-  };
-  const payment = formValues.paymentValue;
+  // const nameOfslot = formValues.nameOfslotValue;
+  // const location = {
+  //   address: formValues.locationValue.address,
+  //   coordinate: formValues.locationValue.coordinate,
+  // };
+  // const payment = formValues.paymentValue;
 
-  const formPic = formValues.picValue;
+  // const formPic = formValues.picValue;
 
-  const notes = formValues.notesValue;
+  // const notes = formValues.notesValue;
 
  
-  const res = await createParkomat({nameOfslot,
-    location,
-    payment,
-    formPic,
-    notes,
-    uniqueId,})
+  // const res = await createParkomat({nameOfslot,
+  //   location,
+  //   payment,
+  //   formPic,
+  //   notes,
+  //   uniqueId,})
+  console.log({formValues})
+  const res = await createParkomat({formValues,uniqueId})
 if(res&&res.data) {
 addOneMoreParkomat(res.data.lastObject)
 } 
@@ -155,7 +160,7 @@ addOneMoreParkomat(res.data.lastObject)
       const res = await getPlaceId(e.place_id)
   
       if(res&&res.status=='200') {
-        console.log('boba')
+  
         const $ = cheerio.load(res.data.result.adr_address);
         
            const street= $('.street-address').text().length>1?$('.street-address').text()+',':''
@@ -182,6 +187,14 @@ addOneMoreParkomat(res.data.lastObject)
     dispatch(setDeleteIco(false));
     dispatch(changePicValue(null));
   };
+
+  const changeSelect = (e) => {
+   
+dispatch(changePaymentValue(e.target.value))
+//  if(formValues.paymentValue==='fondy'){
+// setShowSecretKeyInput(true);
+// }
+  }
   return (
     <div
       className="add-parkomat parkomat-modal"
@@ -237,18 +250,30 @@ addOneMoreParkomat(res.data.lastObject)
           <Map checkedAddress={checkedAddress} />
           </div>
         </div>
+        
         <select
-          value={formValues.paymentValue}
-          onChange={(e) => dispatch(changePaymentValue(e.target.value))}
+          value={formValues.paymentValue.namePayment}
+          onChange={changeSelect}
         >
-          <option value="google pay">google pay</option>
+          <option value="...">Payment System</option>
+          <option value="fondy">fondy</option>
           <option value="privat24">privat 24</option>
           <option value="card">card</option>
         </select>
+        <div className="inputs-container" style={{display:formValues.paymentValue.namePayment==='fondy'?'block':'none'}} >
+          <input type="text" placeholder="enter merchant_id"
+          value={formValues.paymentValue.merchantId}
+          onChange={(e)=>dispatch(changeMerchantId(e.target.value))}
+          />
+        <input type="text" placeholder="enter secret key"  
+        value={formValues.paymentValue.secretKey} onChange={(e)=>dispatch(changePaymentSecretKey(e.target.value))} 
+        className="secret-key-input" />
+        </div>  
         <label class="file-upload">
           <input type="file" class="file-input" onChange={handleImageChange} />
           <span class="file-label">Upload File</span>
         </label>
+
         <div
           className="add-parkomat__ico"
           style={{ display: deleteIcon ? "block" : "none" ,display:formValues.picValue?'block':'none'}}

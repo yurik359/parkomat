@@ -2,20 +2,27 @@ const { parkomatItem } = require("../models/parkomatItem");
 const { Parkomat } = require("../models/parkomatItem");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
+const uniqid = require('uniqid');
+const CryptoJS = require('crypto-js');
+
+
 const axios = require('axios');
 module.exports = {
   addParkomat: async (req, res) => {
-    try {
-      const {
-        nameOfslot,
-        location,
-        payment,
-        formPic,
-        notes,
-        uniqueId,
-        accessToken,
-      } = req.body;
 
+    try {
+       const {formValues,uniqueId} = req.body
+       console.log(formValues.nameOfslotValue)
+      // const {
+      //   nameOfslot,
+      //   location,
+      //   payment,
+      //   formPic,
+      //   notes,
+      //   uniqueId,
+      //   accessToken,
+      // } = req.body;
+      
 
       const { id } = req.decoded;
 
@@ -24,11 +31,11 @@ module.exports = {
         {
           $push: {
             parkomatItemsArray: {
-              nameOfslot,
-              location,
-              payment,
-              formPic,
-              notes,
+              nameOfslot:formValues.nameOfslotValue,
+              location:formValues.locationValue,
+              payment:formValues.paymentValue,
+              formPic:formValues.picValue,
+              notes:formValues.notesValue,
               uid: uniqueId,
             },
           },
@@ -46,8 +53,9 @@ module.exports = {
         lastOfParkomatList.parkomatItemsArray &&
         lastOfParkomatList.parkomatItemsArray.length > 0
       ) {
-        const lastObject = lastOfParkomatList.parkomatItemsArray[0];
 
+        const lastObject = lastOfParkomatList.parkomatItemsArray[0];
+        
         res.send({ lastObject });
       }
     } catch (error) {
@@ -134,7 +142,7 @@ module.exports = {
   },
   getPlaceId:async (req,res) => {
     
-      console.log(req.params)
+      
       const placeId = req.params.placeId; 
       const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=AIzaSyB1Odbx682gqH7bH9t74j9zH9hFeZKxoZQ`;
       axios.get(url)
@@ -148,5 +156,48 @@ module.exports = {
         console.error(error);
       });
   
-  } 
+  } ,
+  sendPaymentURL :async (req,res) => {
+    try {
+      const request =req.body
+     
+      const uniqueId = uniqid();
+     const document= await Parkomat.findOne(
+        { "parkomatItemsArray.uid": 'e8e4fb6b-3e32-4210-a0dc-3317751adfa5' },
+      )
+      if(document&&document.parkomatItemsArray) {
+        
+        const desiredObject = document.parkomatItemsArray.find(item => item.uid === 'e8e4fb6b-3e32-4210-a0dc-3317751adfa5');
+        const paymentValue = desiredObject ? desiredObject.payment : null;
+   
+        if(paymentValue&&paymentValue.secretKey&&paymentValue.merchantId){
+          const secretKey ='test'; 
+          const requestData = {
+            request:{
+          
+              order_id: uniqueId,
+              order_desc: 'test order',
+              currency: 'USD',
+              amount: '125',
+              merchant_id: '1396424'
+            }
+            };
+            const sortedKeys = Object.keys(requestData.request).sort();
+            const dataString = [secretKey, ...sortedKeys.map(key => requestData.request[key])].join('|');
+            const signature = CryptoJS.SHA1(dataString).toString();
+            requestData.request.signature=signature
+          axios.post('https://pay.fondy.eu/api/checkout/url/', requestData)
+          .then(response=>res.send(response.data))
+          .catch(err=>{
+            console.log(err),
+            res.send(err)}
+          )
+        }
+    
+      }
+    
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };

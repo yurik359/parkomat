@@ -11,6 +11,12 @@ font-size: 17px;
 font-style: normal;
 font-weight: 500;
 line-height: 140%;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 1;
+overflow: hidden;
+max-height: 20px;
+max-width: 220px;
 }
 .slot-item {
   cursor: pointer;

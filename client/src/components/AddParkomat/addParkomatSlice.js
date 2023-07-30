@@ -7,7 +7,7 @@ const addParkomatSlice = createSlice({
     formValues: {
       nameOfslotValue: "",
       locationValue: { address: "", coordinate: { lat: "", lon: "" } },
-      paymentValue: "",
+      paymentValue: {namePayment:"",secretKey:"",merchantId:''},
       picValue: "",
       notesValue: "",
     },
@@ -25,10 +25,16 @@ const addParkomatSlice = createSlice({
     },
     changeCoordinate: (state, action) => {
       state.formValues.locationValue.coordinate = action.payload;
-      console.log(state.formValues.locationValue.coordinate);
+
     },
     changePaymentValue: (state, action) => {
-      state.formValues.paymentValue = action.payload;
+      state.formValues.paymentValue.namePayment = action.payload;
+    },
+    changePaymentSecretKey:(state,action) => {
+      state.formValues.paymentValue.secretKey = action.payload
+    },
+    changeMerchantId:(state,action) => {
+      state.formValues.paymentValue.merchantId=action.payload
     },
     changePicValue: (state, action) => {
       state.formValues.picValue = action.payload;
@@ -37,21 +43,31 @@ const addParkomatSlice = createSlice({
       state.formValues.notesValue = action.payload;
     },
     editingParkomat: (state, action) => {
-      state.formValues.nameOfslotValue = action.payload.nameOfslot;
-      state.formValues.locationValue = action.payload.location;
-      state.formValues.paymentValue = action.payload.payment;
-      state.formValues.picValue = action.payload.formPic;
-      state.formValues.notesValue = action.payload.notes;
+      state.formValues = {
+        nameOfslotValue :action.payload.nameOfslot,
+        locationValue : action.payload.location,
+        paymentValue :{namePayment:action.payload.payment.namePayment,
+          secretKey:action.payload.payment.secretKey,merchantId:action.payload.payment.merchantId},
+          picValue:action.payload.formPic,
+          notesValue:action.payload.notes
+      }
+   
     },
     setDeleteIco: (state, action) => {
       state.deleteIcon = action.payload;
     },
     clearForm: (state, action) => {
-      state.formValues.nameOfslotValue = "";
-      state.formValues.locationValue.address = "";
-      state.formValues.paymentValue = "google pay";
-      state.formValues.picValue = null;
-      state.formValues.notesValue = "";
+      state.formValues = {
+        nameOfslotValue:'',
+        locationValue:{ 
+          ...state.formValues.locationValue, 
+          address: '', 
+        },
+        paymentValue:{namePayment:'',secretKey:'',merchantId:''},
+        picValue:null,
+        notesValue:'',
+      }
+    
     },
   },
 });
@@ -68,4 +84,6 @@ export const {
   setDeleteIco,
   clearForm,
   changeCoordinate,
+  changePaymentSecretKey,
+  changeMerchantId
 } = actions;

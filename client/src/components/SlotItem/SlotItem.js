@@ -40,7 +40,7 @@ const SlotItem = ({
       <img src={formPic||parking} alt="" />
       <div className="name-payment">
         <div className="slot__name">{nameOfslot}</div>
-        <div className="slot__payment">{payment}</div>
+        <div className="slot__payment">{payment.namePayment}</div>
       </div>
       <div className="slot-item__location">
      {location.address}

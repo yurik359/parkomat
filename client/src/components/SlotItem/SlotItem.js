@@ -18,6 +18,7 @@ const SlotItem = ({
   // const [clickedParkomat,setClickedParkomat] = useState(false)
   const selectParkomatItem = () => {
     if (clickedParkomat == true && indexOfParkomat == uid) {
+      console.log(indexOfParkomat)
       dispatch(addIndexParkomat(null));
       dispatch(changeClickedParkomat(false));
     } else {

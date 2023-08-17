@@ -137,14 +137,7 @@ addOneMoreParkomat(res.data.lastObject)
    
   };
 
-  const handleClickOutside = (e) => {
-    if (
-      e.target.classList.contains("add-parkomat") &&
-      !e.target.classList.contains("add-parkomat__form")
-    ) {
-      setCloseModal(true);
-    }
-  };
+ 
 
   useEffect(() => {
     

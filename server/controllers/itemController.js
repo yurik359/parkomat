@@ -150,7 +150,7 @@ module.exports = {
         const placeData = response.data;
     
         res.send(placeData)
-        // Здесь вы можете обрабатывать полученные данные о месте
+        
       })
       .catch(error => {
         console.error(error);
@@ -198,6 +198,36 @@ module.exports = {
     
     } catch (error) {
       console.log(error)
+    }
+  },
+  getAllParkomats:async (req,res) => {
+    try {
+   
+      const documents = await Parkomat.find({ parkomatItemsArray: { $exists: true, $not: { $size: 0 } } });
+      
+    
+      let allParkomatItems = [];
+  
+     
+      documents.forEach(doc => {
+        allParkomatItems = allParkomatItems.concat(doc.parkomatItemsArray);
+      });
+      if(allParkomatItems.length>1) {
+       const allParkomatLocation= allParkomatItems.map(e=>{
+          return {
+          location:e.location
+          }
+
+        })
+        
+        res.send(allParkomatLocation)
+      }
+  
+    
+      
+    } catch (error) {
+      console.error('Error:', error);
+      res.send(error)
     }
   }
 };

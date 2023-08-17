@@ -3,7 +3,7 @@ import "./slots.css";
 import SlotItem from "../SlotItem/SlotItem";
 import AddParkomat from "../AddParkomat/AddParkomat";
 import DeleteModal from "../DeleteModal/DeleteModal";
-
+import QRCodeComponent from "../QRCodeComponent/QRCodeComponent";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,7 @@ const Slots = () => {
   const { indexOfParkomat, typeOfmodal } = useSelector(
     (state) => state.slotItemSlice
   );
+  const [showQr,setShowQr] = useState(false)
   
   const getParkomatList = async (accessToken) => {
     
@@ -120,6 +121,22 @@ const Slots = () => {
    
     dispatch(setDeleteIco(false));
   };
+  
+  //qr-code
+  const qrCodeGenetating = () => {
+    if (indexOfParkomat == null) return;
+    setShowQr(true)
+  }
+
+  useEffect(() => {
+    
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        setShowQr(false);
+      }
+    });
+  }, []);
+  
   return (
     <div className="slots__background">
       <div className="slots wrapper">
@@ -132,6 +149,11 @@ const Slots = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="slots__btns">
+            <div className="slots__qr-btn slot-btn"
+            onClick={qrCodeGenetating}
+            >
+             Get <span >Qr-code</span>
+            </div>
             <div
               className="slots__edit-btn slot-btn"
               onClick={handleOpenEdit}
@@ -163,6 +185,7 @@ const Slots = () => {
           closeDeleteModal={closeDeleteModal}
           setCloseDeleteModal={setCloseDeleteModal}
         />
+       < QRCodeComponent showQr={showQr} setShowQr={setShowQr} data={`sl:${indexOfParkomat}`}/>
       </div>
     </div>
   );

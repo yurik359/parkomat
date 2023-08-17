@@ -12,7 +12,23 @@
   padding-top: 50px;
   flex-wrap: wrap;
 }
-
+.slots__qr-btn {
+  background-color: rgb(61, 192, 148);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color:white;
+  white-space: nowrap;
+  font-size: 13px;
+margin-right: 15px;
+cursor: pointer;
+}
+.slots__qr-bt span {
+  
+  
+}
 .slots__upper-container {
   display: flex;
   justify-content: space-between;

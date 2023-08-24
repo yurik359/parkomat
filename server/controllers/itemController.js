@@ -174,7 +174,7 @@ module.exports = {
           const secretKey ='test'; 
           const requestData = {
             request:{
-          
+              response_url:"http://176.117.76.79:4001/thank",
               order_id: uniqueId,
               order_desc: 'test order',
               currency: 'USD',
@@ -229,5 +229,8 @@ module.exports = {
       console.error('Error:', error);
       res.send(error)
     }
+  },
+  thankPage:(req,res)=> {
+      res.send()
   }
 };

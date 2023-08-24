@@ -22,6 +22,9 @@ router.get('/getAddresses',getAddresses)
 router.get('/getPlaceId:placeId',getPlaceId)
 router.get('/getPaymentUrl',sendPaymentURL)
 router.get('/getAllParkomats',getAllParkomats)
+router.get('/thank', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
+});
 router.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));
   });

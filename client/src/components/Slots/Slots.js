@@ -185,7 +185,7 @@ const Slots = () => {
           closeDeleteModal={closeDeleteModal}
           setCloseDeleteModal={setCloseDeleteModal}
         />
-       < QRCodeComponent showQr={showQr} setShowQr={setShowQr} data={`sl:${indexOfParkomat}`}/>
+       < QRCodeComponent showQr={showQr} setShowQr={setShowQr} data={`http://localhost:19006/?parkomatId=${indexOfParkomat}`}/>
       </div>
     </div>
   );

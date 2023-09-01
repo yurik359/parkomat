@@ -18,8 +18,12 @@
         }
     </style>
     <script>
+         const urlParams = new URLSearchParams(window.location.search);
+
+        const parkomatId = urlParams.get('parkomatId');
+       
    setTimeout(()=>{
-            window.location.replace('http://localhost:19006/')
+            window.location.replace(`http://localhost:19006/?parkomatId=${parkomatId}`)
         },2000)
         
 

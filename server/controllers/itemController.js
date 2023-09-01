@@ -159,22 +159,22 @@ module.exports = {
   } ,
   sendPaymentURL :async (req,res) => {
     try {
-      const request =req.body
-     
+      const parkomatId = req.params.parkomatId;
+      console.log(parkomatId)
       const uniqueId = uniqid();
      const document= await Parkomat.findOne(
-        { "parkomatItemsArray.uid": 'e8e4fb6b-3e32-4210-a0dc-3317751adfa5' },
+        { "parkomatItemsArray.uid": parkomatId },
       )
       if(document&&document.parkomatItemsArray) {
         
-        const desiredObject = document.parkomatItemsArray.find(item => item.uid === 'e8e4fb6b-3e32-4210-a0dc-3317751adfa5');
+        const desiredObject = document.parkomatItemsArray.find(item => item.uid === parkomatId);
         const paymentValue = desiredObject ? desiredObject.payment : null;
    
         if(paymentValue&&paymentValue.secretKey&&paymentValue.merchantId){
           const secretKey ='test'; 
           const requestData = {
             request:{
-              response_url:"http://176.117.76.79:4001/thank",
+              response_url:`http://localhost:4001/thank?parkomatId=${parkomatId}`,
               order_id: uniqueId,
               order_desc: 'test order',
               currency: 'USD',
@@ -202,7 +202,14 @@ module.exports = {
   },
   getAllParkomats:async (req,res) => {
     try {
-   
+      const parkomatId = req.params.parkomatId;
+      
+       const checkParkomat  = await Parkomat.findOne({
+        'parkomatItemsArray.uid': parkomatId
+      });
+      if (!checkParkomat) {
+        return res.send({broken:true,message:'parkomat doesn`t work'})
+      }
       const documents = await Parkomat.find({ parkomatItemsArray: { $exists: true, $not: { $size: 0 } } });
       
     

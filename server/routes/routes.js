@@ -20,8 +20,8 @@ router.post('/sendEmail',sendInstruction)
 router.post('/changePassword',changePassword)
 router.get('/getAddresses',getAddresses)
 router.get('/getPlaceId:placeId',getPlaceId)
-router.get('/getPaymentUrl',sendPaymentURL)
-router.get('/getAllParkomats',getAllParkomats)
+router.get('/getPaymentUrl:parkomatId',sendPaymentURL)
+router.get('/getAllParkomats:parkomatId',getAllParkomats)
 router.post('/thank', (req, res) => {
   res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
 });

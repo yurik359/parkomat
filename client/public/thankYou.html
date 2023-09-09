@@ -21,9 +21,9 @@
          const urlParams = new URLSearchParams(window.location.search);
 
         const parkomatId = urlParams.get('parkomatId');
-       
+       const fbclid = urlParams.get('fbclid')
    setTimeout(()=>{
-            window.location.replace(`http://localhost:19006/?parkomatId=${parkomatId}`)
+            window.location.replace(`https://www.pay-parking.net/?parkomatId=${parkomatId}`)
         },2000)
         
 

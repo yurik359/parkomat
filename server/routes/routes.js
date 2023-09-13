@@ -3,7 +3,13 @@ const express = require("express");
 const router = express.Router();
 const {registration,login,sendInstruction,changePassword,getParkomatList}  = require('../controllers/Users')
 const {verifyToken} = require('../config')
-const {addParkomat,updateParkomat,deleteParkomat,getAddresses,getPlaceId,sendPaymentURL,getAllParkomats} =require('../controllers/itemController')
+const {addParkomat,updateParkomat,
+  deleteParkomat,getAddresses,
+  getPlaceId,sendPaymentURL,
+  getAllParkomats,
+  getAroundParkomats,
+  checkParkomat
+} =require('../controllers/itemController')
 
 
 
@@ -22,6 +28,8 @@ router.get('/getAddresses',getAddresses)
 router.get('/getPlaceId:placeId',getPlaceId)
 router.get('/getPaymentUrl:parkomatId',sendPaymentURL)
 router.get('/getAllParkomats:parkomatId',getAllParkomats)
+router.get('/getAroundParkomats',getAroundParkomats)
+router.get('/checkParkomat:parkomatId',checkParkomat)
 router.post('/thank', (req, res) => {
   res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
 });

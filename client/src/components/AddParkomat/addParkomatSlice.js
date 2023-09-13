@@ -6,7 +6,7 @@ const addParkomatSlice = createSlice({
     editOrCreate: "",
     formValues: {
       nameOfslotValue: "",
-      locationValue: { address: "", coordinate: { lat: "", lon: "" } },
+      locationValue: { address: "", coordinate: { lat: "", lon: "" },coordinates:{type:'Point',coordinates:[]} },
       paymentValue: {namePayment:"",secretKey:"",merchantId:''},
       picValue: "",
       notesValue: "",
@@ -21,10 +21,23 @@ const addParkomatSlice = createSlice({
       state.formValues.nameOfslotValue = action.payload;
     },
     changeLocationValue: (state, action) => {
+      console.log(action.payload)
       state.formValues.locationValue.address = action.payload;
     },
     changeCoordinate: (state, action) => {
-      state.formValues.locationValue.coordinate = action.payload;
+      console.log()
+      state.formValues.locationValue = {
+        ...state.formValues.locationValue,
+        coordinate:{
+          lat:action.payload.lat,
+          lon:action.payload.lon,
+         
+        },
+        coordinates:{type:'Point',coordinates:[action.payload.lon,action.payload.lat]}
+      }
+      // state.formValues.locationValue.coordinate = action.payload;
+      // state.formValues.locationValue.coordinate.coordinates.coordinates = [action.payload.lon,action.payload.lat];
+
 
     },
     changePaymentValue: (state, action) => {

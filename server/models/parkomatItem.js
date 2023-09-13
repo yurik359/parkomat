@@ -12,6 +12,7 @@ const coordinateSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
 },{ _id: false } );
 
 const locationSchema = new mongoose.Schema({
@@ -22,6 +23,17 @@ const locationSchema = new mongoose.Schema({
   coordinate: {
     type: coordinateSchema,
     required: true,
+  },
+  coordinates: {
+    type: {
+      type: String,
+      enum: ['Point'], // Тип 'Point' для геозапитів
+    },
+    coordinates: {
+      type: [Number], // Масив координат [довгота, широта]
+      required: true,
+     
+    },
   },
 },{ _id: false } );
 

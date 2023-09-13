@@ -86,24 +86,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 try {
-  // const nameOfslot = formValues.nameOfslotValue;
-  // const location = {
-  //   address: formValues.locationValue.address,
-  //   coordinate: formValues.locationValue.coordinate,
-  // };
-  // const payment = formValues.paymentValue;
 
-  // const formPic = formValues.picValue;
-
-  // const notes = formValues.notesValue;
-
- 
-  // const res = await createParkomat({nameOfslot,
-  //   location,
-  //   payment,
-  //   formPic,
-  //   notes,
-  //   uniqueId,})
   console.log({formValues})
   const res = await createParkomat({formValues,uniqueId})
 if(res&&res.data) {

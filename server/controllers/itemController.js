@@ -1,10 +1,10 @@
 const { parkomatItem } = require("../models/parkomatItem");
-const { Parkomat } = require("../models/parkomatItem");
+const { Parkomat,parkomatSchema } = require("../models/parkomatItem");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
 const uniqid = require('uniqid');
 const CryptoJS = require('crypto-js');
-
+const geolib = require('geolib');
 
 const axios = require('axios');
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 
     try {
        const {formValues,uniqueId} = req.body
-       console.log(formValues.nameOfslotValue)
+       console.log(formValues.locationValue)
       // const {
       //   nameOfslot,
       //   location,
@@ -160,7 +160,7 @@ module.exports = {
   sendPaymentURL :async (req,res) => {
     try {
       const parkomatId = req.params.parkomatId;
-      console.log(parkomatId)
+      
       const uniqueId = uniqid();
      const document= await Parkomat.findOne(
         { "parkomatItemsArray.uid": parkomatId },
@@ -202,14 +202,10 @@ module.exports = {
   },
   getAllParkomats:async (req,res) => {
     try {
-      const parkomatId = req.params.parkomatId;
       
-       const checkParkomat  = await Parkomat.findOne({
-        'parkomatItemsArray.uid': parkomatId
-      });
-      if (!checkParkomat) {
-        return res.send({broken:true,message:'parkomat doesn`t work'})
-      }
+       
+      
+       
       const documents = await Parkomat.find({ parkomatItemsArray: { $exists: true, $not: { $size: 0 } } });
       
     
@@ -226,8 +222,9 @@ module.exports = {
           }
 
         })
+        res.send({allParkomatLocation})
+       
         
-        res.send(allParkomatLocation)
       }
   
     
@@ -236,6 +233,152 @@ module.exports = {
       console.error('Error:', error);
       res.send(error)
     }
+  },
+  getAroundParkomats:async (req,res)=>{
+try {
+  // Parkomat.createIndex({ 'location.coordinate': '2dsphere' })
+  const coordinates = req.query
+  
+  const documents = await Parkomat.find({ parkomatItemsArray: { $exists: true, $not: { $size: 0 } } });
+      
+    
+      let allParkomatItems = [];
+  
+     
+      documents.forEach(doc => {
+        allParkomatItems = allParkomatItems.concat(doc.parkomatItemsArray);
+      });
+
+      if(allParkomatItems.length>1) {
+        const filteredItems=  allParkomatItems.filter(({location:{coordinate:{lat,lon}}})=>{
+
+          const distance = geolib.getDistance({latitude:coordinates.lat,longitude:coordinates.lon}, {latitude:lat,longitude:lon});
+          return distance < 300;
+        
+        }).map(e=>{
+          return {
+            location:e.location
+          }
+        })
+        
+        res.send(filteredItems)
+      }
+
+
+  // const maxDistance = 300
+  // const parkomatQuery = {
+  //   'parkomatItemsArray.location.coordinates.coordinates': {
+  //     $near: {
+  //       $geometry: {
+  //         type: 'Point',
+  //         coordinates: [25.1580826,49.4305736 ],
+  //         distanceField: 'distance', 
+  //       },
+  //       $maxDistance: maxDistance,
+  //     },
+
+  //   },
+
+  // };
+
+  // Parkomat.find(parkomatQuery)
+  // .exec()
+  // .then((nearbyParkomats) => {
+
+  //   console.log('Ближні паркомати:', nearbyParkomats);
+  // })
+  // .catch((error) => {
+  //   console.error('Помилка при пошуку ближніх паркоматів:', error);
+  // });
+  // await Parkomat.collection.createIndex({ 'location.coordinate': '2dsphere' });
+  // const parkomat = await Parkomat.findById('64e3907a9404d9a890ab185a');
+
+  //   if (!parkomat) {
+  //     console.log('Паркомат не знайдено.');
+  //     return;
+  //   }
+
+  //   const hasGeoIndex = parkomat.schema.indexes().some((index) => {
+  //     return index[0]['location.coordinate'] === '2dsphere';
+  //   });
+
+  //   if (hasGeoIndex) {
+  //     console.log('У паркомата є гео-індекс.');
+  //   } else {
+  //     console.log('У паркомата немає гео-індексу.');
+  //   }
+  
+  // Parkomat.aggregate([
+  //   {
+  //     $unwind: '$parkomatItemsArray',
+  //   },
+  //   {
+  //     $match: {
+  //       'parkomatItemsArray.location.coordinate': {
+  //         $nearSphere: {
+  //           $geometry: {
+  //             type: 'Point',
+  //             coordinates: [25.594767, 49.553517], // Ваші координати
+  //           },
+  //           $maxDistance: 300, // Максимальна відстань в метрах
+  //         },
+  //       },
+  //     },
+  //   },
+  // ]) .then((nearbyParkomats) => {
+  //       // Результат містить паркомати, що знаходяться в радіусі 300 метрів від користуача
+  //       console.log('Ближні паркомати:', nearbyParkomats);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Помилка при пошуку ближніх паркоматів:', error);
+  //     });
+  
+ 
+  // Parkomat.aggregate([
+  //   {
+  //     $geoNear: {
+  //       near: {
+  //         type: 'Point',
+  //         coordinates: [25.594767, 49.553517], // Важливо: координати у форматі [lon, lat]
+  //       },
+  //       distanceField: 'distance', // Поле для збереження відстані
+  //       maxDistance: 300, // Максимальна допустима відстань
+  //       spherical: true, // Географічний пошук
+  //     },
+  //   },
+  // ])
+  //   .then((nearbyParkomats) => {
+  //     // Результат містить паркомати, що знаходяться в радіусі 300 метрів від користуача
+  //     console.log('Ближні паркомати:', nearbyParkomats);
+  //   })
+  //   .catch((error) => {
+  //     console.error('Помилка при пошуку ближніх паркоматів:', error);
+  //   });
+
+
+} catch (error) {
+  console.log(error)
+}
+  },
+  checkParkomat:async (req,res)=>{
+    try {
+      const parkomatId = req.params.parkomatId;
+      console.log(parkomatId)
+      const checkParkomat  = await Parkomat.findOne({
+        'parkomatItemsArray.uid': parkomatId
+      });
+      if(!checkParkomat&&parkomatId!=='null') {
+           console.log('doesnt')
+        res.send({broken:true,message:'parkomat doesn`t work'})
+      } else {
+     
+        res.send({broken:false})
+      }
+    } catch (error) {
+      
+    }
+   
   }
   
 };
+

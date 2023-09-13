@@ -27,6 +27,7 @@ const start = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
+      
       app.listen(4001, () => {
         console.log("Server started on port 4001");
       });

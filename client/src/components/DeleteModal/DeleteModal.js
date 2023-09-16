@@ -13,7 +13,7 @@ const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
 
   const dispatch = useDispatch();
   const { indexOfParkomat } = useSelector((state) => state.slotItemSlice);
-  useEffect(() => console.log(indexOfParkomat), [indexOfParkomat]);
+
   useEffect(() => {
    
     window.addEventListener("keydown", (e) => {

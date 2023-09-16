@@ -8,23 +8,25 @@ const slotsSlice = createSlice({
   },
   reducers: {
     addParkomats: (state, action) => {
-      console.log(action.payload);
+    
       state.parkomatArray = action.payload;
       
     },
     addOneMore: (state, action) => {
+     
       state.parkomatArray = [...state.parkomatArray, action.payload];
     },
     deleteParkomat: (state, action) => {
       state.parkomatArray = state.parkomatArray.filter(
-        (e, index) => e.uid !== action.payload
+        (e, index) => e._id !== action.payload
       );
     },
     updateParkomat: (state, action) => {
+      console.log(action.payload)
       const { updatedParkomat } = action.payload;
       state.parkomatArray = state.parkomatArray.map((e, i) => {
-        if (e.uid == updatedParkomat.uid) {
-          return updatedParkomat;
+        if (e._id == updatedParkomat._id) {
+          return updatedParkomat
         } else {
           return e;
         }

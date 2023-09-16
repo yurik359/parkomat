@@ -36,18 +36,15 @@ const Slots = () => {
     
    try {
     const response =await getListItems();
- 
+    console.log(response.data.length)
+
     if (
       response &&
-      response.data.parkomatList &&
-      response.data.parkomatList.parkomatItemsArray >= 1
+      response.data&&
+      response.data.length >= 1
     ) {
-  
-      const {
-        parkomatList: { parkomatItemsArray },
-      } = response.data;
      
-      dispatch(addParkomats(parkomatItemsArray));
+      dispatch(addParkomats(response.data));
 
     } else {
       return;
@@ -74,10 +71,10 @@ const Slots = () => {
       
       const res = await getListItems()
       console.log(res)
-      if (res && res.data.parkomatList) {
+      if (res && res.data) {
         const filteredArray = filterSearch(
           searchTerm,
-          res.data.parkomatList.parkomatItemsArray
+          res.data
         );
         dispatch(addParkomats(filteredArray));
       }
@@ -87,32 +84,40 @@ const Slots = () => {
     return () => clearTimeout(debounce);
   }, [searchTerm]);
 
+
   const addOneMoreParkomat = (e) => {
     dispatch(addOneMore(e));
 
   };
 
+
   const handleDeleteBtn = () => {
     if (indexOfParkomat == null) return;
     setCloseDeleteModal(false);
   };
+
+
   const handleOpenEdit = () => {
     if (indexOfParkomat == null) return;
+
     dispatch(changeTypeOfModal("update"));
 
-    const editingParkomatItem = parkomatArray.filter((e) => {
-      return e.uid == indexOfParkomat;
+  const editingParkomatItem = parkomatArray.filter((e) => {
+      return e._id == indexOfParkomat;
     });
-    console.log(editingParkomatItem[0])
+   
     dispatch(editingParkomat(editingParkomatItem[0]));
 
     dispatch(setDeleteIco(true));
     setCloseModal(false);
   };
+
+
   useEffect(() => {
     console.log("4isas1");
     getParkomatList(accessToken);
   }, []);
+
 
   const handleOpenAddModal = () => {
     dispatch(clearForm());

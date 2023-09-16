@@ -8,12 +8,11 @@ import { useSelector } from "react-redux";
 import "./map.css";
 const Map = () => {
   const {
-    formValues: {
-      locationValue: {
-        coordinate: { lat, lon },
-      },
-    },
+    formValues
   } = useSelector((state) => state.addParkomatSlice);
+  const [lon,lat]=formValues.locationValue.coordinates
+
+  // const [lon,lat] = coordinates
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const tileLayerRef = useRef(null);

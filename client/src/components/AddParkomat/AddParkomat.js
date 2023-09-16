@@ -59,7 +59,7 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
 
   const handleGeoCode = async () => {
  try {
-  const res = await getAddresses(formValues.locationValue.address)
+  const res = await getAddresses(formValues.address)
  if (res&&res.data.predictions&&res.data.predictions.length>0) {
   
   setAddressSuggestion(res.data.predictions);
@@ -81,16 +81,17 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
     },500)
     
     return () => clearTimeout(geoTimeOut);
-  }, [formValues.locationValue.address]);
+  }, [formValues.address]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 try {
-
-  console.log({formValues})
-  const res = await createParkomat({formValues,uniqueId})
+console.log(formValues)
+  
+  const res = await createParkomat({formValues})
+  console.log(res)
 if(res&&res.data) {
-addOneMoreParkomat(res.data.lastObject)
+addOneMoreParkomat(res.data)
 } 
  
 
@@ -109,8 +110,8 @@ addOneMoreParkomat(res.data.lastObject)
     formValues,
   indexOfParkomat,
   })
-  if (res&&res.data.updatedParkomat) {
-    dispatch(updateParkomat({ indexOfParkomat, updatedParkomat:res.data.updatedParkomat }));
+  if (res&&res.data) {
+    dispatch(updateParkomat({ indexOfParkomat, updatedParkomat:res.data }));
   }
   
   setCloseModal(true);
@@ -198,7 +199,7 @@ dispatch(changePaymentValue(e.target.value))
         <div className="add-parkoma__location-section">
           <input
             type="text"
-            value={formValues.locationValue.address}
+            value={formValues.address}
             onFocus={() => setOnFocusInput(true)}
             onBlur={() => setOnFocusInput(false)}
             placeholder="Location"

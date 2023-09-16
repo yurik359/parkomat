@@ -27,7 +27,7 @@ router.post('/changePassword',changePassword)
 router.get('/getAddresses',getAddresses)
 router.get('/getPlaceId:placeId',getPlaceId)
 router.get('/getPaymentUrl:parkomatId',sendPaymentURL)
-router.get('/getAllParkomats:parkomatId',getAllParkomats)
+router.get('/getAllParkomats',getAllParkomats)
 router.get('/getAroundParkomats',getAroundParkomats)
 router.get('/checkParkomat:parkomatId',checkParkomat)
 router.post('/thank', (req, res) => {

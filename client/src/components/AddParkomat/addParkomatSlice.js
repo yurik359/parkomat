@@ -6,8 +6,9 @@ const addParkomatSlice = createSlice({
     editOrCreate: "",
     formValues: {
       nameOfslotValue: "",
-      locationValue: { address: "", coordinate: { lat: "", lon: "" },coordinates:{type:'Point',coordinates:[]} },
+      locationValue:{type:'Point',coordinates:[45.655353,20.654454]} ,
       paymentValue: {namePayment:"",secretKey:"",merchantId:''},
+      address:'',
       picValue: "",
       notesValue: "",
     },
@@ -18,23 +19,16 @@ const addParkomatSlice = createSlice({
       state.editOrCreate = action.payload;
     },
     changeNameOfslotValue: (state, action) => {
+      console.log(action.payload)
       state.formValues.nameOfslotValue = action.payload;
     },
     changeLocationValue: (state, action) => {
-      console.log(action.payload)
-      state.formValues.locationValue.address = action.payload;
+     
+      state.formValues.address = action.payload;
     },
     changeCoordinate: (state, action) => {
-      console.log()
-      state.formValues.locationValue = {
-        ...state.formValues.locationValue,
-        coordinate:{
-          lat:action.payload.lat,
-          lon:action.payload.lon,
-         
-        },
-        coordinates:{type:'Point',coordinates:[action.payload.lon,action.payload.lat]}
-      }
+      
+      state.formValues.locationValue.coordinates= [action.payload.lon,action.payload.lat]
       // state.formValues.locationValue.coordinate = action.payload;
       // state.formValues.locationValue.coordinate.coordinates.coordinates = [action.payload.lon,action.payload.lat];
 
@@ -56,15 +50,17 @@ const addParkomatSlice = createSlice({
       state.formValues.notesValue = action.payload;
     },
     editingParkomat: (state, action) => {
+
       state.formValues = {
         nameOfslotValue :action.payload.nameOfslot,
         locationValue : action.payload.location,
+        address:action.payload.address,
         paymentValue :{namePayment:action.payload.payment.namePayment,
           secretKey:action.payload.payment.secretKey,merchantId:action.payload.payment.merchantId},
           picValue:action.payload.formPic,
           notesValue:action.payload.notes
       }
-   
+  
     },
     setDeleteIco: (state, action) => {
       state.deleteIcon = action.payload;
@@ -74,8 +70,9 @@ const addParkomatSlice = createSlice({
         nameOfslotValue:'',
         locationValue:{ 
           ...state.formValues.locationValue, 
-          address: '', 
+          
         },
+        address: '', 
         paymentValue:{namePayment:'',secretKey:'',merchantId:''},
         picValue:null,
         notesValue:'',

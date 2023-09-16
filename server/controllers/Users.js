@@ -133,15 +133,18 @@ changePassword:async (req,res) => {
       try {
           
 
-          console.log(req.body)
+          
   
         const { id } = req.decoded;
-             const parkomatList= await Parkomat.findOne(
-              { ['userId']: id }, 
-              { parkomatItemsArray: 1 }
-             )
+        console.log(id)
+        const parkomatList = await Parkomat.find({ userId: id });
+  
+            //  const parkomatList= await Parkomat.findOne(
+            //   { ['userId']: id }, 
+            //   { parkomatItemsArray: 1 }
+            //  )
            
-            res.send({parkomatList})
+            res.send(parkomatList)
              
             
          

@@ -9,7 +9,7 @@ const slotItemSlice = createSlice({
   },
   reducers: {
     addIndexParkomat: (state, action) => {
-      console.log(action.payload);
+  
       state.indexOfParkomat = action.payload;
     },
     toggleSelectParkomat: (state, action) => {

@@ -5,25 +5,26 @@ import { addIndexParkomat, changeClickedParkomat } from "./slotItemSlice";
 import parking from '../../services/img/Rectangle28.png'
 
 const SlotItem = ({
-  slotInfo: { nameOfslot, location, payment, formPic, notes, uid },
+  slotInfo: { nameOfslot, address,location, payment, formPic, notes, _id },
   index,
 }) => {
   const dispatch = useDispatch();
   const { indexOfParkomat, clickedParkomat } = useSelector(
     (state) => state.slotItemSlice
   );
-  const { formValues:{locationValue:{address:{}}} } = useSelector(
-    (state) => state.addParkomatSlice
-  );
+ 
+  // const { formValues:{locationValue:{address:{}}} } = useSelector(
+  //   (state) => state.addParkomatSlice
+  // );
   // const [clickedParkomat,setClickedParkomat] = useState(false)
   const selectParkomatItem = () => {
-    if (clickedParkomat == true && indexOfParkomat == uid) {
+    if (clickedParkomat == true && indexOfParkomat == _id) {
       console.log(indexOfParkomat)
       dispatch(addIndexParkomat(null));
       dispatch(changeClickedParkomat(false));
     } else {
       dispatch(changeClickedParkomat(true));
-      dispatch(addIndexParkomat(uid));
+      dispatch(addIndexParkomat(_id));
     }
   };
   return (
@@ -33,7 +34,7 @@ const SlotItem = ({
       onClick={selectParkomatItem}
       style={{
         background:
-          indexOfParkomat == uid && clickedParkomat ? "#a3caf1" : null,
+          indexOfParkomat == _id && clickedParkomat ? "#a3caf1" : null,
         
       }}
     >
@@ -44,7 +45,7 @@ const SlotItem = ({
         <div className="slot__payment">{payment.namePayment}</div>
       </div>
       <div className="slot-item__location">
-     {location.address}
+     {address}
       
       </div>
       <div className="slot-item__line"></div>

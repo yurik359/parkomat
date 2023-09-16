@@ -3,39 +3,50 @@ const { Schema } = mongoose;
 
 
 
-const coordinateSchema = new mongoose.Schema({
-  lat: {
-    type: String,
-    required: true,
-  },
-  lon: {
-    type: String,
-    required: true,
-  },
+// const coordinateSchema = new mongoose.Schema({
+//   lat: {
+//     type: String,
+//     required: true,
+//   },
+//   lon: {
+//     type: String,
+//     required: true,
+//   },
   
-},{ _id: false } );
+// },{ _id: false } );
 
-const locationSchema = new mongoose.Schema({
-  address: {
+const GeoSchema = new Schema({
+  type: {
     type: String,
-    required: true,
-  },
-  coordinate: {
-    type: coordinateSchema,
-    required: true,
+    default: "Point"
   },
   coordinates: {
-    type: {
-      type: String,
-      enum: ['Point'], // Тип 'Point' для геозапитів
-    },
-    coordinates: {
-      type: [Number], // Масив координат [довгота, широта]
-      required: true,
+    type: [Number],
+    index: "2dsphere"
+  }
+});
+
+// const locationSchema = new mongoose.Schema({
+//   address: { 
+//     type: String,
+//     required: true,
+//   },
+//   coordinate: {
+//     type: coordinateSchema,
+//     required: true,
+//   },
+//   coordinates: {
+//     type: {
+//       type: String,
+//       enum: ['Point'], // Тип 'Point' для геозапитів
+//     },
+//     coordinates: {
+//       type: [Number], // Масив координат [довгота, широта]
+//       required: true,
      
-    },
-  },
-},{ _id: false } );
+//     },
+//   },
+// },{ _id: false } );
 
 const paymentSchema = new mongoose.Schema({
   namePayment: {
@@ -51,13 +62,48 @@ const paymentSchema = new mongoose.Schema({
   },
 },{ _id: false } );
 
-const parkomatItemSchema = new mongoose.Schema({
+// const parkomatItemSchema = new mongoose.Schema({
+//   nameOfslot: {
+//     type: String,
+//     required: true,
+//   },
+//   location: {
+//     type: GeoSchema,
+//     required: true,
+//   },
+//   payment: {
+//     type: paymentSchema,
+//     required:true,
+    
+//   },
+//   formPic:{
+//     type:String,
+//   },
+//   notes: {
+//     type: String,
+//   },
+//   uid:{
+//     type:String,
+//     required:true,
+//   }
+// },{ _id: false } );
+
+const parkomatSchema = new mongoose.Schema({
+  userId:{ type: String, required: true,},
+  // parkomatItemsArray: {
+  //   type: [parkomatItemSchema],
+  //   required: true,
+  // },,
   nameOfslot: {
     type: String,
     required: true,
   },
+  address: { 
+    type: String,
+    required: true,
+  },
   location: {
-    type: locationSchema,
+    type: GeoSchema,
     required: true,
   },
   payment: {
@@ -71,18 +117,7 @@ const parkomatItemSchema = new mongoose.Schema({
   notes: {
     type: String,
   },
-  uid:{
-    type:String,
-    required:true,
-  }
-},{ _id: false } );
-
-const parkomatSchema = new mongoose.Schema({
-  userId:{ type: String, required: true, unique: true },
-  parkomatItemsArray: {
-    type: [parkomatItemSchema],
-    required: true,
-  },
+ 
 });
 
 const Parkomat = mongoose.model('parkomatItems', parkomatSchema,'parkomatItems');

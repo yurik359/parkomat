@@ -48,7 +48,9 @@ export const createParkomat     = (payload) => api.post('/addParkomat',payload)
 export const editParkomat       = (payload) => api.put('/updateParkomat',payload)
 export const getPlaceId         = (id)      => api.get('/getPlaceId'+id)
 export const getAddresses       = (payload) => api.get(`/getAddresses?address=${payload}`)
-
+export const checkTwoFa         = (payload) => api.post('/checkTwoFa',payload)
+export const savePaymentInfo    = (payload) => api.post('/savePaymentInfo',payload)
+export const getPaymentsSystems = ()      =>   api.get('/getPaymentsSystems')
 
 export const handleGET = async (url) => {
     const res = await fetch(url);

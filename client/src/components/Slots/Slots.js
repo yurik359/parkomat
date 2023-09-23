@@ -7,13 +7,13 @@ import QRCodeComponent from "../QRCodeComponent/QRCodeComponent";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addParkomats, addOneMore, changeTypeOfModal } from "./slotsSlice";
+import { addParkomats, addOneMore, changeTypeOfModal,changePaymentsInfo } from "./slotsSlice";
 import {
   editingParkomat,
   clearForm,
   setDeleteIco,
 } from "../AddParkomat/addParkomatSlice";
-import { getListItems } from "../../services/requests";
+import { getListItems,getPaymentsSystems } from "../../services/requests";
 
 
 const Slots = () => {
@@ -26,11 +26,12 @@ const Slots = () => {
     localStorage.getItem("accessToken")
   );
   const dispatch = useDispatch();
-  const { parkomatArray } = useSelector((state) => state.slotsSlice);
+  const { parkomatArray,paymentsInfo } = useSelector((state) => state.slotsSlice);
   const { indexOfParkomat, typeOfmodal } = useSelector(
     (state) => state.slotItemSlice
   );
   const [showQr,setShowQr] = useState(false)
+
   
   const getParkomatList = async (accessToken) => {
     
@@ -70,7 +71,7 @@ const Slots = () => {
 
       
       const res = await getListItems()
-      console.log(res)
+      
       if (res && res.data) {
         const filteredArray = filterSearch(
           searchTerm,

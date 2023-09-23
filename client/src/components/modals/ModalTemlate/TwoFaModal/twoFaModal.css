@@ -1,0 +1,37 @@
+.two-fa__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+.two-fa__input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   max-width: 70%;
+
+}
+
+.two-fa__input input {
+    margin-top: 7px;
+    margin-bottom: 14px;
+    border-radius: 15px;
+    height: 30px;
+    padding-left: 10px;
+    border: 1px solid rgb(177, 177, 177);
+}
+
+.two-fa__input button {
+    border: none;
+    border-radius: 10px;
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    color: rgb(1, 2, 2);
+}
+.two-fa__input span,.two-fa__qr span {
+    font-size: 20px;
+    font-weight: 600;
+}

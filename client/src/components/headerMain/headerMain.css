@@ -66,12 +66,21 @@ font-weight: 500;
   background-color: rgb(255, 255, 255);
   border-radius: 50%;
 }
-
+.header__navigate li.dot:nth-child(2):before {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: 258px;
+  width: 7px;
+  height: 7px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+}
 .header__navigate li.dot:last-child::before {
   content: "";
   position: absolute;
   top: 27px;
-  left: 254px;
+  left: 395px;
   width: 7px;
   height: 7px;
   background-color: rgb(255, 255, 255);

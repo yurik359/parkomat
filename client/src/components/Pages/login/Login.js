@@ -4,58 +4,54 @@ import { useNavigate, Link } from "react-router-dom";
 import ModalForgetPass from "../../modalForgetPass/ModalForgetPass";
 import { useDispatch } from "react-redux";
 import { setForgotPassword } from "./loginSlice";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import parking from "../../../services/img/Frame.png";
 import { setAccessToken } from "../main/mainSlice";
 import { useSelector } from "react-redux";
-
+import GoogleLoginButton from "../../GoogleLoginButton/GoogleLoginButton";
 import { login } from "../../../services/requests";
+import TwoFaModal from "../../modals/ModalTemlate/TwoFaModal/TwoFaModal";
 const Login = () => {
-  
-
-
-  const {accessToken} =useSelector(state=>state.mainSlice)
+  const { accessToken } = useSelector((state) => state.mainSlice);
   const dispatch = useDispatch();
+const [qrDataURL,setQrDataURL] = useState('')
+const [temporaryToken,setTemporaryToken] = useState('')
   
-  
-  const navigate = useNavigate();
-  const [error,setError] = useState(null)
-  console.log(accessToken)
+  const [error, setError] = useState(null);
+const [twoFaModal,setTwoFaModal] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
-try {
-  const res= await login({
-    email: e.target[0].value,
-    password: e.target[1].value,
-  })
-  console.log(res)
-  if(res){
-    const data = res.data
-    
-    if (data.message&&data.token) {
-      setError(null)
+    try {
+      const res = await login({
+        email: e.target[0].value,
+        password: e.target[1].value,
+      });
 
-      localStorage.setItem("accessToken", data.token);
-  
-      
-     navigate("/dashboard")
-      
+      if (res) {
+        const data = res.data;
+        console.log(data)
+        if(data.qrDataURL) {
+          setQrDataURL(data.qrDataURL)
+          
+        }
+        if(data.temporaryToken) {
+          console.log(data)
+          setTemporaryToken(data.temporaryToken)
+        }
+        setTwoFaModal(true)
+
+        // if (data.message && data.token) {
+        
+        // }
+      }
+    } catch (error) {
+      if (
+        error.response.data.message &&
+        error.response.data.message == "wrong password or email"
+      ) {
+        setError(error.response.data.message);
+      }
     }
-
-  }
-  
-} catch (error) {
-  if(error.response.data.message&&error.response.data.message=='wrong password or email') {
-    setError(error.response.data.message)
-
-  }
-}
-
-   
-    
-    
- 
-    
   };
 
   const forgotPasswordClicked = () => {
@@ -77,7 +73,7 @@ try {
             >
               Forgot Password?
             </div>
-            {error&&<span>{error}</span>}
+            {error && <span>{error}</span>}
             <button>
               Log In <div class="right-arrow"></div>
             </button>
@@ -87,12 +83,12 @@ try {
                 <span>Sign up</span>
               </Link>
             </div>
-           
           </form>
         </div>
         <div className="login-pic"></div>
-        
+
         <ModalForgetPass />
+        <TwoFaModal isOpen={twoFaModal} onClose={setTwoFaModal}setError={setError}temporaryToken={temporaryToken} qrDataURL={qrDataURL}/>
       </div>
     </>
   );

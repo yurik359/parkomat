@@ -5,7 +5,9 @@ const { Schema } = mongoose;
 const User = new Schema({
     organizationName:{type:String,required:true},
     password:{type:String,required:true},
-    email:{type:String,unique:true,required:true}
+    email:{type:String,unique:true,required:true},
+    secretKey_TwoFa:{type:String},
+    phone:{type:String,unique:true,required:true}
 })
 
 

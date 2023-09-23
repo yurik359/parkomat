@@ -121,7 +121,7 @@ module.exports = {
         
 
    
-          console.log('true')
+         
           const secretKey = "test";
           const requestData = {
             request: {
@@ -299,8 +299,9 @@ module.exports = {
     try {
       
 
+      
       const parkomatId = req.params.parkomatId;
-      console.log(parkomatId.length)
+      console.log(parkomatId)
    if(parkomatId.length!==24&&parkomatId !== "null"){
     return res.send({ broken: true, message: "parkomat doesn`t work" });
    }
@@ -314,6 +315,7 @@ module.exports = {
       }
     } catch (error) {
       console.log(error)
+      
     }
   },
 };

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setAccessToken } from "../Pages/main/mainSlice";
 import { useDispatch } from "react-redux";
 import { addParkomats } from "../Slots/slotsSlice";
+
 const HeaderMain = () => {
   const dispatch=useDispatch();
   const [isActive, setIsActive] = useState(
@@ -35,7 +36,12 @@ const HeaderMain = () => {
             <li className={isActive == "slots" ? "dot" : null}>
               <Link to="slots" onClick={() => setIsActive("slots")}>
                 Slots
-              </Link>{" "}
+              </Link>
+            </li>
+            <li className={isActive == "payments" ? "dot" : null}>
+              <Link to="payments" onClick={() => setIsActive("payments")}>
+                Payments
+              </Link>
             </li>
           </ul>
         </div>

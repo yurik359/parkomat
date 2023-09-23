@@ -1,164 +1,204 @@
 const { User } = require("../models/user");
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer');
-const {secret} = require('../config')
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { secret } = require("../config");
 const { parkomatItem } = require("../models/parkomatItem");
 const { Parkomat } = require("../models/parkomatItem");
-const generateAccessToken = (payload) =>{
-
-return jwt.sign(payload,secret,{expiresIn:'24h' })
-}
-
+const speakeasy = require("speakeasy");
+const QRCode = require("qrcode");
+const generateAccessToken = (payload) => {
+  return jwt.sign(payload, secret, { expiresIn: "24h" });
+};
 
 module.exports = {
-  registration:async (req, res) =>{
+  registration: async (req, res) => {
     try {
-      const { organizationName, email, password } = req.body;
-      
+      const { organizationName, email, password,phoneNumber } = req.body;
+
       const candidate = await User.findOne({ email });
       if (candidate) {
-        return res.status(401).json({ message: "user with this email already exists" , status:'401'});
+        return res
+          .status(401)
+          .json({
+            message: "user with this email already exists",
+            status: "401",
+          });
       }
-      const hashPassword = bcrypt.hashSync(password,5);
-      const user = await User.create({ organizationName, password:hashPassword,email });
+      const hashPassword = bcrypt.hashSync(password, 5);
+      const user = await User.create({
+        organizationName,
+        password: hashPassword,
+        email,
+        phone:phoneNumber,
+      });
+
+      const token = jwt.sign({ id: user._id }, secret, { expiresIn: "24h" });
       
-      const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-      // User.dropIndex({ organizationName: 1 }, (err, result) => {
-      //   if (err) {
-      //     console.error('Ошибка при удалении уникального индекса:', err);
-      //   } else {
-      //     console.log('Уникальный индекс успешно удален:', result);
-      //   }
-      // });
-      return res.json({message:'User registered successfully',token})
+      return res.json({ message: "User registered successfully", token });
     } catch (error) {
       res.status(401).json({ message: "Registration error" });
-      console.log(error)
-
+      console.log(error);
     }
   },
-  
-  login:async(req, res) =>{
+
+  login: async (req, res) => {
     try {
-        const { email, password } = req.body;
-        
-        const user = await User.findOne({ email });
-        
-        if (!user ) {
-          res.status(401).send({ message: "wrong password or email" });
-          return;
-        }
-        const validPassword = bcrypt.compareSync(password,user.password)
-        
-        if(!validPassword) {
-            
-            return res.status(400).json({message:'wrong password or email'})
-        }
-        
-        const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-        
-        res.status(200).json({ message: "Login successful", token });
+      const { email, password } = req.body;
+
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        res.status(401).send({ message: "wrong password or email" });
+        return;
       }
-     catch (error) {
-        console.log(error)
+      const validPassword = bcrypt.compareSync(password, user.password);
+
+      if (!validPassword) {
+        return res.status(400).json({ message: "wrong password or email" });
+      }
+     
+      if (user.secretKey_TwoFa) {
+        const temporaryToken = jwt.sign({ id: user._id, }, secret, { expiresIn: "15m" });
+        return res.send({ message: "user found", qrDataURL: false, temporaryToken });
+      } else {
+        
+        const secretKey_TwoFa = speakeasy.generateSecret({
+          _id: user._id,
+        });
+        const temporaryToken = jwt.sign({ id: user._id,secretKey_TwoFa:secretKey_TwoFa.base32 }, secret, { expiresIn: "15m" });
+        // const hashSecret = bcrypt.hashSync(secretKey_TwoFa,3);
+ 
+        
+        const otpauth_url = `otpauth://totp/Parking_Admin:${user.email}?secret=${secretKey_TwoFa.base32}`;
+        const qrDataURL = await QRCode.toDataURL(otpauth_url);
+        res.send({ message: "user found", qrDataURL, temporaryToken });
+      }
+
+      //
+
+      // res.status(200).json({ message: "Login successful", token });
+    } catch (error) {
+      console.log(error);
       res.status(400).json({ message: "login error" });
     }
   },
-
-  sendInstruction:async (req,res) => {
+  checkTwoFa: async (req, res) => {
     try {
-        const {emailRecover} = req.body
-        console.log(req.body)
-        const user = await User.findOne({ email:emailRecover });
-        if (user) {
-                
-            const token = jwt.sign({id:user._id},secret,{expiresIn:'1h' })
-            let transporter = nodemailer.createTransport({
-                service: 'Gmail',
-                auth: {
-                  user: 'yurik52222@gmail.com',
-                  pass: 'ucoxmzhrvzmdbjmp',
-                },
-              });
-              let mailOptions = {
-                from: 'yurik52222@gmail.com',
-                to: emailRecover,
-                subject: 'Test Email',
-                text: ` http://localhost:4001/recover-page?code=${token}`,
-              };
-              transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                  console.error('error', error);
-                } else {
-                  console.log('send email successfuly', info.response);
-                  res.send({message:'on your email was sent instructions to change password'})
-                }
-              });
-             
-              
-        } else {
-            res.send({message:'no user found with this email'})
-        }
-    } catch (error) {
-        res.send({message:error})
-    }
-},
-changePassword:async (req,res) => {
-        try {
-            const {code,password} = req.body
-            
-            jwt.verify(code, secret,async (err, decoded) => {
-                if (err) {
-                    res.status(401).send({message:err})
-                  console.error('Error decode  token', err);
-                } else {
-                    const {id} = decoded
-                    const hashPass=bcrypt.hashSync(password,5);
-                    await User.updateOne(
-                        { _id: id },
-                        { $set: { password: hashPass } }
-                      );
-                
-                   res.send({message:'password successful changed',status:'ok'})
-                }
-              })
-        } catch (error) {
-            res.send({message:'error during changing password',status:'error'})
-        }
-    },
-    getParkomatList:async (req,res) => {
+      const { id,secretKey_TwoFa } = req.decoded;
+      const userTokenTwoFA = req.body.twoFaValue;
       
-
-      try {
-          
-
-          
+      const user = await User.findOne({ _id: id });
+      
   
-        const { id } = req.decoded;
-        console.log(id)
-        const parkomatList = await Parkomat.find({ userId: id });
-  
-            //  const parkomatList= await Parkomat.findOne(
-            //   { ['userId']: id }, 
-            //   { parkomatItemsArray: 1 }
-            //  )
-           
-            res.send(parkomatList)
-             
-            
-         
-      } catch (error) {
-          console.log(error)
-          res.send({message:error})
+    const verified = speakeasy.totp.verify({
+      secret: user.secretKey_TwoFa?user.secretKey_TwoFa:secretKey_TwoFa,
+      encoding: "base32",
+      token: userTokenTwoFA,
+    });
+   
+    if (verified) {
+      if(!user.secretKey_TwoFa){
+  await User.updateOne(
+      { _id: id },
+      { $set: { secretKey_TwoFa } }
+    );
       }
-  }
-}
+    
+      const accessToken = jwt.sign({ id: user._id }, secret, { expiresIn: "48h" });
+   res.send({accessToken})
+    } else {
+   res.send({message:'wrong pin'})
+    }
+  
+        
+       
+      
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  sendInstruction: async (req, res) => {
+    try {
+      const { emailRecover } = req.body;
+      console.log(req.body);
+      const user = await User.findOne({ email: emailRecover });
+      if (user) {
+        const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
+        let transporter = nodemailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: "yurik52222@gmail.com",
+            pass: "ucoxmzhrvzmdbjmp",
+          },
+        });
+        let mailOptions = {
+          from: "yurik52222@gmail.com",
+          to: emailRecover,
+          subject: "Test Email",
+          text: ` http://localhost:4001/recover-page?code=${token}`,
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("error", error);
+          } else {
+            console.log("send email successfuly", info.response);
+            res.send({
+              message: "on your email was sent instructions to change password",
+            });
+          }
+        });
+      } else {
+        res.send({ message: "no user found with this email" });
+      }
+    } catch (error) {
+      res.send({ message: error });
+    }
+  },
+  changePassword: async (req, res) => {
+    try {
+      const { code, password } = req.body;
+
+      jwt.verify(code, secret, async (err, decoded) => {
+        if (err) {
+          res.status(401).send({ message: err });
+          console.error("Error decode  token", err);
+        } else {
+          const { id } = decoded;
+          const hashPass = bcrypt.hashSync(password, 5);
+          await User.updateOne({ _id: id }, { $set: { password: hashPass } });
+
+          res.send({ message: "password successful changed", status: "ok" });
+        }
+      });
+    } catch (error) {
+      res.send({ message: "error during changing password", status: "error" });
+    }
+  },
+  getParkomatList: async (req, res) => {
+    try {
+      const { id } = req.decoded;
+      
+      const parkomatList = await Parkomat.find({ userId: id });
+
+      //  const parkomatList= await Parkomat.findOne(
+      //   { ['userId']: id },
+      //   { parkomatItemsArray: 1 }
+      //  )
+
+      res.send(parkomatList);
+    } catch (error) {
+      console.log(error);
+      res.send({ message: error });
+    }
+  },
+  
+};
 // class usersController {
 //   async registration(req, res) {
 //     try {
 //       const { organizationName, email, password } = req.body;
-      
+
 //       const candidate = await User.findOne({ email });
 //       if (candidate) {
 //         return res.status(401).json({ message: "user with this email already exists" , status:'401'});
@@ -180,22 +220,22 @@ changePassword:async (req,res) => {
 //   async login(req, res) {
 //     try {
 //         const { email, password } = req.body;
-        
+
 //         const user = await User.findOne({ email });
-        
+
 //         if (!user ) {
 //           res.status(401).send({ message: "wrong password or email" });
 //           return;
 //         }
 //         const validPassword = bcrypt.compareSync(password,user.password)
-        
+
 //         if(!validPassword) {
-            
+
 //             return res.status(400).json({message:'wrong password or email'})
 //         }
-        
+
 //         const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-        
+
 //         res.status(200).json({ message: "Login successful", token });
 //       }
 //      catch (error) {

@@ -31,8 +31,8 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   });
   const [closeAddressesList, setCloseAddressesList] = useState(false);
   const [onFocusInput, setOnFocusInput] = useState(false);
-  const [secretKey,setSecretKey] = useState('')
-  const { typeOfmodal } = useSelector((state) => state.slotsSlice);
+ 
+  const { typeOfmodal,paymentsInfo } = useSelector((state) => state.slotsSlice);
   const { formValues, deleteIcon } = useSelector(
     (state) => state.addParkomatSlice
   );
@@ -165,13 +165,29 @@ addOneMoreParkomat(res.data)
     dispatch(changePicValue(null));
   };
 
+  const [isPaymentsInfo,setIsPaymentsInfo] = useState(false)
   const changeSelect = (e) => {
    
 dispatch(changePaymentValue(e.target.value))
-//  if(formValues.paymentValue==='fondy'){
-// setShowSecretKeyInput(true);
-// }
+if(e.target.value==='fondy') {
+  dispatch(changePaymentSecretKey(paymentsInfo.fondy.secretKey))
+  dispatch(changeMerchantId(paymentsInfo.fondy.merchantId))
+} 
+
+
   }
+  useEffect(()=>{
+    if(
+      paymentsInfo.fondy&&paymentsInfo.fondy.merchantId&&
+      paymentsInfo.fondy.secretKey
+      ){
+
+       setIsPaymentsInfo(true) 
+     
+     }else {
+      setIsPaymentsInfo(false)
+     }
+  },[paymentsInfo])
   return (
     <div
       className="add-parkomat parkomat-modal"
@@ -233,19 +249,21 @@ dispatch(changePaymentValue(e.target.value))
           onChange={changeSelect}
         >
           <option value="...">Payment System</option>
-          <option value="fondy">fondy</option>
+          <option value="fondy"style={{display:isPaymentsInfo?'block':'none'}}>fondy</option>
           <option value="privat24">privat 24</option>
           <option value="card">card</option>
         </select>
-        <div className="inputs-container" style={{display:formValues.paymentValue.namePayment==='fondy'?'block':'none'}} >
-          <input type="text" placeholder="enter merchant_id"
+        {/* <div className="inputs-container" style={{display:isPaymentsInfo?'block':'none'}} >
+          {/* <span>Fill in fondy payments info</span> */}
+          {/* <input type="text" placeholder="enter merchant_id"
           value={formValues.paymentValue.merchantId}
           onChange={(e)=>dispatch(changeMerchantId(e.target.value))}
           />
         <input type="text" placeholder="enter secret key"  
         value={formValues.paymentValue.secretKey} onChange={(e)=>dispatch(changePaymentSecretKey(e.target.value))} 
-        className="secret-key-input" />
-        </div>  
+        className="secret-key-input" /> */}
+
+         
         <label class="file-upload">
           <input type="file" class="file-input" onChange={handleImageChange} />
           <span class="file-label">Upload File</span>

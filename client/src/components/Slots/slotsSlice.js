@@ -5,6 +5,7 @@ const slotsSlice = createSlice({
   initialState: {
     parkomatArray: [],
     typeOfmodal: "",
+    paymentsInfo:[],
   },
   reducers: {
     addParkomats: (state, action) => {
@@ -37,6 +38,9 @@ const slotsSlice = createSlice({
     changeTypeOfModal: (state, action) => {
       state.typeOfmodal = action.payload;
     },
+    changePaymentsInfo:(state,action)=> {
+      state.paymentsInfo = action.payload
+    }
   },
 });
 const { actions, reducer } = slotsSlice;
@@ -47,4 +51,5 @@ export const {
   deleteParkomat,
   changeTypeOfModal,
   updateParkomat,
+  changePaymentsInfo,
 } = actions;

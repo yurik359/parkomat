@@ -1,0 +1,25 @@
+.payment-slot__container img {
+    width: 250px;
+    height: 100px;
+    border-radius: 15px;
+}
+
+.payment-slot__container {
+    background-color: white;
+    width: fit-content;
+    border-radius: 15px;
+    padding: 5px;
+    
+}
+.payment-slot__title {
+    margin-bottom:10px;
+}
+
+.payment-slot__container input {
+    border-radius: 15px;
+    border: 1px solid rgb(190, 186, 186);
+   margin-right: 5px;
+   margin-bottom: 10px;
+   height: 20px;
+   padding-left: 10px;
+}

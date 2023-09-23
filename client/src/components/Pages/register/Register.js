@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import { setAccessToken } from "../main/mainSlice";
 import { useDispatch } from "react-redux";
-
+import { parsePhoneNumber, isValidNumber } from 'libphonenumber-js';
 import parkomatPic from "../../../services/img/Frame2.png";
 import { register } from "../../../services/requests";
 const Register = () => {
@@ -20,11 +20,18 @@ const Register = () => {
       setValid("Імя повинно містити мінімум 2 символи");
       return false;
     }
-    if (e.target[2].value !== e.target[3].value) {
+    if (e.target[3].value !== e.target[4].value) {
       setValid("Паролі не співпадають");
       return false;
     }
-    if (e.target[2].value.length < 7) {
+    
+    const phoneNumber =e.target[1].value
+    console.log(phoneNumber.length!==10)
+    if((phoneNumber.length!==10&&phoneNumber.length!==13)||!/^\d+$/.test(phoneNumber)) {
+      setValid("wrong number")
+      return false
+    }
+     if (e.target[3].value.length < 7) {
       setValid("Пароль повинен містити мінімум 7 символів");
       return false;
     }
@@ -40,10 +47,11 @@ const Register = () => {
      try {
       const res=  await register( {
         organizationName: e.target[0].value,
-        email: e.target[1].value,
-        password: e.target[2].value,
+        email: e.target[2].value,
+        password: e.target[3].value,
+        phoneNumber:e.target[1].value
       })
-      console.log(res)
+      
       
       // if(res.data.status&&res.data.status=="401"){
       //   return setResponse(res.data.message)
@@ -79,6 +87,7 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="form-register">
           <div className="form-name">Sign up</div>
           <input required type="text" placeholder="Organization Name" />
+          <input required type="tel" placeholder="Phone number" />
           <input required type="email" placeholder="Email" />
           <input required type="password" placeholder="Password" />
           <input required type="password" placeholder="Confirm password" />

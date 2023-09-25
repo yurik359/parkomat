@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thank you</title>
+</head>
+<body>
+    <div class="container">Your payment has been successfully received.</div>
+    <style>
+        .container {
+            margin-top: 30px;
+            display: flex;
+           font-size: 40px;
+            justify-content: center;
+            width: 100%;
+            color: rgb(113, 143, 133);
+        }
+    </style>
+    <script>
+         const urlParams = new URLSearchParams(window.location.search);
+
+        const parkomatId = urlParams.get('parkomatId');
+       const fbclid = urlParams.get('fbclid')
+   setTimeout(()=>{
+            window.location.replace(`https://www.pay-parking.net/?parkomatId=${parkomatId}`)
+        },2000)
+        
+
+    </script>
+</body>
+</html>

@@ -20,7 +20,7 @@ module.exports = {
             },
             { upsert: true }
           );
-          console.log(res)
+        
       }
 
       res.status(200).send({ message: "data saved" });
@@ -31,15 +31,16 @@ module.exports = {
   getPaymentsSystems:async(req,res) => {
     try {
         const { id } = req.decoded;
-        console.log(id)
+      
         const result = await Payments.find({userId:id})
-        console.log(result)
+      
 if(result.length>0){
     res.send(result[0])
 }else {res.send([])}
         
     } catch (error) {
         console.log(error)
+        
     }
   }
 };

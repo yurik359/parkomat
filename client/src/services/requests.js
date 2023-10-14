@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: 'https://api.pay-parking.net/login/', 
+  baseURL: 'https://api.pay-parking.net/', 
 });
 
 

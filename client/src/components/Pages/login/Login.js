@@ -3,22 +3,24 @@ import { useNavigate, Link } from "react-router-dom";
 
 import ModalForgetPass from "../../modalForgetPass/ModalForgetPass";
 import { useDispatch } from "react-redux";
-import { setForgotPassword } from "./loginSlice";
+import { setForgotPassword,setTwoFaModal } from "./loginSlice";
 import { useState, useEffect } from "react";
 import parking from "../../../services/img/Frame.png";
 import { setAccessToken } from "../main/mainSlice";
 import { useSelector } from "react-redux";
-import GoogleLoginButton from "../../GoogleLoginButton/GoogleLoginButton";
-import { login } from "../../../services/requests";
 import TwoFaModal from "../../modals/ModalTemlate/TwoFaModal/TwoFaModal";
+import { login } from "../../../services/requests";
+
 const Login = () => {
   const { accessToken } = useSelector((state) => state.mainSlice);
+
+  const [temporaryToken,setTemporaryToken] = useState('')
+  const [twoFaModal,setTwoFaModal] = useState(false)
   const dispatch = useDispatch();
-const [qrDataURL,setQrDataURL] = useState('')
-const [temporaryToken,setTemporaryToken] = useState('')
+const navigate = useNavigate()
   
   const [error, setError] = useState(null);
-const [twoFaModal,setTwoFaModal] = useState(false)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -27,23 +29,33 @@ const [twoFaModal,setTwoFaModal] = useState(false)
         password: e.target[1].value,
       });
 
-      if (res) {
-        const data = res.data;
-        console.log(data)
-        if(data.qrDataURL) {
-          setQrDataURL(data.qrDataURL)
-          
-        }
-        if(data.temporaryToken) {
-          console.log(data)
-          setTemporaryToken(data.temporaryToken)
-        }
-        setTwoFaModal(true)
-
-        // if (data.message && data.token) {
-        
-        // }
+      if(res.data.twoFa) {
+        console.log(res)
       }
+if(res&&res.data&&res.data.twoFa) {
+  setTwoFaModal(true)
+setTemporaryToken(res.data.temporaryToken)
+}else if(res&&res.data&&res.data.token) {
+  navigate("/dashboard");
+  localStorage.setItem("accessToken", res.data.token);
+}
+      // if (res) {
+      //   const data = res.data;
+      //   console.log(data)
+      //   if(data.qrDataURL) {
+      //     setQrDataURL(data.qrDataURL)
+          
+      //   }
+      //   if(data.temporaryToken) {
+      //     console.log(data)
+      //     setTemporaryToken(data.temporaryToken)
+      //   }
+      //   setTwoFaModal(true)
+
+      //   // if (data.message && data.token) {
+        
+      //   // }
+      // }
     } catch (error) {
       if (
         error.response.data.message &&
@@ -88,7 +100,7 @@ const [twoFaModal,setTwoFaModal] = useState(false)
         <div className="login-pic"></div>
 
         <ModalForgetPass />
-        <TwoFaModal isOpen={twoFaModal} onClose={setTwoFaModal}setError={setError}temporaryToken={temporaryToken} qrDataURL={qrDataURL}/>
+        <TwoFaModal temporaryToken={temporaryToken} isOpen={twoFaModal} onClose={setTwoFaModal}/>
       </div>
     </>
   );

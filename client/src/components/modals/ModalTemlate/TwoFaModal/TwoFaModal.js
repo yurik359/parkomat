@@ -4,20 +4,22 @@ import { useNavigate, Link } from "react-router-dom";
 import QRCode from "react-qr-code";
 import { checkTwoFa } from "../../../../services/requests";
 import { useState } from "react";
-const TwoFaModal = ({ isOpen,qrDataURL,temporaryToken,setError,onClose }) => {
+import { useDispatch } from "react-redux";
+const TwoFaModal = ({ isOpen,qrDataURL,temporaryToken,onClose }) => {
     const [twoFaValue,setTwoFaValue] = useState('')
     const [twoFaError,setTwoFaError] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const checkTwoFaToken= async () => {
         try {
             const res = await checkTwoFa({twoFaValue,temporaryToken})
        if(res.data&&res.data.accessToken){
-        setError(null);
+       
         setTwoFaError(false)
         localStorage.setItem("accessToken", res.data.accessToken);
        
         navigate("/dashboard"); 
-        
+        onClose(false)
        } else {
         setTwoFaError(true)
        }

@@ -40,7 +40,7 @@ if(result.length>0){
         
     } catch (error) {
         console.log(error)
-        
+
     }
   }
 };

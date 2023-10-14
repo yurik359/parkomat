@@ -36,6 +36,10 @@
   padding: 10px 10px 10px 27px;
   box-sizing: border-box;
 }
+.form-register input.PhoneInputInput {
+  padding-left: 65px;
+}
+
 .form-register input::placeholder {
   color: #8F8F8F;
   font-family: Inter;
@@ -45,9 +49,9 @@
   line-height: 140%; 
 }
 
-.form-register input:nth-child(5) {
+/* .form-register input:nth-child(5) {
   margin-bottom: 10px;
-}
+} */
 .policy {
   max-width: 81px;
 }
@@ -60,7 +64,17 @@
 .validation {
   color: #f04b6c;
 }
+.two-factor-container {
+ display: flex;
+ color: #8F8F8F;
+}
+.two-factor-container input {
+max-width: 15px;
+min-width: 15px;
+height: 15px;
+margin-right: 10px;
 
+}
 .register-page {
   display: flex;
   min-width: fit-content;

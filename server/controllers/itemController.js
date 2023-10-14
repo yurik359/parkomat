@@ -122,7 +122,7 @@ module.exports = {
 
    
          
-          const secretKey = "test";
+          const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
           const requestData = {
             request: {
               response_url: `https://api.pay-parking.net/thank?parkomatId=${parkomatId}`,
@@ -130,8 +130,9 @@ module.exports = {
               order_desc: "test order",
               currency: "USD",
               amount: "125",
-              merchant_id: "1396424",
+              merchant_id: "1534515",
             },
+            
           };
           const sortedKeys = Object.keys(requestData.request).sort();
           const dataString = [
@@ -142,7 +143,10 @@ module.exports = {
           requestData.request.signature = signature;
           axios
             .post("https://pay.fondy.eu/api/checkout/url/", requestData)
-            .then((response) => res.send(response.data))
+            .then((response) =>{
+              console.log(response.data)
+              res.send(response.data)
+            } )
             .catch((err) => {
               console.log(err), res.send(err);
             });

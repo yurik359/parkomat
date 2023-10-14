@@ -82,14 +82,15 @@ const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
     
     return () => clearTimeout(geoTimeOut);
   }, [formValues.address]);
-
+const [isNamePayment,setIsNamePayment] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(formValues.paymentValue.namePayment===''||formValues.paymentValue.namePayment==='...') return setIsNamePayment(true)
 try {
-console.log(formValues)
+
   
   const res = await createParkomat({formValues})
-  console.log(res)
+
 if(res&&res.data) {
 addOneMoreParkomat(res.data)
 } 
@@ -129,6 +130,8 @@ addOneMoreParkomat(res.data)
       if (e.key === "Escape") {
         setCloseModal(true);
       }
+
+      
     });
   }, []);
 
@@ -167,7 +170,7 @@ addOneMoreParkomat(res.data)
 
   const [isPaymentsInfo,setIsPaymentsInfo] = useState(false)
   const changeSelect = (e) => {
-   
+   setIsNamePayment(false)
 dispatch(changePaymentValue(e.target.value))
 if(e.target.value==='fondy') {
   dispatch(changePaymentSecretKey(paymentsInfo.fondy.secretKey))
@@ -191,11 +194,13 @@ if(e.target.value==='fondy') {
   return (
     <div
       className="add-parkomat parkomat-modal"
+      onClick={()=>setCloseModal(true)}
       style={{ display: closeModal ? "none" : "flex" }}
     >
       <form
         className="add-parkomat__form"
         onSubmit={typeOfmodal == "update" ? handleEditParkomat : handleSubmit}
+        onClick={e => e.stopPropagation()}
       >
         <div
           className="add-parkomat__close"
@@ -247,21 +252,15 @@ if(e.target.value==='fondy') {
         <select
           value={formValues.paymentValue.namePayment}
           onChange={changeSelect}
+          
         >
-          <option value="...">Payment System</option>
+          <option value="..." >Payment System</option>
           <option value="fondy"style={{display:isPaymentsInfo?'block':'none'}}>fondy</option>
           <option value="privat24">privat 24</option>
           <option value="card">card</option>
         </select>
-        {/* <div className="inputs-container" style={{display:isPaymentsInfo?'block':'none'}} >
-          {/* <span>Fill in fondy payments info</span> */}
-          {/* <input type="text" placeholder="enter merchant_id"
-          value={formValues.paymentValue.merchantId}
-          onChange={(e)=>dispatch(changeMerchantId(e.target.value))}
-          />
-        <input type="text" placeholder="enter secret key"  
-        value={formValues.paymentValue.secretKey} onChange={(e)=>dispatch(changePaymentSecretKey(e.target.value))} 
-        className="secret-key-input" /> */}
+        {isNamePayment&&<span>Choose payment method firstly</span>}
+        
 
          
         <label class="file-upload">

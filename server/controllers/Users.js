@@ -14,7 +14,8 @@ const generateAccessToken = (payload) => {
 module.exports = {
   registration: async (req, res) => {
     try {
-      const { organizationName, email, password,phoneNumber } = req.body;
+      const { organizationName, email, password,phoneNumber,twoFa } = req.body;
+      
 
       const candidate = await User.findOne({ email });
       if (candidate) {
@@ -35,7 +36,17 @@ module.exports = {
 
       const token = jwt.sign({ id: user._id }, secret, { expiresIn: "24h" });
       
-      return res.json({ message: "User registered successfully", token });
+      if(twoFa) {
+        const secretKey_TwoFa = speakeasy.generateSecret({
+          _id: user._id,
+        });
+        const temporaryToken = jwt.sign({ id: user._id,secretKey_TwoFa:secretKey_TwoFa.base32 }, secret, { expiresIn: "15m" });
+        
+        const otpauth_url = `otpauth://totp/Parking_Admin:${user.email}?secret=${secretKey_TwoFa.base32}`
+        const qrDataURL = await QRCode.toDataURL(otpauth_url)
+        return res.json({ message: "User registered successfully",qrDataURL,temporaryToken })
+      }
+      return res.json({ message: "User registered successfully", token, });
     } catch (error) {
       res.status(401).json({ message: "Registration error" });
       console.log(error);
@@ -59,25 +70,17 @@ module.exports = {
       }
      
       if (user.secretKey_TwoFa) {
-        const temporaryToken = jwt.sign({ id: user._id, }, secret, { expiresIn: "15m" });
-        return res.send({ message: "user found", qrDataURL: false, temporaryToken });
+        const temporaryToken = jwt.sign({ id: user._id,secretKey_TwoFa:user.secretKey_TwoFa }, secret, { expiresIn: "15m" });
+        res.status(200).json({ message: "Login successful", twoFa:true,temporaryToken });
       } else {
-        
-        const secretKey_TwoFa = speakeasy.generateSecret({
-          _id: user._id,
-        });
-        const temporaryToken = jwt.sign({ id: user._id,secretKey_TwoFa:secretKey_TwoFa.base32 }, secret, { expiresIn: "15m" });
-        // const hashSecret = bcrypt.hashSync(secretKey_TwoFa,3);
- 
-        
-        const otpauth_url = `otpauth://totp/Parking_Admin:${user.email}?secret=${secretKey_TwoFa.base32}`;
-        const qrDataURL = await QRCode.toDataURL(otpauth_url);
-        res.send({ message: "user found", qrDataURL, temporaryToken });
+        const token = jwt.sign({ id: user._id }, secret, { expiresIn: "24h" });
+ res.status(200).json({ message: "Login successful", token });
       }
 
-      //
 
-      // res.status(200).json({ message: "Login successful", token });
+      
+
+     
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "login error" });

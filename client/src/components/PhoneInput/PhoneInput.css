@@ -1,0 +1,22 @@
+.react-phone-number-input__country {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px; /* или другое значение для корректировки положения флага */
+    border:1px solid red;
+}
+
+.react-phone-number-input__input {
+    padding-left: 245px; /* добавляет отступ слева, чтобы текст не перекрывал флаг */
+}
+
+.PhoneInputCountry {
+    left: 67px;
+    top: -11px;
+    margin-left: -40px;
+}
+
+.PhoneInputCountrySelect {
+    z-index: 2;
+    height: 30px;
+}

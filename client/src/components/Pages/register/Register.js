@@ -62,7 +62,7 @@ const Register = () => {
         
 
       })
-     
+     console.log(e.target[6].checked)
       
       // if(res.data.status&&res.data.status=="401"){
       //   return setResponse(res.data.message)

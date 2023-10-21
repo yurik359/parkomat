@@ -11,6 +11,7 @@ const HeaderMain = () => {
   const [isActive, setIsActive] = useState(
     window.location.pathname.substring(1)
   );
+  console.log('lolio')
   const navigate = useNavigate();
 
   const logOut = () => {

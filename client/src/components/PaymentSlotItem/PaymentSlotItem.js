@@ -16,8 +16,8 @@ const PaymentSlotItem = ({paymentsInfo}) => {
     }
 
     useEffect(()=>{
-        console.log(paymentsInfo)
-        if(paymentsInfo.fondy&&paymentsInfo.fondy.merchantId&&paymentsInfo.fondy.secretKey){
+      
+        if(paymentsInfo&&paymentsInfo.fondy&&paymentsInfo.fondy.merchantId&&paymentsInfo.fondy.secretKey){
             console.log(paymentsInfo)
             setMerchantId(paymentsInfo.fondy.merchantId)
             setSecretKey(paymentsInfo.fondy.secretKey)

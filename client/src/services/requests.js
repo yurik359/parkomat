@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import ToLogin from "../components/ToLogin/ToLogin";
 
 const api = axios.create({
-  baseURL: 'https://api.pay-parking.net/', 
+  baseURL: 'http://localhost:4001', 
 });
 
 
@@ -19,23 +19,29 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// const ToLogi = () => {
+//   const navigate=useNavigate()
+//  return navigate('/login')
+  
+// }
+
 
 api.interceptors.response.use(
   (response) => {
     
-    if (response.status === 403) {
-
-      return localStorage.removeItem('accessToken');
-    }
+    
     return response;
   },
   (error) => {
-    
-    return Promise.reject(error);
+   
+    if (error.response.status === 401) {
+      
+       localStorage.removeItem('accessToken');
+       window.location.href = '/login'
+    }
+    return console.log(error);
   }
 );
-
-
     
 
 export const deleteParkomatItem = (payload) => api.delete('/deleteParkomat',{params:{indexOfParkomat:payload.indexOfParkomat}})

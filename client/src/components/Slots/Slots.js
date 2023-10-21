@@ -33,11 +33,11 @@ const Slots = () => {
   const [showQr,setShowQr] = useState(false)
 
   
-  const getParkomatList = async (accessToken) => {
+  const getParkomatList = async () => {
     
    try {
     const response =await getListItems();
-    console.log(response.data.length)
+
 
     if (
       response &&

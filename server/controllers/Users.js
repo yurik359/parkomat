@@ -108,7 +108,7 @@ module.exports = {
     );
       }
     
-      const accessToken = jwt.sign({ id: user._id }, secret, { expiresIn: "48h" });
+      const accessToken = jwt.sign({ id: user._id }, secret, { expiresIn: "10s" });
    res.send({accessToken})
     } else {
    res.send({message:'wrong pin'})
@@ -184,11 +184,7 @@ module.exports = {
       
       const parkomatList = await Parkomat.find({ userId: id });
 
-      //  const parkomatList= await Parkomat.findOne(
-      //   { ['userId']: id },
-      //   { parkomatItemsArray: 1 }
-      //  )
-
+      
       res.send(parkomatList);
     } catch (error) {
       console.log(error);
@@ -197,63 +193,4 @@ module.exports = {
   },
   
 };
-// class usersController {
-//   async registration(req, res) {
-//     try {
-//       const { organizationName, email, password } = req.body;
 
-//       const candidate = await User.findOne({ email });
-//       if (candidate) {
-//         return res.status(401).json({ message: "user with this email already exists" , status:'401'});
-//       }
-//       const hashPassword = bcrypt.hashSync(password,5);
-//       const user = await User.create({ organizationName, password:hashPassword,email });
-//       await parkomatItem.create({
-//         _id:user._id,
-//         parkomatItemsArray:[]
-//       })
-//       const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-
-//       return res.json({message:'User registered successfully',token})
-//     } catch (error) {
-//       res.status(401).json({ message: "Registration error" });
-//     }
-//   }
-
-//   async login(req, res) {
-//     try {
-//         const { email, password } = req.body;
-
-//         const user = await User.findOne({ email });
-
-//         if (!user ) {
-//           res.status(401).send({ message: "wrong password or email" });
-//           return;
-//         }
-//         const validPassword = bcrypt.compareSync(password,user.password)
-
-//         if(!validPassword) {
-
-//             return res.status(400).json({message:'wrong password or email'})
-//         }
-
-//         const token = jwt.sign({id:user._id},secret,{expiresIn:'24h' })
-
-//         res.status(200).json({ message: "Login successful", token });
-//       }
-//      catch (error) {
-//         console.log(error)
-//       res.status(400).json({ message: "login error" });
-//     }
-//   }
-
-//   async getUsers(req, res) {
-//     try {
-//       res.json("server work");
-//     } catch (error) {
-//       res.status(400).json({ message: "Registration error" });
-//     }
-//   }
-// }
-
-// module.exports = new usersController();

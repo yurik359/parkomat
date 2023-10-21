@@ -132,7 +132,7 @@ module.exports = {
               amount: "125",
               merchant_id: "1534515",
             },
-            
+
           };
           const sortedKeys = Object.keys(requestData.request).sort();
           const dataString = [
@@ -186,7 +186,7 @@ if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
       
 
 
-      const maxDistance = 300;
+      const maxDistance = 500;
       const parkomatQuery = {
         "location.coordinates": {
           $near: {

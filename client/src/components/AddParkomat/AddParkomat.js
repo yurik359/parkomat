@@ -180,7 +180,7 @@ if(e.target.value==='fondy') {
 
   }
   useEffect(()=>{
-    if(
+    if(paymentsInfo&&
       paymentsInfo.fondy&&paymentsInfo.fondy.merchantId&&
       paymentsInfo.fondy.secretKey
       ){

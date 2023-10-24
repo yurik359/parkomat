@@ -108,7 +108,7 @@ module.exports = {
     );
       }
     
-      const accessToken = jwt.sign({ id: user._id }, secret, { expiresIn: "10s" });
+      const accessToken = jwt.sign({ id: user._id }, secret, { expiresIn: "24h" });
    res.send({accessToken})
     } else {
    res.send({message:'wrong pin'})

@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const router = express.Router();
 const {registration,login,sendInstruction,changePassword,getParkomatList,checkTwoFa}  = require('../controllers/Users')
-const {savePaymentInfo,getPaymentsSystems} =require('../controllers/payments')
+const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo} =require('../controllers/payments')
 const {verifyToken} = require('../config')
 const {addParkomat,updateParkomat,
   deleteParkomat,getAddresses,
@@ -36,9 +36,7 @@ router.post('/checkTwoFa',verifyToken,checkTwoFa)
 router.post('/savePaymentInfo',verifyToken,savePaymentInfo)
 router.get('/getPaymentsSystems',verifyToken,getPaymentsSystems)
 
-router.post('/thank', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
-});
+router.post('/thank',AppovedPaymentsInfo);
 router.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));
   });

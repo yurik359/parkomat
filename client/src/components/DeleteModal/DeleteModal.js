@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./deleteModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteParkomat } from "../Slots/slotsSlice";
-
+import Map from "../map/map";
 
 import {
   addIndexParkomat,
@@ -61,6 +61,7 @@ const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
           </div>
         </div>
       </div>
+ 
     </div>
   );
 };

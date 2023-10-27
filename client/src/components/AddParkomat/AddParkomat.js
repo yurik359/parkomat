@@ -192,6 +192,7 @@ if(e.target.value==='fondy') {
      }
   },[paymentsInfo])
   return (
+    
     <div
       className="add-parkomat parkomat-modal"
       onClick={()=>setCloseModal(true)}
@@ -244,9 +245,9 @@ if(e.target.value==='fondy') {
                 );
               })}
           </div>
-          <div className="" style={{width:'90%'}}>
-          <Map checkedAddress={checkedAddress} />
-          </div>
+      {!closeModal&&<div className="" style={{width:'90%'}}>
+                <Map checkedAddress={checkedAddress} />
+          </div>}    
         </div>
         
         <select
@@ -289,7 +290,7 @@ if(e.target.value==='fondy') {
           rows="10"
           placeholder="Notes"
         ></textarea>
-        <button> {typeOfmodal}</button>
+        <button style={{cursor:'pointer'}}> {typeOfmodal}</button>
       </form>
 
       <div></div>

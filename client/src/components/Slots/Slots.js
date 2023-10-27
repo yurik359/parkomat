@@ -5,7 +5,7 @@ import AddParkomat from "../AddParkomat/AddParkomat";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import QRCodeComponent from "../QRCodeComponent/QRCodeComponent";
 import { useEffect, useState } from "react";
-
+import Map from "../map/map";
 import { useDispatch, useSelector } from "react-redux";
 import { addParkomats, addOneMore, changeTypeOfModal,changePaymentsInfo } from "./slotsSlice";
 import {
@@ -181,6 +181,7 @@ const Slots = () => {
               <div className="slots__add-text">Add new</div>
             </div>
           </div>
+         
         </div>
         <AddParkomat
           closeModal={closeModal}

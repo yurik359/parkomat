@@ -1,6 +1,6 @@
 const { User } = require("../models/user");
-const { Payments } = require("../models/payments");
-
+const { Payments ,ApprovedPaymentInfo} = require("../models/payments");
+const path = require("path");
 module.exports = {
   savePaymentInfo: async (req, res) => {
     try {
@@ -41,6 +41,27 @@ if(result.length>0){
     } catch (error) {
         console.log(error)
 
+    }
+  },
+  AppovedPaymentsInfo:async(req,res) => {
+    try {
+      const paymentInfo = req.body
+         await ApprovedPaymentInfo.create({
+          order_id:paymentInfo.order_id,
+          merchant_id:paymentInfo.merchant_id,
+          sender_email:paymentInfo.sender_email,
+          currency:paymentInfo.currency,
+          amount:paymentInfo.amount,
+          order_time:paymentInfo.order_time,
+          order_status:paymentInfo.order_status
+
+          
+
+        })
+        res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
+
+    } catch (error) {
+      console.log(error)
     }
   }
 };

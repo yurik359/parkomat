@@ -1,9 +1,15 @@
-#map {
+/* #map {
   border-radius: 22px;
   border: 1px solid #e8e8e8;
-  height: 101px;
+  height: 100px;
   width: 90%;
 
+} */
+.leaflet-container {
+  height: 100px;
+  width: 100%;
+  border-radius: 22px;
+  border: 1px solid #e8e8e8;
 }
 
 /* .leaflet-container {

@@ -125,7 +125,7 @@ module.exports = {
           const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
           const requestData = {
             request: {
-              response_url: `http://localhost:4001/thank?parkomatId=${parkomatId}`,
+              response_url: `https://api.pay-parking.net/thank?parkomatId=${parkomatId}`,
               order_id: uniqueId,
               order_desc: "test order",
               currency: "USD",

@@ -20,7 +20,7 @@ const ApprovedPaymentInfo = new Schema({
     amount:{type:String,required:true},
     order_time:{type:String,required:true}, 
     order_status:{type:String,required:true},
-})
+},{timestamps: true})
 
 module.exports = {
     Payments:mongoose.model("payments", Payments, "payments"),

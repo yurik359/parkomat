@@ -7,6 +7,8 @@ const { parkomatItem } = require("../models/parkomatItem");
 const { Parkomat } = require("../models/parkomatItem");
 const speakeasy = require("speakeasy");
 const QRCode = require("qrcode");
+require('dotenv').config({ path: 'sensativeInfo.env' });
+
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
@@ -124,22 +126,22 @@ module.exports = {
   sendInstruction: async (req, res) => {
     try {
       const { emailRecover } = req.body;
-      console.log(req.body);
+      
       const user = await User.findOne({ email: emailRecover });
       if (user) {
         const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
         let transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
-            user: "yurik52222@gmail.com",
-            pass: "ucoxmzhrvzmdbjmp",
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
           },
         });
         let mailOptions = {
-          from: "yurik52222@gmail.com",
+          from: "kasdks@gmail.com",
           to: emailRecover,
-          subject: "Test Email",
-          text: ` http://localhost:4001/recover-page?code=${token}`,
+          subject: "PayParking access recover",
+          text: `https://api.pay-parking.net/recover-page?code=${token}`,
         };
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {

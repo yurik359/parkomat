@@ -113,7 +113,7 @@ module.exports = {
   sendPaymentURL: async (req, res) => {
     try {
       const parkomatId = req.params.parkomatId;
-
+      const userId     = req.params.userId
       const uniqueId = uniqid();
       const desireItem=await Parkomat.find({ _id:  parkomatId});
     
@@ -126,13 +126,15 @@ module.exports = {
           const requestData = {
             request: {
               response_url: `https://api.pay-parking.net/thank?parkomatId=${parkomatId}`,
+              server_callback_url:`https://api.pay-parking.net/thank?parkomatId=${parkomatId}`,
               order_id: uniqueId,
               order_desc: "test order",
               currency: "USD",
               amount: "125",
               merchant_id: "1534515",
+              merchant_data:userId,
+            
             },
-
           };
           const sortedKeys = Object.keys(requestData.request).sort();
           const dataString = [
@@ -141,6 +143,7 @@ module.exports = {
           ].join("|");
           const signature = CryptoJS.SHA1(dataString).toString();
           requestData.request.signature = signature;
+          console.log(requestData)
           axios
             .post("https://pay.fondy.eu/api/checkout/url/", requestData)
             .then((response) =>{

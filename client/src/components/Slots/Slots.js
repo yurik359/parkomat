@@ -32,7 +32,7 @@ const Slots = () => {
   );
   const [showQr,setShowQr] = useState(false)
 
-  
+  console.log(parkomatArray)
   const getParkomatList = async () => {
     
    try {

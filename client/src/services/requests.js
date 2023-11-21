@@ -4,7 +4,7 @@ import axios from "axios";
 import ToLogin from "../components/ToLogin/ToLogin";
 
 const api = axios.create({
-  baseURL: 'https://api.pay-parking.net/', 
+  baseURL: 'https://api.pay-parking.net', 
 });
 
 
@@ -57,7 +57,8 @@ export const getAddresses       = (payload) => api.get(`/getAddresses?address=${
 export const checkTwoFa         = (payload) => api.post('/checkTwoFa',payload)
 export const savePaymentInfo    = (payload) => api.post('/savePaymentInfo',payload)
 export const getPaymentsSystems = ()      =>   api.get('/getPaymentsSystems')
-
+export const getPaymentStatistic= ()          => api.get('/getPaymentStatystic') 
+export const getTimeRange       = (payload)          => api.post(`/getTimeRange`,payload) 
 export const handleGET = async (url) => {
     const res = await fetch(url);
     const data = await res.json();

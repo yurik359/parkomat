@@ -1,22 +1,26 @@
-.modal {
-  display: flex;
-  flex-direction: column;
+ /* .modal {
+  
+  
   background-color: aliceblue;
   height: 150px;
   width: 270px;
   padding: 10px;
-  justify-content: center;
-  align-items: center;
-}
+ 
+} */
 
 .background-forget {
   justify-content: center;
+  width: 100%;
 }
-.modal-forget {
-  position: relative;
+.forget-modal {
+
   top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-.modal-forget input {
+.forget-modal input {
   border-radius: 22px;
   border: 1px solid #e8e8e8;
   background: #fff;
@@ -38,4 +42,4 @@
   cursor: pointer;
   color: white;
   text-align: center;
-}
+} 

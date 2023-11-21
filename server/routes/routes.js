@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const router = express.Router();
 const {registration,login,sendInstruction,changePassword,getParkomatList,checkTwoFa}  = require('../controllers/Users')
-const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo} =require('../controllers/payments')
+const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo,getPaymentStatistic,getTimeRange,getForPie} =require('../controllers/payments')
 const {verifyToken} = require('../config')
 const {addParkomat,updateParkomat,
   deleteParkomat,getAddresses,
@@ -28,14 +28,16 @@ router.post('/sendEmail',sendInstruction)
 router.post('/changePassword',changePassword)
 router.get('/getAddresses',getAddresses)
 router.get('/getPlaceId:placeId',getPlaceId)
-router.get('/getPaymentUrl:parkomatId',sendPaymentURL)
+router.get('/getPaymentUrl/:parkomatId/:userId',sendPaymentURL)
 router.get('/getAllParkomats',getAllParkomats)
 router.get('/getAroundParkomats',getAroundParkomats)
 router.get('/checkParkomat/:parkomatId',checkParkomat)
 router.post('/checkTwoFa',verifyToken,checkTwoFa)
 router.post('/savePaymentInfo',verifyToken,savePaymentInfo)
 router.get('/getPaymentsSystems',verifyToken,getPaymentsSystems)
-
+router.get('/getPaymentStatystic',verifyToken,getPaymentStatistic)
+router.post('/getTimeRange',verifyToken,getTimeRange)
+router.get('/getForPie',getForPie)
 router.post('/thank',AppovedPaymentsInfo);
 router.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));

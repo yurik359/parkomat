@@ -3,7 +3,7 @@ import "./modalForgetPass.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setForgotPassword } from "../Pages/login/loginSlice";
-
+import ModalTemplate from "../modals/ModalTemlate/ModalTemplate";
 import { recoverPassword } from "../../services/requests";
 const ModalForgetPass = () => {
   const dispatch = useDispatch();
@@ -38,13 +38,15 @@ const ModalForgetPass = () => {
     }
     
   };
-
+console.log(forgotPassword)
   return (
-    <div
+    <ModalTemplate isOpen={forgotPassword} onClose={()=>dispatch(setForgotPassword(false))}>
+    {/* <div
       className="background__modal add-parkomat background-forget"
       style={{ display: forgotPassword ? "flex" : "none" }}
-    >
-      <div className="modal modal-forget">
+    > */}
+      {/* <div className="modal modal-forget"> */}
+      <div className="forget-modal">
         <span>Enter your email</span>
         <span style={{ display: resServer ? "inline-block" : "none" }}>
           {resServer}
@@ -58,8 +60,10 @@ const ModalForgetPass = () => {
         <div className="modal__send-btn" onClick={sendEmail}>
           send
         </div>
-      </div>
-    </div>
+        </div>
+      {/* </div> */}
+    {/* </div> */}
+    </ModalTemplate>
   );
 };
 

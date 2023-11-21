@@ -7,7 +7,10 @@ const ModalTemplate = ({ isOpen, onClose, children }) => {
   }
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay"  onClick={(e)=>{
+      if (e.target === e.currentTarget) {
+        return onClose()} 
+        }}>
       <div className="modalX">
         <button onClick={onClose} className='modal-button'>X</button>
        

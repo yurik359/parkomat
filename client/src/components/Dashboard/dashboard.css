@@ -361,6 +361,9 @@ line-height: 18px;
   font-weight: 500;
   line-height: 163.023%;
   text-transform: capitalize;
+  width: 85px;
+  display: flex;
+  justify-content: center;
 }
 
 /* .slots__edit-btn {

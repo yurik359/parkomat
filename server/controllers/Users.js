@@ -62,13 +62,14 @@ module.exports = {
       const user = await User.findOne({ email });
 
       if (!user) {
+        console.log('not found')
         res.status(401).send({ message: "wrong password or email" });
         return;
       }
       const validPassword = bcrypt.compareSync(password, user.password);
 
       if (!validPassword) {
-        return res.status(400).json({ message: "wrong password or email" });
+        return res.status(401).json({ message: "wrong password or email" });
       }
      
       if (user.secretKey_TwoFa) {

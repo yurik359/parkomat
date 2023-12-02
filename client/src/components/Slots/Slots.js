@@ -14,7 +14,7 @@ import {
   setDeleteIco,
 } from "../AddParkomat/addParkomatSlice";
 import { getListItems,getPaymentsSystems } from "../../services/requests";
-
+import { addIndexParkomat, changeClickedParkomat } from "../SlotItem/slotItemSlice";
 
 const Slots = () => {
 
@@ -92,19 +92,16 @@ const Slots = () => {
   };
 
 
-  const handleDeleteBtn = () => {
-    if (indexOfParkomat == null) return;
-    setCloseDeleteModal(false);
-  };
+  
 
 
-  const handleOpenEdit = () => {
-    if (indexOfParkomat == null) return;
+  const handleOpenEdit = (id) => {
+    dispatch(addIndexParkomat(id))
 
     dispatch(changeTypeOfModal("update"));
 
   const editingParkomatItem = parkomatArray.filter((e) => {
-      return e._id == indexOfParkomat;
+      return e._id == id;
     });
    
     dispatch(editingParkomat(editingParkomatItem[0]));
@@ -130,7 +127,7 @@ const Slots = () => {
   
   //qr-code
   const qrCodeGenetating = () => {
-    if (indexOfParkomat == null) return;
+   
     setShowQr(true)
   }
 
@@ -154,7 +151,7 @@ const Slots = () => {
         
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="slots__btns">
+          {/* <div className="slots__btns">
             <div className="slots__qr-btn slot-btn"
             onClick={qrCodeGenetating}
             >
@@ -166,14 +163,14 @@ const Slots = () => {
             ></div>
             <div
               className="slots__delete-btn slot-btn"
-              onClick={handleDeleteBtn}
+            
             ></div>
-          </div>
+          </div> */}
         </div>
         <div className="slots__down-container ">
           {parkomatArray &&
             parkomatArray.map((e, i) => {
-              return <SlotItem key={i} slotInfo={e} index={i} />;
+              return <SlotItem key={i} slotInfo={e} index={i} setCloseDeleteModal={setCloseDeleteModal} handleOpenEdit={handleOpenEdit} qrCodeGenetating={qrCodeGenetating} />;
             })}
           <div className="slots__add-item" onClick={handleOpenAddModal}>
             <div className="slots__title">

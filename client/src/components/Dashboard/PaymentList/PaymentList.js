@@ -7,11 +7,11 @@ return (
       <select name="" id="">
         <option value="filterr">Filter</option>
       </select>
-      <input type="text" placeholder="Search" />
+      {/* <input type="text" placeholder="Search" />
       <div className="down-section__btns">
         <div className="down-section__edit-btn"></div>
         <div className="down-section__delete-btn"></div>
-      </div>
+      </div> */}
     </div>
     <div className="down-section__transactions">
         {paymentStat&&paymentStat.allPaymentsArray&&

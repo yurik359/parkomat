@@ -24,28 +24,20 @@ if (pieData&&parkomatItemsList) {
         }
        
     }
-    const parkomatWithZeroTransaction = parkomatItemsList.filter(item1 => !pieData.find(item2 => item2._id === item1._id)).map(e=>{
-        return {_id:e._id,count:0,name:e.nameOfslot}
-    })
-   const  allParkomatTransaction = [...pieDataWithName,...parkomatWithZeroTransaction]
-   
-    sortedArray = allParkomatTransaction.sort((a, b) => {
-    const nameA = a.name.toUpperCase();
-    const nameB = b.name.toUpperCase();
-    if (nameA < nameB) {
-      return -1;
+    
+    sortedArray = pieDataWithName.sort((a, b) => b.count - a.count)
+    if (sortedArray.length>10) {
+        sortedArray = sortedArray.slice(0, 10);
     }
-    if (nameA > nameB) {
-      return 1;
-    }
-    return 0;
-  });
-
+   console.log(sortedArray)
+    
 } 
 return sortedArray
 }
   useEffect(()=>{
-   const arrayForStatistic = getArrayForStatistic();
+    
+   const arrayForStatistic = getArrayForStatistic()
+   
    if(arrayForStatistic) {
    setLabelsData(arrayForStatistic.map(e=>{
     return e.name
@@ -65,38 +57,27 @@ return sortedArray
             label: 'Total transaction',
             data:  valuesData, // Значення для кожної категорії
             backgroundColor: [
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(54, 162, 235, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(255, 106, 46, 0.6)',
-            ], // Кольори для кожної категорії
-            // borderColor: [
-            //   'rgba(255, 99, 132, 1)',
-            //   'rgba(54, 162, 235, 1)',
-            //   'rgba(255, 206, 86, 1)',
-            //   'rgba(255, 206, 86, 1)',
-            // ], // Обводка кольорів
-            // borderWidth: 1,
+                'rgba(255, 106, 46, 0.6)',
+                'rgba(46, 169, 255, 0.6)',
+                'rgba(255, 46, 190, 0.6)',
+                'rgba(46, 255, 104, 0.6)',
+                'rgba(204, 46, 255, 0.6)',
+                'rgba(255, 218, 46, 0.6)',
+                'rgba(46, 255, 218, 0.6)',
+                'rgba(147, 46, 255, 0.6)',
+                'rgba(46, 255, 71, 0.6)',
+                'rgba(255, 46, 79, 0.6)'
+            ], 
           },
         ],
       };
-    //   const options = {
-    //     plugins: {
-    //       datalabels: {
-    //         color: '#fff', // Колір тексту міток
-    //         formatter: (value, context) => {
-    //           return value; // Значення, яке ви бажаєте відображати на графіку
-    //         },
-    //       },
-    //     },
-    //   };
-
+   
     return (
 <>
     {pieData?.length!==0?<div>
-        <h2>Кругова діаграма</h2>
+        <h2 style={{textAlign:'center'}}>Top {labelsData.length} parking</h2>
         <Doughnut data={data}  /></div>
-       :<div style={{height:200,display:'flex',alignItems:'center'}}><span>немає данних за цей період</span></div>}
+       :<div style={{height:200,display:'flex',alignItems:'center'}}><span>Немає данних за цей період</span></div>}
       </>
    )
 };

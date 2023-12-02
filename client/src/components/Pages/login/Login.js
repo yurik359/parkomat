@@ -29,15 +29,24 @@ const navigate = useNavigate()
         password: e.target[1].value,
       });
 
-      if(res.data.twoFa) {
-        console.log(res)
-      }
+      // if(res.data.twoFa) {
+      //   console.log(res)
+      // }
+      
 if(res&&res.data&&res.data.twoFa) {
   setTwoFaModal(true)
 setTemporaryToken(res.data.temporaryToken)
 }else if(res&&res.data&&res.data.token) {
   navigate("/dashboard");
   localStorage.setItem("accessToken", res.data.token);
+}
+console.log(res.response.data)
+if (
+  res.response.data.message &&
+  res.response.data.message == "wrong password or email"
+) {
+
+  setError(res.response.data.message);
 }
       // if (res) {
       //   const data = res.data;
@@ -57,12 +66,8 @@ setTemporaryToken(res.data.temporaryToken)
       //   // }
       // }
     } catch (error) {
-      if (
-        error.response.data.message &&
-        error.response.data.message == "wrong password or email"
-      ) {
-        setError(error.response.data.message);
-      }
+      console.log('lolol')
+      
     }
   };
 

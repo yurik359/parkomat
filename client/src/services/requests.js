@@ -4,7 +4,7 @@ import axios from "axios";
 import ToLogin from "../components/ToLogin/ToLogin";
 
 const api = axios.create({
-  baseURL: 'https://api.pay-parking.net', 
+  baseURL: 'http://localhost:4001', 
 });
 
 
@@ -34,12 +34,12 @@ api.interceptors.response.use(
   },
   (error) => {
    
-    if (error.response.status === 401) {
+    if (error.response.data&&error.response.data.message === 'token expired') {
       
        localStorage.removeItem('accessToken');
        window.location.href = '/login'
     }
-    return console.log(error);
+   return error
   }
 );
     

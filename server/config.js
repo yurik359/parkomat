@@ -13,7 +13,7 @@ module.exports ={
           jwt.verify(accessToken, 'SECRET_KEY', (err, decoded) => {
             if (err) {
               
-              return res.status(401).send({message:err})
+              return res.status(401).send({message:'token expired'})
             }
         
             req.decoded = decoded;

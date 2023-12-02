@@ -85,7 +85,7 @@ const endOfYesterday = new Date(yesterday.getFullYear(), yesterday.getMonth(), y
       })
      
       const res = await getTimeRange({dateToFilter,parkomatIdList})
-      console.log(res)
+      
       if(res.data&&res.data.pie) {
         setPieData(res.data.pie)
       }
@@ -107,10 +107,13 @@ const endOfYesterday = new Date(yesterday.getFullYear(), yesterday.getMonth(), y
   }
  const test = {end:'sad',start:'asdsa'}
   }
-// useEffect(()=> {
- 
-//   lol()
-// },[])
+useEffect(()=> {
+  setTimeout(()=>{
+    const selectedValue = document.getElementById("ranges").value;
+   
+  getDateToFilter(selectedValue)},1)
+  
+},[parkomatItemsList])
   return (
     <>
     { <div className="dashboard-background">
@@ -119,14 +122,14 @@ const endOfYesterday = new Date(yesterday.getFullYear(), yesterday.getMonth(), y
         <div className="dashboard__graphics">
           <div className="dashboard__graphics-header">
             <div className="dashboard__title">Earnings Report</div>
-            <select onChange={(e)=>getDateToFilter(e.target.value)}name="" id="">
-              <option value="filter">Filter</option>
+            <select onChange={(e)=>getDateToFilter(e.target.value)} name="" id="ranges">
+              
               <option value="today">Today</option>
               <option value="yesterday">Yesterday</option>
-              <option value="CurrentWeek">current week</option>
+              <option value="CurrentWeek">Current week</option>
               <option value="LastWeek">last week</option>
 
-              <option value="Month">Month</option>
+              <option selected value="Month">Current Month</option>
               <option value="LastMonth">Last Month</option>
               <option value="DateRange">Date range</option>
 

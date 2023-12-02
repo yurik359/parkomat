@@ -62,7 +62,7 @@ const Register = () => {
         
 
       })
-     console.log(e.target[6].checked)
+     console.log(res)
       
       // if(res.data.status&&res.data.status=="401"){
       //   return setResponse(res.data.message)
@@ -80,14 +80,14 @@ const Register = () => {
         }
       }
       
-    
+      if(res.response.status&&res.response.status=="401"){
+        return setResponse(res.response.data.message)
+      }
       
       setResponse(null)
       
      } catch (error) {
-      if(error.response.status&&error.response.status=="401"){
-        return setResponse(error.response.data.message)
-      }
+     
       console.log(error)
      }
       

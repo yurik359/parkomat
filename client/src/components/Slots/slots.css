@@ -1,6 +1,6 @@
 .slot-btn {
-  width: 57px;
-  height: 57px;
+  width: 23px;
+  height: 23px;
 }
 .slots__background {
   background: #f4f5f6;
@@ -45,7 +45,7 @@ cursor: pointer;
   background-position: 4% center; 
   background-repeat: no-repeat; 
   background-size: 20px 20px;
-
+  height: 53px;
   background-color: #F4F5F6;
 }
 .slots__upper-container input::before {
@@ -71,7 +71,10 @@ cursor: pointer;
 
 .slots__btns {
   display: flex;
-  margin-right: 25px;
+  
+  align-items: center;
+ justify-content: space-between;
+ 
 }
 
 .slots__edit-btn {
@@ -87,12 +90,12 @@ cursor: pointer;
   content: "";
   display: block;
   background: url("../../services/img/Group78.png") 40% no-repeat;
-  width: 53px;
-  height: 53px;
+  width: 23px;
+  height: 23px;
 }
 
 .slots__delete-btn {
-  background-color: #ffd6e0;
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,8 +105,8 @@ cursor: pointer;
 .slots__delete-btn::after {
   content: "";
   display: block;
-  width: 22px;
-  height: 30px;
+  width: 24px;
+  height: 26px;
   background: url("../../services/img/trash.svg") no-repeat;
 }
 .slots__add-item {

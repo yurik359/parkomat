@@ -57,6 +57,7 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     
   },
+  
   merchantId:{
     type:String,
   },
@@ -101,6 +102,10 @@ const parkomatSchema = new mongoose.Schema({
   address: { 
     type: String,
     required: true,
+  },
+  isSupportedByCarNumber:{
+    type: Boolean,
+    required:true
   },
   location: {
     type: GeoSchema,

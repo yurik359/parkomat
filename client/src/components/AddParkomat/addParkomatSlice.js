@@ -8,6 +8,7 @@ const addParkomatSlice = createSlice({
       nameOfslotValue: "",
       locationValue:{type:'Point',coordinates:[45.655353,20.654454]} ,
       paymentValue: {namePayment:"",secretKey:"",merchantId:''},
+      isSupportedByCarNumber:false,
       address:'',
       picValue: "",
       notesValue: "",
@@ -46,6 +47,9 @@ const addParkomatSlice = createSlice({
     changePicValue: (state, action) => {
       state.formValues.picValue = action.payload;
     },
+    changeIsSupportedByCarNumber:(state,action) => {
+      state.formValues.isSupportedByCarNumber = action.payload
+    },
     changeNotesValue: (state, action) => {
       state.formValues.notesValue = action.payload;
     },
@@ -55,6 +59,7 @@ const addParkomatSlice = createSlice({
         nameOfslotValue :action.payload.nameOfslot,
         locationValue : action.payload.location,
         address:action.payload.address,
+        isSupportedByCarNumber:action.payload.isSupportedByCarNumber,
         paymentValue :{namePayment:action.payload.payment.namePayment,
           secretKey:action.payload.payment.secretKey,merchantId:action.payload.payment.merchantId},
           picValue:action.payload.formPic,
@@ -73,6 +78,7 @@ const addParkomatSlice = createSlice({
           
         },
         address: '', 
+        isSupportedByCarNumber:false,
         paymentValue:{namePayment:'',secretKey:'',merchantId:''},
         picValue:null,
         notesValue:'',
@@ -95,5 +101,6 @@ export const {
   clearForm,
   changeCoordinate,
   changePaymentSecretKey,
-  changeMerchantId
+  changeMerchantId,
+  changeIsSupportedByCarNumber
 } = actions;

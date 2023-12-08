@@ -19,6 +19,7 @@ module.exports = {
         nameOfslot: formValues.nameOfslotValue,
         location: formValues.locationValue,
         address: formValues.address,
+        isSupportedByCarNumber:formValues.isSupportedByCarNumber,
         payment: formValues.paymentValue,
         formPic: formValues.picValue,
         notes: formValues.notesValue,
@@ -42,6 +43,7 @@ module.exports = {
           picValue,
           address,
           notesValue,
+          isSupportedByCarNumber
         },
 
         indexOfParkomat,
@@ -56,10 +58,13 @@ module.exports = {
           location: locationValue,
           payment: paymentValue,
           address,
+          isSupportedByCarNumber,
           formPic: picValue,
           notes: notesValue,
         },
         { new: true }
+
+
       );
       if (updatedParkomat) {
         res.send(updatedParkomat);

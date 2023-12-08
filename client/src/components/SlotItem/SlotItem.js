@@ -5,7 +5,7 @@ import { addIndexParkomat, changeClickedParkomat } from "./slotItemSlice";
 import parking from '../../services/img/Rectangle28.png'
 import trash from '../../services/img/trash.svg'
 import edit from '../../services/img/editBtn.svg'
-import qrIcon from '../../services/img/qrIcon2.svg'
+import qrIcon from '../../services/img/qrIcon.svg'
 const SlotItem = ({
   slotInfo: { nameOfslot, address,location, payment, formPic, notes, _id },
   index,setCloseDeleteModal,handleOpenEdit,qrCodeGenetating

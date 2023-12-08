@@ -11,7 +11,8 @@ import {
   setDeleteIco,
   changeCoordinate,
   changePaymentSecretKey,
-  changeMerchantId
+  changeMerchantId,
+  changeIsSupportedByCarNumber
 } from "./addParkomatSlice";
 import { updateParkomat } from "../Slots/slotsSlice";
 import cheerio from 'cheerio';
@@ -191,6 +192,7 @@ if(e.target.value==='fondy') {
       setIsPaymentsInfo(false)
      }
   },[paymentsInfo])
+  useEffect(()=>{console.log(formValues.isSupportedByCarNumber)},[formValues.isSupportedByCarNumber])
   return (
     
     <div
@@ -261,7 +263,10 @@ if(e.target.value==='fondy') {
           <option value="card">card</option>
         </select>
         {isNamePayment&&<span>Choose payment method firstly</span>}
-        
+        <div className="typeByPayment" style={{display:'flex',alignItems:'center',margin:'10px 0 10px 0',width:'62%'}}>
+        <input checked={formValues.isSupportedByCarNumber} onChange={(e)=>dispatch(changeIsSupportedByCarNumber(e.target.checked))} type="checkbox" style={{margin:'0 10px -0.5px 0',height:20,width:15}}/>
+        <span >Payment by car number</span>
+        </div>
 
          
         <label class="file-upload">

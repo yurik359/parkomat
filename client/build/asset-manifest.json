@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.d910dbb4.css",
-    "main.js": "/static/js/main.1533f758.js",
+    "main.css": "/static/css/main.7a37e33c.css",
+    "main.js": "/static/js/main.795bb722.js",
     "static/media/Frame.png": "/static/media/Frame.b93232577ba0e4e7c6d8.png",
     "static/media/Frame2.png": "/static/media/Frame2.4a0244c8e0b13228ea40.png",
     "static/media/DeleteButton.png": "/static/media/DeleteButton.81626085beba865586cf.png",
     "static/media/Fondy.png": "/static/media/Fondy.25eb0dd7d6cff843c350.png",
     "static/media/Rectangle28.png": "/static/media/Rectangle28.b3db4916db09b1350713.png",
     "static/media/editBtn.svg": "/static/media/editBtn.d976680c3d9a0f2edb7ebced344c727f.svg",
-    "static/media/qrIcon2.svg": "/static/media/qrIcon2.f3b46d6540a7988c1cc5581c254aab7a.svg",
     "static/media/trash.svg": "/static/media/trash.892ce0bf5163a5ac48b20b2a4fa8844c.svg",
+    "static/media/qrIcon.svg": "/static/media/qrIcon.76407e0790ff8dc9208c6601700100e9.svg",
     "index.html": "/index.html",
-    "main.d910dbb4.css.map": "/static/css/main.d910dbb4.css.map",
-    "main.1533f758.js.map": "/static/js/main.1533f758.js.map"
+    "main.7a37e33c.css.map": "/static/css/main.7a37e33c.css.map",
+    "main.795bb722.js.map": "/static/js/main.795bb722.js.map"
   },
   "entrypoints": [
-    "static/css/main.d910dbb4.css",
-    "static/js/main.1533f758.js"
+    "static/css/main.7a37e33c.css",
+    "static/js/main.795bb722.js"
   ]
 }

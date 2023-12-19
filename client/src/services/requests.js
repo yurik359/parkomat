@@ -58,7 +58,11 @@ export const checkTwoFa         = (payload) => api.post('/checkTwoFa',payload)
 export const savePaymentInfo    = (payload) => api.post('/savePaymentInfo',payload)
 export const getPaymentsSystems = ()      =>   api.get('/getPaymentsSystems')
 export const getPaymentStatistic= ()          => api.get('/getPaymentStatystic') 
-export const getTimeRange       = (payload)          => api.post(`/getTimeRange`,payload) 
+export const getTimeRange       = (payload)          => api.post(`/getTimeRange`,payload)
+export const addCard            = ()        => api.get('/addCard') 
+export const howMuchToPay       = ()        => api.get('/howMuchToPay') 
+export const payCommission      = (payload)        => api.get(`/payCommission?amount=${payload}`) 
+
 export const handleGET = async (url) => {
     const res = await fetch(url);
     const data = await res.json();

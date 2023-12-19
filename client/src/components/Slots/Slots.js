@@ -15,7 +15,7 @@ import {
 } from "../AddParkomat/addParkomatSlice";
 import { getListItems,getPaymentsSystems } from "../../services/requests";
 import { addIndexParkomat, changeClickedParkomat } from "../SlotItem/slotItemSlice";
-
+import PaymentSection from "../PaymentSection/PaymentSection";
 const Slots = () => {
 
   const [closeModal, setCloseModal] = useState(true);
@@ -151,6 +151,8 @@ const Slots = () => {
         
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <PaymentSection/>
+         
           {/* <div className="slots__btns">
             <div className="slots__qr-btn slot-btn"
             onClick={qrCodeGenetating}
@@ -166,6 +168,7 @@ const Slots = () => {
             
             ></div>
           </div> */}
+
         </div>
         <div className="slots__down-container ">
           {parkomatArray &&

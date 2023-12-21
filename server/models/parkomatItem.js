@@ -122,6 +122,10 @@ const parkomatSchema = new mongoose.Schema({
   notes: {
     type: String,
   },
+  isDebtor: {
+    type:Boolean,
+    
+  }
  
 });
 

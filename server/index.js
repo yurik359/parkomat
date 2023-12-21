@@ -7,8 +7,7 @@ const url =
   "mongodb+srv://yurik52222:04291999@cluster0.hge96yf.mongodb.net/parkomat?retryWrites=true&w=majority";
   const cors = require("cors");
   const bodyParser = require('body-parser');
-
-
+const {checkPayment} = require('./scheduleTasks.js')
 
   app.use(cors());
   app.use(express.static(path.join(__dirname, "../client/build")));
@@ -19,7 +18,7 @@ const url =
   app.use('/',routes)
 
 
-
+  checkPayment()
   
 const start = async () => {
     try {

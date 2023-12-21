@@ -1,6 +1,7 @@
 const { User } = require("../models/user");
-const { Payments ,ApprovedPaymentInfo} = require("../models/payments");
+const { Payments ,ApprovedPaymentInfo,paymentsOurClients} = require("../models/payments");
 const path = require("path");
+
 module.exports = {
   savePaymentInfo: async (req, res) => {
     try {
@@ -242,6 +243,40 @@ res.send({totalTransactions,totalApproved,sumTransactions})
     } catch (error) {
       console.log(error)
     }
-  }
+  },
+  howMuchToPay:async (req,res) => {
+    try {
+      const { id } = req.decoded;
+      console.log(id)
+      const resu = await paymentsOurClients.aggregate([
+        {
+          $match: {
+            userId: id, // Умова для першого поля
+            order_status: "approved"  // Умова для другого поля
+          }
+        },
+        {
+          $group: {
+            _id: null, // Групуємо всі документи разом
+            totalSum: { $sum:{$toInt:"$amount"}  } // Підрахунок суми по полю "fieldToSum"
+          }
+        }
+      
+     
+      ]);
+      
 
+      const result = await ApprovedPaymentInfo.countDocuments({
+        userId: id,
+        order_status: "approved" 
+      });
+      const userPaidForAllTime = resu.length>=1?resu.totalSum/100:0
+      console.log(result,userPaidForAllTime)
+      
+      res.send({userPaidForAllTime,allTransaction:result})
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  
 };

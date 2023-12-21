@@ -1,5 +1,7 @@
-const { parkomatItem } = require("../models/parkomatItem");
-const { Parkomat, parkomatSchema } = require("../models/parkomatItem");
+
+const { Parkomat,  } = require("../models/parkomatItem");
+const { paymentsOurClients} = require("../models/payments");
+const {Debtor } = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
 const uniqid = require("uniqid");
@@ -7,6 +9,7 @@ const CryptoJS = require("crypto-js");
 const geolib = require("geolib");
 
 const axios = require("axios");
+const User = require("../models/user");
 module.exports = {
   addParkomat: async (req, res) => {
     try {
@@ -148,7 +151,7 @@ module.exports = {
           ].join("|");
           const signature = CryptoJS.SHA1(dataString).toString();
           requestData.request.signature = signature;
-          console.log(requestData)
+         
           axios
             .post("https://pay.fondy.eu/api/checkout/url/", requestData)
             .then((response) =>{
@@ -260,4 +263,120 @@ console.log(exists)
       
     }
   },
+  addCard :(req,res) =>{
+    try {
+      const { id } = req.decoded;
+      const uniqueId = uniqid();
+      const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
+      const requestData = {
+        request: {
+          
+          server_callback_url:`https://api.pay-parking.net/handlerClientPayment`,
+          order_id: uniqueId,
+          order_desc: "test order",
+          currency: "USD",
+          amount: "1",
+          merchant_id: "1534515",
+          required_rectoken: "Y",
+          merchant_data:id
+        },
+      };
+      const sortedKeys = Object.keys(requestData.request).sort();
+      const dataString = [
+        secretKey,
+        ...sortedKeys.map((key) => requestData.request[key]),
+      ].join("|");
+      const signature = CryptoJS.SHA1(dataString).toString();
+      requestData.request.signature = signature;
+     
+      axios
+        .post("https://pay.fondy.eu/api/checkout/url/", requestData)
+        .then((response) =>{
+          console.log(response.data)
+          res.send(response.data)
+        } )
+        .catch((err) => {
+          console.log(err), res.send(err);
+        });
+      
+    } catch (error) {
+      console.log(error)
+    }
+      },
+      payCommission: async (req,res) => {
+        try {
+          const { id } = req.decoded;
+          const uniqueId = uniqid();
+          const {amount} = req.query
+          
+          const fondyAmount = Number(parseFloat(amount).toFixed(2))*100
+        
+          const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
+          const requestData = {
+            request: {
+            
+              server_callback_url:`https://api.pay-parking.net/handlerClientPayment`,
+              order_id: uniqueId,
+              order_desc: "test order",
+              currency: "USD",
+              amount: fondyAmount.toString() ,
+              merchant_id: "1534515",
+            merchant_data:id,
+            
+            
+            },
+          };
+          const sortedKeys = Object.keys(requestData.request).sort();
+          const dataString = [
+            secretKey,
+            ...sortedKeys.map((key) => requestData.request[key]),
+          ].join("|");
+          const signature = CryptoJS.SHA1(dataString).toString();
+          requestData.request.signature = signature;
+         
+          axios
+            .post("https://pay.fondy.eu/api/checkout/url/", requestData)
+            .then((response) =>{
+            
+          
+              res.send(response.data)
+            } )
+            .catch((err) => {
+              console.log(err), res.send(err);
+            });
+        } catch (error) {
+          console.log(error)
+        }
+      },
+      handlerClientPayment:async (req,res) => {
+          try {
+            const paymentInfo = req.body
+            if(paymentInfo&&paymentInfo.rectoken) {
+              await User.findOneAndUpdate({_id:paymentInfo.merchant_data},{recToken:paymentInfo.rectoken})
+                return
+            }
+            await paymentsOurClients.create({
+              userId:paymentInfo.merchant_data,
+            
+              order_id:paymentInfo.order_id,
+              merchant_id:paymentInfo.merchant_id,
+              sender_email:paymentInfo.sender_email,
+              currency:paymentInfo.currency,
+              amount:+paymentInfo.amount,
+              order_time:paymentInfo.order_time,
+              order_status:paymentInfo.order_status
+    
+              
+            })
+            if(paymentInfo&&paymentInfo.order_status==='approved') {
+                  const debtorRecord = await Debtor.findOneAndRemove({userId:paymentInfo.merchant_data})
+                  await Parkomat.updateMany({ userId: paymentInfo.merchant_data }, { $set: { isDebtor: false } }) 
+            }
+            res.status(200)
+          } catch (error) {
+            console.log(error)
+          }
+      },
+
+
 };

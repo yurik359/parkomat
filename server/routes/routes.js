@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const router = express.Router();
 const {registration,login,sendInstruction,changePassword,getParkomatList,checkTwoFa}  = require('../controllers/Users')
-const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo,getPaymentStatistic,getTimeRange,getForPie} =require('../controllers/payments')
+const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo,getPaymentStatistic,getTimeRange,getForPie,howMuchToPay} =require('../controllers/payments')
 const {verifyToken} = require('../config')
 const {addParkomat,updateParkomat,
   deleteParkomat,getAddresses,
@@ -10,7 +10,9 @@ const {addParkomat,updateParkomat,
   getAllParkomats,
   getAroundParkomats,
   checkParkomat,
-  
+  addCard,
+  payCommission,
+  handlerClientPayment
 } =require('../controllers/itemController')
 
 
@@ -39,6 +41,11 @@ router.get('/getPaymentStatystic',verifyToken,getPaymentStatistic)
 router.post('/getTimeRange',verifyToken,getTimeRange)
 router.get('/getForPie',getForPie)
 router.post('/thank',AppovedPaymentsInfo);
+router.get('/addCard',verifyToken,addCard)
+router.get('/howMuchToPay',verifyToken,howMuchToPay)
+router.get('/payCommission',verifyToken,payCommission)
+router.post('/handlerClientPayment',handlerClientPayment);
+
 router.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../../client/build/index.html"));
   });

@@ -9,7 +9,15 @@ const url =
   const bodyParser = require('body-parser');
 const {checkPayment} = require('./scheduleTasks.js')
 
+
+
   app.use(cors());
+  app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "script-src 'self' 'sha256-CBu0w5uiOaPgb2R6Zgf7E0+STJHF4lcPIdhZzQXE6yk='");
+    
+    // Другие настройки CSP, если нужно
+    next();
+  });
   app.use(express.static(path.join(__dirname, "../client/build")));
   app.use(express.static('public'));
   app.use(bodyParser.json({ limit: '1mb' }));
@@ -17,6 +25,8 @@ const {checkPayment} = require('./scheduleTasks.js')
   app.use(express.json());
   app.use('/',routes)
 
+
+  
 
   checkPayment()
   

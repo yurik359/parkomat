@@ -1,6 +1,6 @@
 
 const { Parkomat,  } = require("../models/parkomatItem");
-const { paymentsOurClients} = require("../models/payments");
+const { paymentsOurClients,Payments} = require("../models/payments");
 const {Debtor } = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { secret } = require("../config");
@@ -123,12 +123,14 @@ module.exports = {
       const parkomatId = req.params.parkomatId;
       const userId     = req.params.userId
       const uniqueId = uniqid();
-      const desireItem=await Parkomat.find({ _id:  parkomatId});
-    
-        const paymentValue = desireItem[0] ? desireItem[0].payment : null;
+      const infoPaymentFondy=await Payments.find({userId:  userId,paymentSystem:'Fondy'});
+      
+        if(!infoPaymentFondy||!infoPaymentFondy.length>=1)return
+      
         
+              
 
-   
+  
          
           const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
           const requestData = {
@@ -161,7 +163,10 @@ module.exports = {
             .catch((err) => {
               console.log(err), res.send(err);
             });
+
+            
         
+
       
     } catch (error) {
       console.log(error);
@@ -197,7 +202,7 @@ if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
       
 
 
-      const maxDistance = 500;
+      const maxDistance = 1000;
       const parkomatQuery = {
         "location.coordinates": {
           $near: {
@@ -309,12 +314,13 @@ console.log(exists)
           const uniqueId = uniqid();
           const {amount} = req.query
           
-          const fondyAmount = Number(parseFloat(amount).toFixed(2))*100
+          const fondyAmount = amount*100
         
           const secretKey = "C6JeFM5PbeRbOzI6IlHa0vVYNuYVQj01";
           const requestData = {
             request: {
             
+              
               server_callback_url:`https://api.pay-parking.net/handlerClientPayment`,
               order_id: uniqueId,
               order_desc: "test order",

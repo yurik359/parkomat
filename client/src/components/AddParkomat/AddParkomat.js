@@ -18,13 +18,18 @@ import { updateParkomat } from "../Slots/slotsSlice";
 import cheerio from 'cheerio';
 import Map from "../map/map";
 import deleteIco from "../../services/img/DeleteButton.png";
-import axios from 'axios';
+
 import { createParkomat,editParkomat,getPlaceId,getAddresses} from "../../services/requests";
 import { v4 as uuidv4 } from "uuid";
-import { baseUrl } from "../../services/requests";
+
+import { useTranslation } from "../../services/translations";
 const AddParkomat = ({ closeModal, setCloseModal, addOneMoreParkomat }) => {
   const uniqueId = uuidv4();
 
+  const { language  } = useSelector(
+    (state) => state.slotsSlice
+  );
+  const {t}= useTranslation(language)
   const [addressSuggestion, setAddressSuggestion] = useState(null);
   const [checkedAddress, setCheckedAddress] = useState({
     lat: 50.456561,
@@ -169,30 +174,31 @@ addOneMoreParkomat(res.data)
     dispatch(changePicValue(null));
   };
 
-  const [isPaymentsInfo,setIsPaymentsInfo] = useState(false)
+  const [isFondy,setIsFondy] = useState(false)
+  const [isStripe,setIsStripe] = useState(false)
   const changeSelect = (e) => {
    setIsNamePayment(false)
 dispatch(changePaymentValue(e.target.value))
-if(e.target.value==='fondy') {
-  dispatch(changePaymentSecretKey(paymentsInfo.fondy.secretKey))
-  dispatch(changeMerchantId(paymentsInfo.fondy.merchantId))
-} 
+// if(e.target.value==='fondy') {
+//   dispatch(changePaymentSecretKey(paymentsInfo.fondy.secretKey))
+//   dispatch(changeMerchantId(paymentsInfo.fondy.merchantId))
+// } 
 
 
   }
   useEffect(()=>{
-    if(paymentsInfo&&
-      paymentsInfo.fondy&&paymentsInfo.fondy.merchantId&&
-      paymentsInfo.fondy.secretKey
-      ){
-
-       setIsPaymentsInfo(true) 
+    if(
+      paymentsInfo&&paymentsInfo.length>=1
+      )
+      {
+         setIsFondy(paymentsInfo.some(e => e.paymentSystem === 'Fondy' && e.paymentApiKey && e.secretKey))
+         setIsStripe(paymentsInfo.some(e => e.paymentSystem === 'Stripe' && e.paymentApiKey && e.secretKey))
+        }
+       
      
-     }else {
-      setIsPaymentsInfo(false)
-     }
+     
   },[paymentsInfo])
-  useEffect(()=>{console.log(formValues.isSupportedByCarNumber)},[formValues.isSupportedByCarNumber])
+
   return (
     
     <div
@@ -209,16 +215,16 @@ if(e.target.value==='fondy') {
           className="add-parkomat__close"
           onClick={() => setCloseModal(true)}
         >
-          Close
+          {t('close')}
         </div>
-        <div className="add-parkomat__title">Add New</div>
+        <div className="add-parkomat__title">{t('addNew')}</div>
         <input
           className="add-parkomat__name-input"
           value={formValues.nameOfslotValue}
           onChange={(e) => dispatch(changeNameOfslotValue(e.target.value))}
           type="text"
           required
-          placeholder="Name of the slots"
+          placeholder={t('nameOfSlot')}
         />
         <div className="add-parkoma__location-section">
           <input
@@ -226,7 +232,7 @@ if(e.target.value==='fondy') {
             value={formValues.address}
             onFocus={() => setOnFocusInput(true)}
             onBlur={() => setOnFocusInput(false)}
-            placeholder="Location"
+            placeholder={t('location')}
             required
             onChange={(e) => dispatch(changeLocationValue(e.target.value))}
           />
@@ -257,21 +263,21 @@ if(e.target.value==='fondy') {
           onChange={changeSelect}
           
         >
-          <option value="..." >Payment System</option>
-          <option value="fondy"style={{display:isPaymentsInfo?'block':'none'}}>fondy</option>
-          <option value="privat24">privat 24</option>
-          <option value="card">card</option>
+          <option value="..." >{t('paymentSystem')}</option>
+          <option value="fondy"style={{display:isFondy?'block':'none'}}>fondy</option>
+          <option value="Stripe"style={{display:isStripe?'block':'none'}} >Stripe</option>
+       
         </select>
         {isNamePayment&&<span>Choose payment method firstly</span>}
         <div className="typeByPayment" style={{display:'flex',alignItems:'center',margin:'10px 0 10px 0',width:'62%'}}>
         <input checked={formValues.isSupportedByCarNumber} onChange={(e)=>dispatch(changeIsSupportedByCarNumber(e.target.checked))} type="checkbox" style={{margin:'0 10px -0.5px 0',height:20,width:15}}/>
-        <span >Payment by car number</span>
+        <span >{t('paymentByCarNumber')}</span>
         </div>
 
          
         <label class="file-upload">
           <input type="file" class="file-input" onChange={handleImageChange} />
-          <span class="file-label">Upload File</span>
+          <span class="file-label">{t('uploadFile')}</span>
         </label>
 
         <div
@@ -293,7 +299,7 @@ if(e.target.value==='fondy') {
           id=""
           cols="30"
           rows="10"
-          placeholder="Notes"
+          placeholder={t('notes')}
         ></textarea>
         <button style={{cursor:'pointer'}}> {typeOfmodal}</button>
       </form>

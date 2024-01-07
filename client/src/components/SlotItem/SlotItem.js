@@ -21,7 +21,7 @@ const SlotItem = ({
   };
   const handleQrCode = () => {
     dispatch(addIndexParkomat(_id));
-    qrCodeGenetating()
+    qrCodeGenetating(nameOfslot)
   }
   // const { formValues:{locationValue:{address:{}}} } = useSelector(
   //   (state) => state.addParkomatSlice

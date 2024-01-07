@@ -67,20 +67,46 @@ line-height: 140%;
   background-color: #fff;
   align-items: center;
   border-radius: 28px;
+  
+}
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.dashboard__filter-block {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dashbard__date-inputs {
+  
+
+  
+  
+
 }
 .dashboard__title {
   color: #333;
-  font-size: 20px;
+  font-size: 25px;
   font-family: Inter;
   font-weight: 500;
   line-height: 140%;
+  margin-top: -7px;
 }
 
 .dashboard__graphics-header select {
   max-width: 195px;
+  width: 100%;
   border-radius: 16px;
   border: 1px solid #d7d7d7;
-  height: 57px;
+  height: 37px;
 }
 
 .dashboard__graphics-header select {
@@ -132,7 +158,16 @@ line-height: 140%;
   font-family: Inter;
   line-height: 140%;
 }
+.dashbard__date-inputs input {
+  border-radius: 15px;
+  border:1px solid #d7d7d7;
+  padding: 5px;
+  width: 110px;
 
+}
+.dashbard__date-inputs input:first-child {
+  margin-right: 5px;
+}
 .grapchics-main__main-graphic {
   /* flex-basis: 60%;
   height: 200px; */

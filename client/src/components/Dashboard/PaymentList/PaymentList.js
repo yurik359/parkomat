@@ -1,6 +1,7 @@
 import './paymentList.css'
 import PaymentItem from './PaymentItem/PaymentItem'
 const PaymentList = ({paymentStat}) => {
+  console.log(paymentStat)
 return (
     <div className="dashboard__down down-section">
     <div className="down-section__nav">
@@ -16,7 +17,7 @@ return (
     <div className="down-section__transactions">
         {paymentStat&&paymentStat.allPaymentsArray&&
         paymentStat.allPaymentsArray.map((e,i)=>{
-            return <PaymentItem itemInfo = {e} key={i}/>
+            return <PaymentItem itemInfo = {e} arrayItems={paymentStat.allPaymentsArray}key={i}/>
         })}
     
     

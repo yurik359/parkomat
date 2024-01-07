@@ -9,8 +9,12 @@ import {
   changeClickedParkomat,
 } from "../SlotItem/slotItemSlice";
 import { deleteParkomatItem } from "../../services/requests";
+import { useTranslation } from "../../services/translations";
 const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
-
+  const { language  } = useSelector(
+    (state) => state.slotsSlice
+  );
+  const {t}= useTranslation(language)
   const dispatch = useDispatch();
   const { indexOfParkomat } = useSelector((state) => state.slotItemSlice);
 
@@ -51,13 +55,13 @@ const DeleteModal = ({ closeDeleteModal, setCloseDeleteModal }) => {
       style={{ display: closeDeleteModal ? "none" : "flex" }}
     >
       <div className="modal-window">
-        <div className="modal-question">Are you sure?</div>
+        <div className="modal-question">{t('deleteText')}</div>
         <div className="modal-btns">
           <div className="modal-yes" onClick={handleDeleteItem}>
-            Yes
+          {t('yes')}
           </div>
           <div className="modal-no" onClick={handleClearIndex}>
-            No
+          {t('no')}
           </div>
         </div>
       </div>

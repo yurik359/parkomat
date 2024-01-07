@@ -2,12 +2,15 @@ import { Pie,Doughnut } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { getListItems,getPaymentsSystems } from "../../services/requests";
 import { useEffect,useState } from 'react';
-
+import { useTranslation } from '../../services/translations';
 
 const PieChart = ({pieData,parkomatItemsList}) => {
   const [labelsData,setLabelsData] = useState(null)
   const [valuesData,setValuesData] = useState(null)
-  
+  const { language  } = useSelector(
+    (state) => state.slotsSlice
+  );
+  const {t}= useTranslation(language)
   useEffect(()=>{console.log(pieData)},[pieData])
    const getArrayForStatistic = ()=>{
     let sortedArray
@@ -75,9 +78,9 @@ return sortedArray
     return (
 <>
     {pieData?.length!==0?<div>
-        <h2 style={{textAlign:'center'}}>Top {labelsData.length} parking</h2>
+        <h2 style={{textAlign:'center'}}>{t('top')} {labelsData.length} {t('parking')}</h2>
         <Doughnut data={data}  /></div>
-       :<div style={{height:200,display:'flex',alignItems:'center'}}><span>Немає данних за цей період</span></div>}
+       :<div style={{height:200,display:'flex',alignItems:'center'}}><span>{t('noData')}</span></div>}
       </>
    )
 };

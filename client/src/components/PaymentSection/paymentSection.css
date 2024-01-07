@@ -1,7 +1,10 @@
 .current-week {
     display: flex;
-    flex-direction: column;
-    
+   align-items: center;
+    background-color: rgb(241, 57, 57);
+    justify-content: center;
+    margin-top: 5px;
+padding: 5px;
 }
 
 .current-week button {
@@ -10,11 +13,22 @@
     color: #fff;
     background-color: #4fa4fb;
     border: none;
-    width: 80px;
-    height: 30px;
+    width: 82px;
+    height: 33px;
     cursor: pointer;
 }
 .current-week span {
     font-weight:500;
+    color: white;
 
+}
+
+.current-week__buttons,.current-week__titles {
+    display: flex;
+    /* flex-direction: column; */
+}
+
+
+.current-week__buttons {
+    margin-left: 10px;
 }

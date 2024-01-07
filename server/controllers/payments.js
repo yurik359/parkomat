@@ -1,28 +1,32 @@
 const { User } = require("../models/user");
 const { Payments ,ApprovedPaymentInfo,paymentsOurClients} = require("../models/payments");
 const path = require("path");
-
+const stripe = require('stripe');
+const { off } = require("process");
 module.exports = {
   savePaymentInfo: async (req, res) => {
     try {
       const { id } = req.decoded;
       const request = req.body;
 
-      if (request.type === "fondy") {
+     
        
-        const { merchantId, secretKey } = request;
-       const res= await Payments.updateOne(
-            { userId: id },
+        const { paymentApiKey, secretKey,type } = request;
+       const resu= await Payments.updateOne(
+            { userId: id,
+              'paymentSystem': type
+            },
             {
               $set: {
-                'fondy.merchantId': merchantId,
-                'fondy.secretKey': secretKey
+                'paymentSystem': type,
+                'secretKey': secretKey,
+                'paymentApiKey':paymentApiKey
               }
             },
             { upsert: true }
           );
         
-      }
+      
 
       res.status(200).send({ message: "data saved" });
     } catch (error) {
@@ -36,7 +40,8 @@ module.exports = {
         const result = await Payments.find({userId:id})
       
 if(result.length>0){
-    res.send(result[0])
+  console.log(result)
+    res.send(result)
 }else {res.send([])}
         
     } catch (error) {
@@ -47,22 +52,31 @@ if(result.length>0){
   AppovedPaymentsInfo:async(req,res) => {
     try {
       const paymentInfo = req.body
-     const parkomatId = req.query.parkomatId
       
+      const ifStripe = paymentInfo.paymentSystem&&paymentInfo.paymentSystem==="Stripe"?paymentInfo.paymentSystem:null
+
+     const parkomatId =!ifStripe? req.query.parkomatId : paymentInfo.parkomatId
+
          await ApprovedPaymentInfo.create({
-          userId:paymentInfo.merchant_data,
+          paymentSystem:ifStripe?'Stripe':'Fondy',
+          userId:ifStripe?paymentInfo.userId:paymentInfo.merchant_data,
           parkomatId,
           order_id:paymentInfo.order_id,
-          merchant_id:paymentInfo.merchant_id,
+          merchant_id:!ifStripe?paymentInfo.merchant_id:null,
           sender_email:paymentInfo.sender_email,
           currency:paymentInfo.currency,
           amount:paymentInfo.amount,
-          order_time:paymentInfo.order_time,
+          order_time:!ifStripe?paymentInfo.order_time:null,
           order_status:paymentInfo.order_status
 
           
         })
-        res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
+        if(!ifStripe) {
+          res.sendFile(path.join(__dirname, '../../client/public/thankYou.html'));
+        } else {
+          res.send({messages:'Payment saved'})
+        }
+        
 
     } catch (error) {
       console.log(error)
@@ -102,7 +116,8 @@ res.send({totalTransactions,totalApproved,sumTransactions})
       const { id } = req.decoded;
       const dateToFilter = req.body.dateToFilter
      const parkomatIdList = req.body.parkomatIdList
-
+const testo = await ApprovedPaymentInfo.find({userId:id})
+console.log(testo)
      const resSumTransactions = await ApprovedPaymentInfo.aggregate([
       {
         $match: {
@@ -116,7 +131,7 @@ res.send({totalTransactions,totalApproved,sumTransactions})
         $group: {
           _id:null,
           totalSum: { $sum: { $toInt: "$amount" } },
-          countAll: { $sum: 1 }, // Підрахунок всіх документів
+        
           countApproved: {
             $sum: {
               $cond: [{ $eq: ["$order_status", "approved"] }, 1, 0] // Підрахунок документів з order_status === 'approved'
@@ -125,13 +140,26 @@ res.send({totalTransactions,totalApproved,sumTransactions})
         }
       }
     ])
-
+    const uniqueOrderIds = await ApprovedPaymentInfo.distinct("order_id", {
+      userId: id,
+      createdAt: { $gte: new Date(dateToFilter.start), $lte: new Date(dateToFilter.end) }
+    });
+    const uniqueOrderIdsCount = uniqueOrderIds.length;
   
     const sumTransactions = resSumTransactions&&resSumTransactions.length>=1?resSumTransactions:[]
-    const allPaymentsArray = await ApprovedPaymentInfo.find({ userId: id })
-    console.log(allPaymentsArray)
+    const allPaymentsArray = await ApprovedPaymentInfo.aggregate([
+      {
+        $match: {
+          "userId": id,
+          createdAt: { $gte: new Date(dateToFilter.start), $lte: new Date(dateToFilter.end) }
+        }
+      }
+      
+    ])
+   
      if(allPaymentsArray&&allPaymentsArray.length>=1&&sumTransactions&&sumTransactions.length>=1) {
       sumTransactions[0]['allPaymentsArray']=allPaymentsArray
+      sumTransactions[0]['allTransaction']=uniqueOrderIdsCount
      }
     
 
@@ -176,7 +204,7 @@ res.send({totalTransactions,totalApproved,sumTransactions})
       }
     ])
   
-    console.log(test)
+   
     const result= await ApprovedPaymentInfo.find({
         createdAt: {
           $gte: dateToFilter.start,
@@ -187,9 +215,11 @@ res.send({totalTransactions,totalApproved,sumTransactions})
       const resultPie =await ApprovedPaymentInfo.aggregate([
         {
           $match: {
-            parkomatId: { $in: parkomatIdList}// Фільтрація за певним значенням поля 'parkomatId'
+            parkomatId: { $in: parkomatIdList},// Фільтрація за певним значенням поля 'parkomatId'
+            order_status:"approved"
           }
         },
+        
         {
           $match: {
             createdAt: {
@@ -213,7 +243,7 @@ res.send({totalTransactions,totalApproved,sumTransactions})
       ])
 
        
-      res.send({bar:test,pie:resultPie,sumTransactions})
+      res.send({bar:test,pie:resultPie,sumTransactions,allTransaction:uniqueOrderIdsCount})
     } catch (error) {
       console.log(error)
     }
@@ -278,5 +308,68 @@ res.send({totalTransactions,totalApproved,sumTransactions})
       console.log(error)
     }
   },
+  createStripeIntent:async (req,res) => {
+    try {
+      const { paymentMethod,price,userId } = req.body;
+      const stripeInstance = stripe('sk_test_51OQVAVLBGq7IrdLL5pjWGFOFWUImKVoH735fb1tYvoXJgGfaxiG05lM9IDaAucrTV9M0KESwxV5jUoqQo4SvAVzh009XPLiaKl');
+
+
+      const paymentIntent = await stripeInstance.paymentIntents.create({
+        amount: price,
+        currency: 'usd',
+        payment_method_types: ['card'],
+        description: 'Описание платежа',
+        metadata: {
+          customer_email: 'customer@example.com', // Здесь указывается email клиента
+        },
+      });
+      
+
+
+      // const paymentIntent = await stripeInstance.checkout.sessions.create({
+      //   payment_method_types: ['card'],
+      //   line_items: [
+      //     {
+      //       price_data: {
+      //         currency: 'usd',
+      //         product_data: {
+      //           name: 'lolololol',
+      //         },
+      //         unit_amount: price, // Сумма платежа в минимальных единицах валюты (например, центы)
+      //       },
+      //       quantity: 1,
+      //     },
+      //   ],
+      //   mode: 'payment',
+      //   success_url: 'http://localhost:4001/thankYou?payment_id=123&status=success',
+      //   cancel_url: 'https://api.pay-parking.net/thank?',
+      // });
+      console.log(paymentIntent)
+      
+        res.status(200).send({paymentIntent,client_secret:paymentIntent.client_secret})
+    
+
+      
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  getStripeAPI:async (req,res)=> {
+    
+try {
+  const userId  =req.params.userId
+  const result = await Payments.find({userId:userId,paymentSystem:'Stripe'});
+  console.log(userId)
+if(result&&result.length>=1) {
+  res.status(200).send(result[0])
+} else {
+  res.send({message:'not found'})
+}
+} catch (error) {
+  res.send(error)
+  console.log(error)
+}
+  }
+  
   
 };

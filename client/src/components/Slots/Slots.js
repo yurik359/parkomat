@@ -16,8 +16,12 @@ import {
 import { getListItems,getPaymentsSystems } from "../../services/requests";
 import { addIndexParkomat, changeClickedParkomat } from "../SlotItem/slotItemSlice";
 import PaymentSection from "../PaymentSection/PaymentSection";
+import { useTranslation } from "../../services/translations";
 const Slots = () => {
-
+  const { language  } = useSelector(
+    (state) => state.slotsSlice
+  );
+  const {t}= useTranslation(language)
   const [closeModal, setCloseModal] = useState(true);
   const [closeDeleteModal, setCloseDeleteModal] = useState(true);
   
@@ -126,8 +130,9 @@ const Slots = () => {
   };
   
   //qr-code
-  const qrCodeGenetating = () => {
-   
+  const [nameSlotQr,setNameSlotQR] = useState(null)  
+  const qrCodeGenetating = (nameOfslot) => {
+    setNameSlotQR(nameOfslot)
     setShowQr(true)
   }
 
@@ -147,11 +152,11 @@ const Slots = () => {
           <input
             type="text"
             value={searchTerm}
-            placeholder="Search"
+            placeholder={t('search')}
         
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <PaymentSection/>
+    
          
           {/* <div className="slots__btns">
             <div className="slots__qr-btn slot-btn"
@@ -178,7 +183,7 @@ const Slots = () => {
           <div className="slots__add-item" onClick={handleOpenAddModal}>
             <div className="slots__title">
               <div className="slots__plus">&#43;</div>
-              <div className="slots__add-text">Add new</div>
+              <div className="slots__add-text">{t('addNew')}</div>
             </div>
           </div>
          
@@ -192,7 +197,7 @@ const Slots = () => {
           closeDeleteModal={closeDeleteModal}
           setCloseDeleteModal={setCloseDeleteModal}
         />
-       < QRCodeComponent showQr={showQr} setShowQr={setShowQr} data={`http://localhost:19006/?parkomatId=${indexOfParkomat}`}/>
+       < QRCodeComponent showQr={showQr} nameSlotQr={nameSlotQr} setShowQr={setShowQr} data={`http://localhost:19006/?parkomatId=${indexOfParkomat}`}/>
       </div>
     </div>
   );

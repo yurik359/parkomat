@@ -6,7 +6,8 @@ const {paymentsInfo}  = useSelector(state=>state.slotsSlice)
 
     return (
         <div className='payment-page wrapper'>
-            <PaymentSlotItem paymentsInfo={paymentsInfo} />
+            <PaymentSlotItem paymentsInfo={paymentsInfo} title={'Fondy'} placeholder={'merchant id'}/>
+            <PaymentSlotItem paymentsInfo={paymentsInfo} title={'Stripe'} placeholder={'Publish api'} />
         </div>
     )
 

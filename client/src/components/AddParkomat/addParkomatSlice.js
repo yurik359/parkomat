@@ -7,7 +7,7 @@ const addParkomatSlice = createSlice({
     formValues: {
       nameOfslotValue: "",
       locationValue:{type:'Point',coordinates:[45.655353,20.654454]} ,
-      paymentValue: {namePayment:"",secretKey:"",merchantId:''},
+      paymentValue: {namePayment:""},
       isSupportedByCarNumber:false,
       address:'',
       picValue: "",
@@ -38,12 +38,7 @@ const addParkomatSlice = createSlice({
     changePaymentValue: (state, action) => {
       state.formValues.paymentValue.namePayment = action.payload;
     },
-    changePaymentSecretKey:(state,action) => {
-      state.formValues.paymentValue.secretKey = action.payload
-    },
-    changeMerchantId:(state,action) => {
-      state.formValues.paymentValue.merchantId=action.payload
-    },
+    
     changePicValue: (state, action) => {
       state.formValues.picValue = action.payload;
     },
@@ -61,7 +56,7 @@ const addParkomatSlice = createSlice({
         address:action.payload.address,
         isSupportedByCarNumber:action.payload.isSupportedByCarNumber,
         paymentValue :{namePayment:action.payload.payment.namePayment,
-          secretKey:action.payload.payment.secretKey,merchantId:action.payload.payment.merchantId},
+         },
           picValue:action.payload.formPic,
           notesValue:action.payload.notes
       }
@@ -79,7 +74,7 @@ const addParkomatSlice = createSlice({
         },
         address: '', 
         isSupportedByCarNumber:false,
-        paymentValue:{namePayment:'',secretKey:'',merchantId:''},
+        paymentValue:{namePayment:''},
         picValue:null,
         notesValue:'',
       }
@@ -100,7 +95,6 @@ export const {
   setDeleteIco,
   clearForm,
   changeCoordinate,
-  changePaymentSecretKey,
-  changeMerchantId,
+  
   changeIsSupportedByCarNumber
 } = actions;

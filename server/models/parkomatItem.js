@@ -53,14 +53,7 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  secretKey: {
-    type: String,
-    
-  },
-  
-  merchantId:{
-    type:String,
-  },
+
 },{ _id: false } );
 
 // const parkomatItemSchema = new mongoose.Schema({

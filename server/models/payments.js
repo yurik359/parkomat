@@ -4,24 +4,24 @@ const { Schema } = mongoose;
 
 const Payments = new Schema({
     userId:{type:String,required:true},
-    
-        fondy:{
-            merchantId:String,
-            secretKey:String,
-        },
+    paymentSystem:{type:String,required:true},
+    paymentApiKey:{type:String,required:true},
+    secretKey:{type:String,required:true}
+       
     
 })
 const currentDate = new Date(); // Поточна дата і час за UTC
 const localDate = new Date(currentDate.getTime() - currentDate.getTimezoneOffset() * 60000);
 const ApprovedPaymentInfo = new Schema({
+    paymentSystem:{type:String,required:true},
     order_id:{type:String,required:true},
     userId:{type:String,required:true},
     parkomatId:{type:String,required:true},
-    merchant_id:{type:String,required:true},
+    merchant_id:{type:String},
     sender_email:{type:String,required:true},
     currency:{type:String,required:true},
     amount:{type:String,required:true},
-    order_time:{type:String,required:true}, 
+    order_time:{type:String}, 
     order_status:{type:String,required:true},
     createdAt:{type:Date,default:localDate,required:true}
 })

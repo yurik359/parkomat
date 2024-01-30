@@ -1,6 +1,6 @@
 .down-section__trans-item {
     display: flex;
-  
+  flex-basis: 700px;
 }
 .down-section__typeOf-payment {
     flex-basis: 126px;

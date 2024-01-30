@@ -1,0 +1,33 @@
+.burger_background {
+    width: 100%;
+    height: 100%;
+    background-color: #001F3F;
+    position: absolute;
+    z-index: 9999;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+  
+}
+.burger_container {
+    padding-left: 15px;
+  
+}
+.burger_transition {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+}
+
+@media screen and (max-width: 1000px) { 
+    .burger-logout {
+        height: 36px;
+        width: 104px;
+        font-size: 13px  !important;
+        margin-top: 20px; 
+       
+    }
+
+}
+
+

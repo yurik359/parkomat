@@ -1,0 +1,18 @@
+.dashboard__down {
+    width: 60%;
+}
+
+
+@media screen and (max-width:980px){
+    .dashboard__down {
+        margin-top: 25px;
+        width: 70%;
+    } 
+}
+
+@media screen and (max-width:980px) {
+    .dashboard__down {
+     
+        width: 80%;
+    } 
+}

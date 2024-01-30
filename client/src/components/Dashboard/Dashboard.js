@@ -144,10 +144,11 @@ console.log(paymentStat)
     { <div className="dashboard-background">
     <div className="dashboard wrapper">
       <div className="dashboard__upper">
+      <div className="dashboard__left-column">
         <div className="dashboard__graphics">
           <div className="dashboard__graphics-header">
-            <div className="dashboard__title">{t('earningsReport')}</div>
-            <div className="dashboard__filter-block" >
+            <div className="dashboard__title" style={{fontSize:language==='de'&&window.innerWidth<387?14:''}}>{t('earningsReport')}</div>
+            <div className="dashboard__filter-block" style={{maxWidth:language==='de'&&window.innerWidth<443?110:120}} >
             <select onChange={(e)=>getDateToFilter(e.target.value)} name="" id="ranges">
               
               <option value="today">{t('today')}</option>
@@ -174,11 +175,11 @@ console.log(paymentStat)
                 <img src={graphic} alt="" />
                 <span>your total earnings</span>
               </div>
-              <div className="grapchics-main__footer">
-                <div className="grapchics-main__percent-line">
-                  <img src={line} alt="" />
+              {/* <div className="grapchics-main__footer"> */}
+                {/* <div className="grapchics-main__percent-line">
+                  <img src={line} alt="" /> */}
 
-                  <div className="grapchics-main__percent">
+                  {/* <div className="grapchics-main__percent">
                     <img
                       className="grapchics-main__arrow"
                       src={arrow}
@@ -186,12 +187,12 @@ console.log(paymentStat)
                     />
 
                     <span>12%</span>
-                  </div>
-                </div>
-                <div className="grapchics-main__footer-description">
+                  </div> */}
+                {/* </div> */}
+                {/* <div className="grapchics-main__footer-description">
                   Update your payment method
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
             </div>
             {/* <div className="grapchics-main__main-graphic">
             <div  className='grapchics-main__xnumber'>
@@ -239,24 +240,25 @@ console.log(paymentStat)
             <div className="dashboard__loader"></div>
           </div>
         </div>
-       
-        <PaymentList paymentStat={paymentStat}/>
-      </div>
-      <div className="dashboard__payment-info payment-info">
+       </div>
+        <div className="dashboard__payment-info payment-info">
         {/* <img src={circle} alt="" style={{ padding: "20px 0" }} /> */}
         <PieChart pieData={pieData} parkomatItemsList={parkomatItemsList}/>
         <div className="payment-info__text">
           <div className="payment-info__title">Lorem Ipsum</div>
           <div className="payment-info__count">{paymentStat&&paymentStat.countApproved?paymentStat.countApproved:0}</div>
-          <div className="payment-info__additional-info">
+          {/* <div className="payment-info__additional-info">
             Update your payment method
-          </div>
+          </div> */}
         </div>
-        <div className="payment-info__footer" style={{ padding: "20px 0" }}>
+        {/* <div className="payment-info__footer" style={{ padding: "20px 0" }}>
           <div className="payment-info__indicator"></div>
           <span>Lorem Ipsum</span>
-        </div>
+        </div> */}
       </div>
+       
+      </div>
+      <PaymentList paymentStat={paymentStat}/>
     </div>
   </div>}
    </>

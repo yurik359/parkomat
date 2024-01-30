@@ -34,6 +34,7 @@ const Main = () => {
   return (
     <div className="main">
       <HeaderMain />
+      
       <Routes>
         <Route path="slots" element={<Slots />} />
         <Route path='dashboard' element={<Dashboard />} />

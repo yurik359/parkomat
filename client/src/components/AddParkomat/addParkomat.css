@@ -44,7 +44,7 @@ line-height: 140%;
 }
 
 .add-parkomat {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   background-color: #25252566;
@@ -54,7 +54,7 @@ line-height: 140%;
   justify-content: center;
   padding-top: 80px;
   align-items: start;
-  min-height: 700px;
+  min-height: 100vh;
 }
 .add-parkomat form {
   /* padding: 70px 0; */
@@ -66,7 +66,7 @@ line-height: 140%;
  
   border-radius: 48px;
   max-width: 561px;
-  min-width: 561px;
+  width: 100%;
 }
 .add-parkomat__address-list {
   box-sizing: border-box;
@@ -209,3 +209,33 @@ textarea {
   margin-top: 5px;
 }
 
+@media screen and (max-width: 320px){
+  .add-parkomat__name-input, textarea, select, label,.add-parkoma__location-section {
+    width: 80%;
+  }
+  .file-upload  {
+    padding: 10px 0;
+  }
+  .add-parkoma__location-section input, .map-container {
+  width: 100% !important;
+  }
+  .add-parkomat__name-input, .add-parkoma__location-section input,select {
+    height: 35px;
+  }
+  textarea  {
+    height: 40px;
+  }
+  .typeByPayment {
+    width: 70% !important;
+  }
+  .leaflet-container {
+    height: 75px !important;
+  }
+  
+}
+
+@media screen and (max-width:425px) {
+  .add-parkomat {
+    align-items: center;
+  }
+}

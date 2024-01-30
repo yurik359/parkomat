@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
+   opacity: 1;
   }
   
   .modalX {
@@ -41,3 +42,8 @@
     margin-top: 20px;
   }
   
+  @media (max-width:460px) {
+    .modalX {
+      width: 80%;
+    }
+  }

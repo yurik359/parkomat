@@ -4,7 +4,7 @@ const PaymentList = ({paymentStat}) => {
   console.log(paymentStat)
 return (
     <div className="dashboard__down down-section">
-    <div className="down-section__nav">
+    {/* <div className="down-section__nav">
       <select name="" id="">
         <option value="filterr">Filter</option>
       </select>
@@ -13,7 +13,7 @@ return (
         <div className="down-section__edit-btn"></div>
         <div className="down-section__delete-btn"></div>
       </div> */}
-    </div>
+   
     <div className="down-section__transactions">
         {paymentStat&&paymentStat.allPaymentsArray&&
         paymentStat.allPaymentsArray.map((e,i)=>{

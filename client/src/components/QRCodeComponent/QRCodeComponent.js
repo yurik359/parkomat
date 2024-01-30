@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 import './qrCode.css'
 import { useTranslation } from "../../services/translations";
+import ModalTemplate from "../modals/ModalTemlate/ModalTemplate";
 const QRCodeComponent = ({data,showQr,setShowQr,nameSlotQr}) => {
   
   const { language  } = useSelector(
@@ -30,15 +31,17 @@ const QRCodeComponent = ({data,showQr,setShowQr,nameSlotQr}) => {
         document.body.removeChild(link);
       };
   return (
-    <div className='qr-code-container' style={{display:showQr?'flex':'none'}}onClick={handleClickOutside}>
- <div className="qr-popup" >
+    // <div className='qr-code-container' style={{display:showQr?'flex':'none'}}onClick={handleClickOutside}>
+      <ModalTemplate isOpen={showQr} onClose={()=>setShowQr(false)}> 
+ <div style={{display:'flex',flexDirection:"column",alignItems:'center'}} >
         <div style={{fontSize:'20px',marginBottom:'20px',textAlign:'center',padding:5}}>{t('qrMessage')}</div>
     
         
       <QRCodenew id="qrcode-canvas" value={data} size={250} />
       <button onClick={downloadQRCode} className='download-btn'>{t('download')}</button>
       </div>
-    </div>
+       </ModalTemplate> 
+    // </div> 
   );
 };
 

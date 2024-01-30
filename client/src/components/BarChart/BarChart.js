@@ -88,7 +88,7 @@ const BarChart = ({barData}) => {
   };
 
   return (
-    <div  >
+    <div className='graphic' >
       
       <Bar style={{background:'#4fa4fb',borderRadius:20,padding:8,height:200}}data={data} options={options} />
     </div>

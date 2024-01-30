@@ -9,8 +9,12 @@
     background-color: white;
     width: fit-content;
     border-radius: 15px;
-    padding: 5px;
+    padding: 0px 5px 10px 5px;
     margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 .payment-slot__title {
     margin-bottom:10px;
@@ -23,4 +27,35 @@
    margin-bottom: 10px;
    height: 20px;
    padding-left: 10px;
+   padding-right: 2px;
+   white-space: nowrap;       /* Запрет переноса текста */
+  overflow: hidden;          /* Скрытие избыточного текста */
+  text-overflow: ellipsis;  
+}
+.payment-slot__container button {
+    background-color:#4fa4fb ;
+    border: none;
+    color: white;
+    border-radius: 15px;
+    height: 30px;
+    width: 70px;
+}
+.payment-slot__input-container {
+
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+}
+@media screen and (max-width:767px) {
+    .payment-slot__container {
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+}
+@media screen and (max-width:538px) {
+    .payment-slot__container {
+        margin-right: 0px;
+        margin-bottom: 15px;
+    }
 }

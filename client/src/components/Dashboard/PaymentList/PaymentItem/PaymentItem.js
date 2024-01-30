@@ -24,7 +24,7 @@ const PaymentItem = ({itemInfo,arrayItems}) => {
  return (
     <div className="down-section__trans-item" style={{display:hideProcessingItem?'none':'flex'}}>
     <div className="down-section__check-price">
-      <input type="checkbox" />
+  
       <span>{itemInfo.amount/100}$</span>
     </div>
     <div className="down-section__typeOf-payment">{itemInfo.paymentSystem||'Payment system'}</div>

@@ -60,7 +60,8 @@ const [response,setResponse] = useState(false)
       <div className="change-password__btn" onClick={changePass}>
         submit{" "}
       </div>
-      <span>{response&&response}</span>
+      <span style={{marginTop:5}}>{response&&response}</span>
+      <span style={{color:'red',marginTop:5}}>{error&&error}</span>
     </div>
   );
 };

@@ -125,3 +125,17 @@ overflow: hidden;
   
   
 }
+@media screen and (max-width:692px) {
+  .slot-item {
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .slot-item {
+    width: 300px;
+    height: 190px;
+  
+  }
+}
+

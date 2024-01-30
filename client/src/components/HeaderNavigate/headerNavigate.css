@@ -1,0 +1,22 @@
+
+
+
+  @media screen and (max-width: 1000px) { 
+    .header__navigate ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        
+      }
+      .header__navigate ul li {
+        margin-bottom: 10px;
+        margin-left: 0;
+      }
+      .header__language {
+        width: 50px;
+        padding-left: 5px;
+        padding-right: 0px;
+        height: 20px;
+        margin-top: 0;
+      }
+  }

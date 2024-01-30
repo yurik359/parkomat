@@ -32,3 +32,23 @@ padding: 5px;
 .current-week__buttons {
     margin-left: 10px;
 }
+@media (max-width:470px) {
+    .current-week {
+        flex-direction: column;
+        
+    }   
+}
+@media screen and (max-width: 320px) { 
+    .current-week {
+        
+        
+    }
+    .current-week__buttons {
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 2px;
+    }
+    .current-week__titles {
+        
+    }
+}

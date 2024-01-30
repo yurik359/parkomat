@@ -19,9 +19,9 @@ const PaymentSlotItem = ({paymentsInfo,title,placeholder}) => {
     }
 
     useEffect(()=>{
-      console.log(paymentsInfo)
-        if(paymentsInfo){
-          const paymentSystem = paymentsInfo.filter(e=>e.paymentSystem===title)
+     
+        if(paymentsInfo&&paymentsInfo.paymentSystem){
+          const paymentSystem = paymentsInfo.paymentSystem.filter(e=>e.paymentSystem===title)
           if(paymentSystem.length>=1){
             setPaymentApiKey(paymentSystem[0].paymentApiKey)
             setSecretKey(paymentSystem[0].secretKey)
@@ -35,8 +35,10 @@ const PaymentSlotItem = ({paymentsInfo,title,placeholder}) => {
            
             <img src={title==='Stripe'?'https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg':fondy} alt="" />
             <h3 className='payment-slot__title'>{title}</h3>
+            <div className='payment-slot__input-container'>
             <input type="text" value={paymentApiKey} onChange={(e)=>setPaymentApiKey(e.target.value)} placeholder={placeholder} />
-            <input type="text" value={secretKey} onChange={(e)=>setSecretKey(e.target.value)} placeholder='Secret Key' />
+            <input type="password" value={secretKey} onChange={(e)=>setSecretKey(e.target.value)} placeholder='Secret Key' />
+            </div>
             <button onClick={saveInfo}>save</button>
             {saved&&<span>{saved}</span>}
         </div>

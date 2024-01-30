@@ -7,7 +7,7 @@
   justify-content: space-between;
   align-items: center;
   /* height: 80%; */
- padding-top: 15px;
+ padding: 15px 10px 10px 15px;
 }
 
 .header__background {
@@ -86,7 +86,7 @@ font-weight: 500;
   
   border-radius: 50%;
 }
-.header__navigate li.dot:nth-child(2):before {
+/* .header__navigate li.dot:nth-child(2):before {
   content: "";
   position: absolute;
   top: 27px;
@@ -105,8 +105,18 @@ font-weight: 500;
   height: 7px;
   background-color: rgb(255, 255, 255);
   border-radius: 50%;
-}
+} */
 
+@media screen and (max-width: 1000px) {
+  .header__navigate-item {
+    width: fit-content;
+  }
+  .header__navigate-item::before {
+    top:0%;
+    left: 100%;
+    margin-left: 10px; 
+  }
+ }
 /* .header__navigate li {
   width: 60px;
 } */
@@ -125,3 +135,80 @@ font-weight: 500;
 .right-arrow::before {
 left:5px
 }
+.header__burger-menu::before,.header__burger-menu::after{
+  position: absolute;
+  content: '';
+width: 30px;
+height: 3px;
+background-color: #FFF;
+transition: transform 0.5s ease;
+}
+.header__burger-menu::after {
+  top: 20px;
+}
+.header__burger-menu {
+  position: relative;
+  cursor: pointer;
+  width: 30px;
+  height: 23.5px;
+ visibility: hidden;
+  
+}
+.header__burger-menu span {
+  position: absolute;
+  width: 30px;
+  top: 10px;
+height: 3px;
+background-color: #FFF;
+}
+.header__navigate-desktop select {
+  width: 50px;
+  padding-right:0px ;
+  padding-left: 5px;
+  height: 30px;
+  margin: 0 0;
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+.header__navigate-desktop {
+  margin-right: 20px;
+}
+.burger-close span {
+display: none;
+}
+.burger-close::after {
+  transform: translate(0px, -10px) rotate(45deg);
+  transition: transform 0.5s ease
+}
+.burger-close::before {
+  transform: translate(0px, 10px) rotate(135deg);
+  transition: transform 0.5s ease
+}
+@media screen and (max-width: 1000px) {
+  .header__burger-menu {
+    visibility: visible;
+  }
+
+  .header__navigate-desktop,.header__log {
+    display: none;
+  }
+  .burger-logout {
+    display: flex;
+  }
+  
+  .current-week {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 425px) { 
+  .header__conainer {
+    box-sizing: border-box;
+    padding: 10px 10px;
+  }
+  .current-week {
+    flex-direction: column;
+  }
+}
+

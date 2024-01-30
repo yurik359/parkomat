@@ -7,7 +7,9 @@ import { useDispatch,useSelector } from "react-redux";
 import { addParkomats,changeLanguage } from "../Slots/slotsSlice";
 import PaymentSection from "../PaymentSection/PaymentSection";
 import { useTranslation } from "../../services/translations";
-
+import BurgerMenu from "../BurgerMenu/BurgerMenu";
+import HeaderNavigate from "../HeaderNavigate/HeaderNavigate";
+import ChangeLanguage from "../ChangeLanguage/ChangeLanguage";
 const HeaderMain = () => {
  console.log(styles)
   const dispatch=useDispatch();
@@ -18,6 +20,7 @@ const HeaderMain = () => {
   const [isActive, setIsActive] = useState(
     window.location.pathname.substring(1)
   );
+  const [showBurger,setShowBurger] = useState(false)
   console.log('lolio')
   const navigate = useNavigate();
 
@@ -47,40 +50,25 @@ const HeaderMain = () => {
     <div className="header__background">
       <div className="header__conainer wrapper">
         <div className="header__title">PayParking</div>
-        <div className="header__navigate">
-          <ul>
-            <li className={isActive === "dashboard" ? 'header__navigate-item' : null}>
-              <Link to="dashboard" onClick={() => setIsActive("dashboard")}>
-              {t('dashboard')}
-              </Link>
-            </li>
-
-            <li className={isActive === "slots" ? 'header__navigate-item' : null}>
-              <Link to="slots" onClick={() => setIsActive("slots")}>
-              {t('slots')}
-              </Link>
-            </li>
-            <li className={isActive === "payments" ? 'header__navigate-item' : null}>
-              <Link to="payments"  onClick={() => setIsActive("payments")}>
-              {t('payments')}
-              </Link>
-            </li>
-          </ul>
+        <div className="header__navigate-desktop">
+        <HeaderNavigate setIsActive={setIsActive} isActive={isActive}/>
         </div>
         <div style={{fontSize:language==='fr'?"12.5px":'16px'}}className="header__log" onClick={logOut}>
         {t('logOut')} <div class="right-arrow"></div>
         </div>
-        <select name="" id="" value={language} className="header__language" onChange={(e)=>setLanguage(e.target.value)}>
-          <option value="en">en</option>
-          <option value="ua">ua</option>
-          <option value="fr">fr</option>
-          <option value="de">de</option>
-          <option value="pl">pl</option>
-          <option value="es">es</option>
-        </select>
+        
+        <div className={`header__burger-menu ${showBurger?'burger-close':''}`} onClick={()=>setShowBurger((state)=>!state)}>
+          <span></span>
+        </div>
+        <div className="header__navigate-desktop">
+        <ChangeLanguage setLanguage={setLanguage} language={language}/>
+        </div>
        
       </div>
-      <PaymentSection/>
+      <BurgerMenu showBurger={showBurger} setIsActive={setIsActive} isActive={isActive} language={language} setLanguage={setLanguage} logOut={logOut}/>
+     
+       <PaymentSection/>
+      
     </div>
   );
 };

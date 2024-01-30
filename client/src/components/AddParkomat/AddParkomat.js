@@ -18,6 +18,7 @@ import { updateParkomat } from "../Slots/slotsSlice";
 import cheerio from 'cheerio';
 import Map from "../map/map";
 import deleteIco from "../../services/img/DeleteButton.png";
+import ModalTemplate from "../modals/ModalTemlate/ModalTemplate";
 
 import { createParkomat,editParkomat,getPlaceId,getAddresses} from "../../services/requests";
 import { v4 as uuidv4 } from "uuid";
@@ -200,7 +201,7 @@ dispatch(changePaymentValue(e.target.value))
   },[paymentsInfo])
 
   return (
-    
+    // <ModalTemplate isOpen={!closeModal} onClose={()=>setCloseModal(true)}>
     <div
       className="add-parkomat parkomat-modal"
       onClick={()=>setCloseModal(true)}
@@ -253,7 +254,7 @@ dispatch(changePaymentValue(e.target.value))
                 );
               })}
           </div>
-      {!closeModal&&<div className="" style={{width:'90%'}}>
+      {!closeModal&&<div className="map-container" style={{width:'90%'}}>
                 <Map checkedAddress={checkedAddress} />
           </div>}    
         </div>
@@ -306,6 +307,7 @@ dispatch(changePaymentValue(e.target.value))
 
       <div></div>
     </div>
+    // </ModalTemplate>
   );
 };
 

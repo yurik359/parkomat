@@ -166,7 +166,110 @@ line-height: 16px; /* 160% */
 } 
 
 @media (max-width: 768px) {
+  
+  .parkomatReg-pic {
+    height: 623px;
+    min-width: 561px;
+  }
+}
+
+
+@media (max-width: 868px) {
+  .register-page {
+    min-width: 1000px;
+  }
   .form-register{
-    margin-left: 40px;
+    margin-left: 0px;
+    min-width: 350px;
+  }
+  .parkomatReg-pic {
+    height: 623px;
+    min-width: 561px;
+  }
+
+}
+@media (max-width: 845px) { 
+  .register-page {
+    min-width: 845px;
+  }
+  .form-register{
+   
+    min-width: 280px;
+  }
+  .form-register input,.form-register button  {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  .form-register button {
+    margin-top: 10px;
+  }
+  .two-factor-container input {
+    min-width: 15px;
+  }
+  .parkomatReg-pic {
+    height: 573px;
+    min-width: 471px;
+    align-self: center;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 745px) {
+  .register-page {
+    min-width: 745px;
+  }
+  .form-register input,.form-register button,.two-factor-container  {
+    min-width: 250px;
+    max-width: 250px;
+  }
+  .two-factor-container input {
+    min-width: 15px;
+  }
+  .parkomatReg-pic {
+    height: 573px;
+    min-width: 371px;
+    align-self: center;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 650px) { 
+  .register-page { 
+    min-width: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  .form-register {
+    width: 100%;
+    align-items: center;
+  }
+  .form-register input,.form-register button,.two-factor-container  {
+    min-width: 350px;
+    max-width: 350px;
+
+  }
+  .two-factor-container input {
+    min-width: 15px;
+  }
+  .parkomatReg-pic {
+    display: none;
+  }
+  .register-blur {
+    top: -100px;
+    height: 200px;
+    right: 0px;
+    width: 250px;
+    display: none;
+  }
+}
+@media (max-width:400px) {
+  .form-register input,.form-register button,.two-factor-container  {
+    min-width: 305px;
+    max-width: 305px;
+   
+
+  }
+  .two-factor-container input {
+    min-width: 15px;
   }
 }

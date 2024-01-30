@@ -146,6 +146,7 @@ module.exports = {
             
             },
           };
+          
           const sortedKeys = Object.keys(requestData.request).sort();
           const dataString = [
             secretKey,
@@ -198,8 +199,6 @@ if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
 }
  
 
-
-      
 
 
       const maxDistance = 1000;

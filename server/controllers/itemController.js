@@ -217,7 +217,6 @@ if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
       Parkomat.find(parkomatQuery)
         .exec()
         .then((nearbyParkomats) => {
-        
           
           if (result) {
             console.log(nearbyParkomats,result._id)

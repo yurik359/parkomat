@@ -1,73 +1,73 @@
 .payment-page {
-    padding-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
+  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 .payment-page__options {
-    background-color: white;
-    border-radius: 15px;
-    padding: 5px;
-    padding-bottom: 10px;
-
+  background-color: white;
+  border-radius: 15px;
+  padding: 5px;
+  padding-bottom: 10px;
 }
 .payment-page__options {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
 }
 .endpoint-options_endpoint {
-    display: flex;
+  display: flex;
   height: 35px;
   flex-direction: column;
-
-    
-    
 }
 .endpoint-options_endpoint-container {
-    display: flex;
+  display: flex;
 }
 .payment-page__options-form {
-    height: 260px;
+  height: fit-content;
 }
 .payment-page__options input {
-    border-radius: 15px;
-    border: 1px solid rgba(128, 128, 128, 0.729) ;
-    padding-left: 5px;
-    height: 20px;
-    margin-bottom: 8px;
+  border-radius: 15px;
+  border: 1px solid rgba(128, 128, 128, 0.729);
+  padding-left: 5px;
+  height: 20px;
+  margin-bottom: 8px;
 }
 .endpoint-options_endpoint select {
-    margin: 0;
+  margin: 0;
   padding-right: 3px;
   padding-left: 5px;
   width: 60px;
   height: 24px;
 }
+.content-type {
+  display: flex;
+  flex-direction: column;
+}
 .payment-page__options button {
-    background-color:#4fa4fb ;
-    border: none;
-    color: white;
-    border-radius: 15px;
-    height: 30px;
-    width: 70px;
-    align-self: center;
+  background-color: #4fa4fb;
+  border: none;
+  color: white;
+  border-radius: 15px;
+  height: 30px;
+  width: 70px;
+  align-self: center;
 }
 .endpoint-options h3 {
-    margin-bottom: 5px;
-    margin-top: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 .endpoint-options__fields-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
-@media screen and (max-width:767px) {
-    .payment-page {
-        justify-content: center;
-        box-sizing: border-box;
-        padding: 15px 10px;
-    }
-   
+@media screen and (max-width: 767px) {
+  .payment-page {
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 15px 10px;
+  }
 }

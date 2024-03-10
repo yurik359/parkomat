@@ -4,7 +4,7 @@ import axios from "axios";
 import ToLogin from "../components/ToLogin/ToLogin";
 
 const api = axios.create({
-  baseURL: 'https://api.pay-parking.net', 
+  baseURL: 'http://localhost:4001', 
 });
 
 
@@ -62,8 +62,8 @@ export const getTimeRange       = (payload)          => api.post(`/getTimeRange`
 export const addCard            = ()        => api.get('/addCard') 
 export const howMuchToPay       = ()        => api.get('/howMuchToPay') 
 export const payCommission      = (payload)        => api.get(`/payCommission?amount=${payload}`) 
-export const saveEndpointInfo      = ({endpoint,amount,period,method,currency})        => api.get(`/saveEndpointInfo`,{params:{endpoint,amount,period,method,currency}}) 
-
+export const saveEndpointInfo      = ({endpointId,endpoint,contentType,autherizationMethodContent,autherizationMethod,parkomatsId,amount,period,method,currency})        => api.get(`/saveEndpointInfo`,{params:{endpointId,contentType,endpoint,autherizationMethodContent,amount,autherizationMethod,parkomatsId,period,method,currency}}) 
+export const getEndpointItems   = () => api.get(`/getEndpointItems`)
 export const handleGET = async (url) => {
     const res = await fetch(url);
     const data = await res.json();

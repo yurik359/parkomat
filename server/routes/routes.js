@@ -2,7 +2,12 @@ const path = require("path");
 const express = require("express");
 const router = express.Router();
 const {registration,login,sendInstruction,changePassword,getParkomatList,checkTwoFa}  = require('../controllers/Users')
-const {savePaymentInfo,getPaymentsSystems,AppovedPaymentsInfo,getPaymentStatistic,getTimeRange,getForPie,howMuchToPay,createStripeIntent,getStripeAPI,saveEndpointInfo,getEndpointData} =require('../controllers/payments')
+const {savePaymentInfo,getPaymentsSystems,
+  AppovedPaymentsInfo,getPaymentStatistic
+  ,getTimeRange,getForPie,howMuchToPay,
+  createStripeIntent,getStripeAPI,
+  saveEndpointInfo,getEndpointData,
+getEndpointItems} =require('../controllers/payments')
 const {verifyToken} = require('../config')
 const {addParkomat,updateParkomat,
   deleteParkomat,getAddresses,
@@ -49,6 +54,7 @@ router.post('/createStripeIntent',createStripeIntent)
 router.get('/getStripeAPI/:userId',getStripeAPI)
 router.get('/saveEndpointInfo',verifyToken,saveEndpointInfo)
 router.get('/getEndpointData',getEndpointData)
+router.get('/getEndpointItems',verifyToken,getEndpointItems)
 
 
 router.get("*", (req, res) => {

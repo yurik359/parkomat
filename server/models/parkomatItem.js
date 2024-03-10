@@ -104,6 +104,7 @@ const parkomatSchema = new mongoose.Schema({
     type: GeoSchema,
     required: true,
   },
+  endpoint:{type:String},
   payment: {
     type: paymentSchema,
     required:true,

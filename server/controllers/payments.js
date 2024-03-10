@@ -1,4 +1,5 @@
 const { User } = require("../models/user");
+const {Parkomat} = require("../models/parkomatItem")
 const {
   Payments,
   ApprovedPaymentInfo,
@@ -410,18 +411,53 @@ module.exports = {
   saveEndpointInfo: async (req, res) => {
     try {
       const { id } = req.decoded;
-      const { period, endpoint, amount, currency, method } = req.query;
-     console.log(method)
-     const result= await EndpointInfo.updateOne({ userId: id }, 
-        {
+      const { period,endpointId, endpoint,contentType,autherizationMethodContent,autherizationMethod, amount, currency, method,parkomatsId } = req.query;
+      console.log(endpointId) 
+     const endPointId = endpointId||null;
+     const result= await EndpointInfo.updateOne({ _id: endPointId || { $exists: false } }, 
+       {$set: {
+          userId:id,
           period,
           endpoint,
+          contentType,
+          autherizationMethodContent,
+          autherizationMethod,
           amount,
           currency,
           method
         }
+      }
       , { upsert: true });
-console.log(result)
+
+     
+      // if(parkomatsId.length===0&&result.acknowledged){
+      //   await Parkomat.updateMany({endpoint:endPointId})
+      // }
+    console.log(result)
+      if(result.acknowledged) {
+        const newParkomatsIdArray =  parkomatsId?parkomatsId:[]
+      const arrayParkomats =  await Parkomat.find({userId:id,endpoint:endPointId});
+
+        const uniqueArray = arrayParkomats.filter(element => !newParkomatsIdArray.includes(element._id)).map(e=>e._id)
+        
+        await Parkomat.updateMany({ _id: { $in: uniqueArray } }, {$set:{endpoint:''}});
+        const update = { $set: { endpoint: endPointId } }
+       await Parkomat.updateMany({ _id: { $in: parkomatsId } }, update);
+
+       
+
+       if(result.modifiedCount===1) {
+        res.send('endpoint updated')
+       }
+
+       if(result.upsertedCount===1) {
+        res.send({message:'endpoint created',newItemData:{endpointId:result.upsertedId,userId:id}})
+       }
+      }
+     if(result.upsertedCount===0&&result.modifiedCount===0){
+      res.send('endpoint updated')
+     }
+
     } catch (error) {
       console.log(error)
     }
@@ -438,5 +474,18 @@ console.log(result)
       } catch (error) {
         console.log(error)
       }
+  },
+  getEndpointItems: async (req,res) => {
+    try {
+      const { id } = req.decoded;
+     const endpointList = await EndpointInfo.find({userId:id});
+     if(endpointList&&endpointList.length>=1){
+      res.send(endpointList)
+     }
+     
+    } catch (error) {
+      res.send(error)
+      console.log(error)
+    }
   }
 };

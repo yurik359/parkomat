@@ -36,7 +36,7 @@ const Slots = () => {
   );
   const [showQr,setShowQr] = useState(false)
 
-  console.log(parkomatArray)
+
   const getParkomatList = async () => {
     
    try {
@@ -116,8 +116,8 @@ const Slots = () => {
 
 
   useEffect(() => {
-    console.log("4isas1");
-    getParkomatList(accessToken);
+    
+    getParkomatList();
   }, []);
 
 

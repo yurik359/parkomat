@@ -41,6 +41,9 @@ const paymentsOurClients = new Schema({
 const endpointInfo = new Schema({
     endpoint:{type:String, required:true},
     userId:{type:String,required:true},
+    contentType:{type:String,required:true},
+    autherizationMethodContent:{type:String,required:true},
+    autherizationMethod:{type:String,required:true},
     method:{type:String, required:true},
     period:{type:String, required:true},
     amount:{type:String, required:true},

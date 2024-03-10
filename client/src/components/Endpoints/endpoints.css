@@ -1,0 +1,16 @@
+.enpoints-container {
+  display: flex;
+  padding-top: 10px;
+  flex-wrap: wrap;
+}
+
+.add-endpoint-button {
+  height: 491px;
+  width: 250px;
+  border: 1px solid rgba(174, 171, 171, 0.722);
+  border-radius: 15px;
+  color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

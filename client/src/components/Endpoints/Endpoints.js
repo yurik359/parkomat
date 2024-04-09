@@ -1,7 +1,7 @@
 import "./endpoints.css";
 import EndpointItem from "../EndpointItem/EndpointItem";
 import { getEndpointItems,saveEndpointInfo } from "../../services/requests";
-
+import CheckEndpoint from "../CheckEndpoint/CheckEndpoint";
 import { useEffect, useState } from "react";
 const Endpoints = () => {
   const [endpointsList, setEndpointsList] = useState([]);
@@ -42,6 +42,7 @@ const Endpoints = () => {
           return <EndpointItem endpointInfo={e} />;
         })}
       <div className="add-endpoint-button" onClick={addEndpoint}>&#43; ADD ENDPOINT</div>
+      <CheckEndpoint/>
     </div>
   );
 };

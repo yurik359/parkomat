@@ -14,6 +14,7 @@ const User = require("../models/user");
 module.exports = {
   addParkomat: async (req, res) => {
     try {
+
       const { formValues } = req.body;
 
       const { id } = req.decoded;
@@ -35,6 +36,7 @@ module.exports = {
     } catch (error) {
       console.log(error);
       res.json(`error ${error}`);
+      
     }
   },
   updateParkomat: async (req, res) => {
@@ -183,6 +185,7 @@ module.exports = {
         res.send(allDocuments)
       }
       
+
     } catch (error) {
       console.error("Error:", error);
       res.send(error);
@@ -191,42 +194,44 @@ module.exports = {
   getAroundParkomats: async (req, res) => {
     try {
       
-      const queryParam = req.query;
-      let result=null
-if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
+//       const queryParam = req.query;
+//       let result=null
+// if(queryParam.parkomatId!=='null'&&queryParam.parkomatId.length==24) {
 
- result= await Parkomat.findById(queryParam.parkomatId)
+//  result= await Parkomat.findById(queryParam.parkomatId)
 
-}
- 
+// }
+  
 
+const allParkomats = await Parkomat.find({});
+res.send(allParkomats)
+console.log(allParkomats)
 
+//       const maxDistance = 1000;
+//       const parkomatQuery = {
+//         "location.coordinates": {
+//           $near: {
+//             $geometry: {
+//               type: "Point",
+//               coordinates: [queryParam.lon, queryParam.lat],
+//             },
+//             $maxDistance: maxDistance,
+//           },
+//         },
+//       };
 
-      const maxDistance = 1000;
-      const parkomatQuery = {
-        "location.coordinates": {
-          $near: {
-            $geometry: {
-              type: "Point",
-              coordinates: [queryParam.lon, queryParam.lat],
-            },
-            $maxDistance: maxDistance,
-          },
-        },
-      };
-
-      Parkomat.find(parkomatQuery)
-        .exec()
-        .then((nearbyParkomats) => {
+//       Parkomat.find(parkomatQuery)
+//         .exec()
+//         .then((nearbyParkomats) => {
           
-          if (result) {
-            console.log(nearbyParkomats,result._id)
-            const exists = nearbyParkomats.some((item) => item._id.toString()===result._id.toString());
-console.log(exists)
-            res.send(exists?nearbyParkomats:[...nearbyParkomats,result])
-          } else {
-            res.send(nearbyParkomats)
-          }
+//           if (result) {
+//             console.log(nearbyParkomats,result._id)
+//             const exists = nearbyParkomats.some((item) => item._id.toString()===result._id.toString());
+// console.log(exists)
+//             res.send(exists?nearbyParkomats:[...nearbyParkomats,result])
+//           } else {
+//             res.send(nearbyParkomats)
+//           }
            
         
               
@@ -235,10 +240,10 @@ console.log(exists)
          
 
           
-        })
-        .catch((error) => {
-          console.error("Помилка при пошуку ближніх паркоматів:", error);
-        });
+        // })
+        // .catch((error) => {
+        //   console.error("Помилка при пошуку ближніх паркоматів:", error);
+        // });
    
     } catch (error) {
       console.log(error);

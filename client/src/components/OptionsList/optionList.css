@@ -1,0 +1,33 @@
+.params-item-input {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+}
+.params-item-input span {
+  margin-bottom: 2px;
+}
+.params-item-input input {
+  height: 25px;
+}
+.params-item-container {
+  margin-bottom: 10px;
+}
+
+.params-item-delete-button {
+  border: 1px solid red;
+  border-radius: 10px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+}
+.params-item-delete-button img {
+  height: 17px;
+  width: 17px;
+}
+.params-item-checkbox {
+  align-self: flex-end;
+  margin-bottom: -4px;
+}

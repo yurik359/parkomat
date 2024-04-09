@@ -1,0 +1,215 @@
+.option-list ul {
+  display: flex;
+  list-style-type: none;
+  justify-content: center;
+}
+.option-list ul li {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.checkEndpoint-container {
+  width: 50%;
+}
+.checkEndpoint-input-container,
+.params-item-container,
+.params-item-input {
+  display: flex;
+}
+.checkEndpoint-input-container select {
+  width: 50px;
+  padding: 0;
+  border-radius: 0px;
+  margin: 0;
+}
+.checkEndpoint-input-container {
+  align-items: center;
+}
+.checkEndpoint-input-container input {
+  padding: 0 0 0 10px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+.checkEndpoint-input-container select,
+input,
+button {
+  height: 40px;
+}
+.headers-item-container {
+  display: flex;
+  flex-direction: column;
+}
+.checkEndpoint-input-container button {
+  background-color: #4fa4fb;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.checkEndpoint-input-container button:hover {
+  background-color: #006ad4;
+}
+.hide-option {
+  display: none;
+}
+.option-list ul {
+  padding: 0;
+}
+.option-list ul li {
+  margin-right: 25px;
+  padding-bottom: 2px;
+}
+.body-raw {
+  margin-left: 10px;
+}
+.active-option {
+  border-bottom: 1px solid red;
+}
+.body-raw textarea {
+  border-radius: 0;
+  border: none;
+  height: 80px;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  outline: none;
+}
+.body-raw textarea:focus {
+  border: none;
+}
+.body-raw__textarea-container {
+  display: flex;
+}
+.count-lines {
+  height: 80px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  padding-left: 4px;
+  color: rgb(58, 175, 175);
+  scrollbar-width: none;
+}
+.body-raw__modal {
+  background: white;
+  box-shadow: 15px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.body-raw__modal span:hover {
+  background-color: darkgray;
+  color: white;
+}
+.body-raw__modal span {
+  margin-bottom: 5px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.add-option-button {
+  background-color: rgb(137, 136, 136);
+  color: white;
+  border-radius: 15px;
+  border: none;
+  margin: 0 auto;
+  width: 120px;
+  cursor: pointer;
+}
+.option-body-container {
+  display: flex;
+  justify-content: center;
+}
+
+.params-flex {
+  display: flex;
+  flex-direction: column;
+}
+.auth-item-container {
+  display: flex;
+}
+.auth-item-container select {
+  width: 150px;
+  align-self: start;
+}
+.auth-item-container {
+  flex-basis: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.auth-option-Api-key {
+  /* flex-basis: 100%;
+  justify-content: space-evenly; */
+}
+.auth-option-Api-key div,
+.auth-option-base-auth div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.auth-option-Api-key div span,
+.auth-option-base-auth div span {
+  margin-right: 10px;
+}
+.auth-option-bearer-token {
+  margin-bottom: -7px;
+}
+.auth-option-bearer-token span {
+  margin-right: 10px;
+}
+
+.body-raw__choose- {
+  width: 120px;
+  margin-left: 10px;
+}
+.body-raw__textarea-container {
+  width: 100%;
+}
+.body-raw__textarea-container textarea {
+  height: 200px;
+  width: 380px;
+}
+.count-lines {
+  height: 200px;
+}
+.body-raw__modal span:hover {
+  background-color: rgba(204, 204, 204, 0.787);
+}
+.body-raw__indicator {
+  color: #4fa4fb;
+  position: relative;
+  cursor: pointer;
+}
+
+.body-raw__indicator::after {
+  content: "";
+  position: absolute;
+  top: 10%; /* Розташування по вертикалі по середині блоку */
+  left: 130%;
+
+  width: 8px;
+  height: 8px;
+  border-left: 1px solid #4fa4fb; /* Ліва сторона стрілки */
+  border-bottom: 1px solid #4fa4fb; /* Права сторона стрілки */
+  /* border-top: 8px solid #454444; */
+  transform: rotate(-45deg);
+  cursor: pointer;
+}
+
+.body-raw-container {
+  cursor: pointer;
+}
+.response-container {
+  /* display: flex;
+  flex-basis: 100%;
+  border: 1px solid red;
+  overflow-wrap: break-word; */
+}
+pre {
+  overflow-x: auto; 
+ overflow-y: auto; 
+   max-width: 100%; 
+  max-height: 400px;
+  overflow-wrap: break-word;
+ 
+}

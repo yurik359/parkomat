@@ -1,0 +1,17 @@
+.choose-parkomats-container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  border: 1px solid grey;
+}
+
+.choose-parkomats__parkomat-list span:hover {
+  background-color: grey;
+  color: white;
+  cursor: pointer;
+}
+.choose-parkomats__parkomat-list {
+    
+    max-height: 232px;
+  overflow: scroll;
+}

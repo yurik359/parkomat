@@ -62,8 +62,10 @@ export const getTimeRange       = (payload)          => api.post(`/getTimeRange`
 export const addCard            = ()        => api.get('/addCard') 
 export const howMuchToPay       = ()        => api.get('/howMuchToPay') 
 export const payCommission      = (payload)        => api.get(`/payCommission?amount=${payload}`) 
-export const saveEndpointInfo      = ({endpointId,endpoint,contentType,autherizationMethodContent,autherizationMethod,parkomatsId,amount,period,method,currency})        => api.get(`/saveEndpointInfo`,{params:{endpointId,contentType,endpoint,autherizationMethodContent,amount,autherizationMethod,parkomatsId,period,method,currency}}) 
+export const saveEndpointInfo      = (payload)        => api.get(`/saveEndpointInfo`,{params:payload}) 
 export const getEndpointItems   = () => api.get(`/getEndpointItems`)
+export const updateEndpoint       = (payload) => api.put('/updateEndpoint',payload)
+export const addEndpointToParkomats = (payload) => api.put('/addEndpointToParkomats',payload)
 export const handleGET = async (url) => {
     const res = await fetch(url);
     const data = await res.json();

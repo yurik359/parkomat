@@ -1,10 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import "./checkEndpoint.css";
 import OptionList from "../OptionsList/OptionList";
+import { saveEndpointInfo, updateEndpoint } from "../../services/requests";
 import { v4 as uuidv4 } from "uuid";
+import { XMLParser } from "fast-xml-parser";
 import axios from "axios";
-const CheckEndpoint = () => {
+const CheckEndpoint = ({
+  endpointInfo,
+  configId,
+  typeOfEndpoint,
+  endpointTitle,
+}) => {
   const [optionName, setOptionName] = useState("params");
+
   const [paramsList, setParamsList] = useState([]);
   const [headersList, setHeadersList] = useState([]);
   const [headerListWithBaseHeaders, setHeaderListWithBaseHeaders] = useState(
@@ -21,13 +29,18 @@ const CheckEndpoint = () => {
   const [lines, setLines] = useState([1]);
   const [formatData, setFormatData] = useState("Text");
   const [showFormatList, setShowFromatList] = useState(false);
-  const [requestData, setRequestData] = useState({
-    requestMethod: "get",
-    url: "",
-  });
+  const [requestMethod, setRequestMethod] = useState("get");
+  const [formDataList, setFormDataList] = useState([]);
   const [url, setUrl] = useState("");
   const [body, setBody] = useState("");
   const [response, setResponse] = useState(null);
+  const [showFieldsList, setShowFieldsList] = useState(false);
+  const [amountField, setAmountField] = useState("");
+  const [currencyField, setCurrencyField] = useState("");
+  const [peridField, setPeriodField] = useState("");
+  const [typeBody, setTypeBody] = useState("");
+  const [error, setError] = useState("");
+  const [responseDataSave, setResponseDataSave] = useState("");
   const uniqueId = uuidv4();
   const lol = [
     // {
@@ -46,36 +59,35 @@ const CheckEndpoint = () => {
     },
     { key: "Connection", value: "keep-alive", id: uniqueId, default: true },
   ];
-  const formatsList = ["Text", "JSON", "JavaScript", "HTML", "XML"];
+  const fieldsList = ["Amount", "Currency", "Period"];
+  const formatsList = ["JSON", "XML"];
+
   const textAreaContainer = useRef(null);
   const linesContainer = useRef(null);
   const formatListModal = useRef(null);
+
   const addOption = (setList) => {
     setList((state) => [...state, { key: "", value: "", id: uniqueId }]);
   };
   // const addSelectedHeaders= (e) => {
 
   // }
-  useEffect(() => {
-    console.log(selectedHeaders);
-  }, [selectedHeaders]);
-  useEffect(() => {
-    console.log(paramsList);
-    //  localStorage.removeItem('params')
-  }, [paramsList]);
 
   useEffect(() => {
     // localStorage.removeItem("headers");
-    const paramsValues = localStorage.getItem("params");
-    const headersValues = localStorage.getItem("headers");
+    const paramsValues = localStorage.getItem("params" + endpointInfo._id);
+    const headersValues = localStorage.getItem("headers" + endpointInfo._id);
+    const formDataValues = localStorage.getItem("formData" + endpointInfo._id);
     if (paramsValues) {
       setParamsList(JSON.parse(paramsValues));
     }
-
+    if (formDataValues) {
+      setFormDataList(JSON.parse(formDataValues));
+    }
     if (!headersValues) {
       localStorage.setItem("headers", JSON.stringify(lol));
     }
-    console.log(headersValues);
+
     if (headersValues) {
       setHeadersList(JSON.parse(headersValues));
       // setHeaderListWithBaseHeaders([...lol, ...JSON.parse(headersValues)]);
@@ -110,6 +122,104 @@ const CheckEndpoint = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+    setAmountField(endpointInfo.amount);
+    setCurrencyField(endpointInfo.currency);
+    setPeriodField(endpointInfo.period);
+    setUrl(endpointInfo.endpoint);
+    setRequestMethod(endpointInfo.method);
+  }, []);
+  const clickOutsideFiledList = (event) => {
+    if (!event.target.classList.contains("field-item")) {
+      // Перевірка чи клік відбувся поза модальним вікном
+
+      setShowFieldsList(false);
+
+      document.removeEventListener("click", clickOutsideFiledList);
+    }
+  };
+  const handleClickField = (key, value) => {
+    setShowFieldsList(key);
+    document.body.addEventListener("click", clickOutsideFiledList);
+  };
+
+  const handleSetField = (field, key) => {
+    if (field === "Amount") {
+      setAmountField(key);
+    } else if (field === "Currency") {
+      setCurrencyField(key);
+    } else if (field === "Period") {
+      setPeriodField(key);
+    }
+  };
+  const renderJsonFields = (data) => {
+    if (Array.isArray(data)) {
+      return data.map((item, index) => (
+        <div key={index}>{renderJsonFields(item)}</div>
+      ));
+    } else if (typeof data === "string" || typeof data === "object") {
+      // const jsObj = JSON.parse(data);
+      // console.log(data);
+      const transformObj = Object.entries(data);
+      return transformObj.map(([key, value]) => {
+        if (typeof value === "object") {
+          return (
+            <div key={key}>
+              <div className="field-item">{key}:</div>
+              <div>{renderJsonFields(value)}</div>
+              <div
+                className="fieldsList"
+                style={{ display: showFieldsList === key ? "block" : "none" }}
+              >
+                <span>amount</span>
+                <span>currency</span>
+                <span>period</span>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div key={key} className="field-container">
+              <span
+                className="field-item"
+                style={{ borderBottom: "1px solid red", cursor: "pointer" }}
+                onClick={() => handleClickField(key, value)}
+              >
+                {key}
+              </span>
+              :{value.toString()},
+              <div
+                className="fieldsList"
+                style={{ display: showFieldsList === key ? "flex" : "none" }}
+              >
+                <span onClick={() => handleSetField("Amount", key)}>
+                  amount
+                </span>
+                <span onClick={() => handleSetField("Currency", key)}>
+                  currency
+                </span>
+                <span onClick={() => handleSetField("Period", key)}>
+                  period
+                </span>
+              </div>
+            </div>
+          );
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    const obj = Object.entries({ lol: "lol", mepw: "cat", gav: "pes" });
+
+    const res = obj.map(([key, value]) => {
+      return (
+        <div key={key} onClick={() => handleClickField(key, value)}>
+          {key}: {value.toString()}
+        </div>
+      );
+    });
+  }, []);
   const handleClickFormatData = (e) => {
     const contentTypeValue =
       e === "Text"
@@ -122,9 +232,14 @@ const CheckEndpoint = () => {
         ? "text/html"
         : e === "XML"
         ? "application/xml"
+        : e === "form-data"
+        ? "multipart/form-data"
         : "";
-    setShowFromatList(false);
-    setFormatData(e);
+
+    if (e !== "form-data") {
+      setShowFromatList(false);
+      setFormatData(e);
+    }
 
     // if (isContentTypeHeader) {
     //   selectedHeaders.forEach(e=>{
@@ -154,36 +269,37 @@ const CheckEndpoint = () => {
     //     },
     //   ]);
     //   }
-    const idHeader = uniqueId;
-    const isContentTypeHeader = selectedHeaders.some(
-      (e) => e.key === "Content-Type"
-    );
-    if (!isContentTypeHeader) {
-      setSelectedHeaders((state) => [
-        ...state,
-        {
-          key: "Content-Type",
-          value: contentTypeValue,
-          id: idHeader,
-          index: selectedHeaders.length + 1,
-        },
-      ]);
-    }
 
-    setSelectedHeaders((state) =>
-      state.map((e) => {
-        if (e.key === "Content-Type") {
-          return {
-            key: "Content-Type",
-            value: contentTypeValue,
-            id: idHeader,
-            index: selectedHeaders.length + 1,
-          };
-        } else {
-          return e;
-        }
-      })
-    );
+    const idHeader = uniqueId;
+    // const isContentTypeHeader = selectedHeaders.some(
+    //   (e) => e.key === "Content-Type"
+    // );
+    // if (!isContentTypeHeader) {
+    //   setSelectedHeaders((state) => [
+    //     ...state,
+    //     {
+    //       key: "Content-Type",
+    //       value: contentTypeValue,
+    //       id: idHeader,
+    //       index: selectedHeaders.length + 1,
+    //     },
+    //   ]);
+    // }
+
+    // setSelectedHeaders((state) =>
+    //   state.map((e) => {
+    //     if (e.key === "Content-Type") {
+    //       return {
+    //         key: "Content-Type",
+    //         value: contentTypeValue,
+    //         id: idHeader,
+    //         index: selectedHeaders.length + 1,
+    //       };
+    //     } else {
+    //       return e;
+    //     }
+    //   })
+    // );
     setHeadersList((state) =>
       state.map((e) => {
         if (e.key === "Content-Type") {
@@ -212,6 +328,41 @@ const CheckEndpoint = () => {
       ]);
     }
   };
+  const renderXML = (node, key) => {
+    if (typeof node === "string") {
+      return <span key={key}>{node}</span>;
+    }
+
+    return Object.keys(node).map((tag, index) => (
+      <div key={index} style={{ marginLeft: "20px" }}>
+        <span
+          className="clickable field-item"
+          style={{ color: "blue", cursor: "pointer" }}
+          onClick={() => setShowFieldsList(tag)}
+        >
+          &lt;{tag}&gt;
+        </span>
+        {Array.isArray(node[tag])
+          ? node[tag].map((child, i) => renderXML(child, i))
+          : renderXML(node[tag], index)}
+        <span
+          className="clickable"
+          // style={{ color: 'blue', cursor: 'pointer' }}
+          // onClick={() => alert(`Clicked on tag: </${tag}>`)}
+        >
+          &lt;/{tag}&gt;
+        </span>
+        <div
+          className="fieldsList"
+          style={{ display: showFieldsList === tag ? "flex" : "none" }}
+        >
+          <span onClick={() => handleSetField("Amount", key)}>amount</span>
+          <span onClick={() => handleSetField("Currency", key)}>currency</span>
+          <span onClick={() => handleSetField("Period", key)}>period</span>
+        </div>
+      </div>
+    ));
+  };
   const transformInfoForAxiosRequest = (array) => {
     const result = array
       .filter((e) => e.checked === true)
@@ -221,16 +372,40 @@ const CheckEndpoint = () => {
       }, {});
     return result;
   };
+  const handleCreateFormDataObj = (array) => {
+    let formData = new FormData();
+    array
+      .filter((e) => e.checked === true)
+      .forEach((e) => {
+        formData.append(e.key, e.value);
+      });
+    return formData;
+  };
   useEffect(() => {
-    console.log(typeof body);
-  }, [body]);
+    const xmlTest = `<book id="1">
+    <title>The Great Gatsby</title>
+    <author>F. Scott Fitzgerald</author>
+    <year>1925</year>
+    <genre>Fiction</genre>
+    <price>10.99</price>
+  </book>`;
+    const parser = new XMLParser();
+    const jsonObj = parser.parse(xmlTest);
 
+    setResponse(jsonObj);
+  }, []);
   const checkRequest = () => {
     const headers = transformInfoForAxiosRequest(headersList);
     const params = transformInfoForAxiosRequest(paramsList);
 
     let config = {};
-
+    const bodyContent =
+      typeBody === "formData"
+        ? handleCreateFormDataObj(formDataList)
+        : typeBody === "raw"
+        ? body
+        : {};
+    console.log(typeBody);
     if (authorization.typeOfAuth === "Basic Auth") {
       config.auth = {
         username: authorization.basicAuth.username,
@@ -243,16 +418,40 @@ const CheckEndpoint = () => {
     if (params && Object.entries(params).length > 0) {
       config.params = params;
     }
-
-    axios[requestData.requestMethod](url, body, config)
+    console.log(bodyContent);
+    axios[requestMethod](
+      url,
+      requestMethod === "get" ? config : bodyContent,
+      config
+    )
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setResponse(JSON.stringify(response.data,null,2));
+        setError("");
+        let headerResponse;
+        let responseData;
+        if (
+          response.headers["content-type"] === "application/json; charset=utf-8"
+        ) {
+          headerResponse = "json";
+          responseData = response.data;
+        } else {
+          const parser = new XMLParser();
+          const jsonObj = parser.parse(response.data);
+          headerResponse = "xml";
+          responseData = jsonObj;
+        }
+        setResponse({ responseData, headerResponse });
       })
       .catch((error) => {
         console.log(error);
-        setResponse(error.message);
+        setResponse("");
+        setError(error.message);
       });
+  };
+  const chooseFormatData = (typeOfBody, formatData) => {
+    console.log(formatData);
+    handleClickFormatData(formatData);
+
+    setTypeBody(typeOfBody);
   };
 
   const addAuthToHeader = () => {};
@@ -260,11 +459,6 @@ const CheckEndpoint = () => {
     const index = headersList.findIndex((e) => e.key === "Authorization");
     const isApiKey = headersList.some((e) => e.id === "apiKey");
     if (authorization.typeOfAuth === "No auth") {
-      console.log(
-        headersList.filter(
-          (e) => e.key !== "Authorization" && e.id !== "apiKey"
-        )
-      );
       setHeadersList((state) =>
         state.filter((e) => e.key !== "Authorization" && e.id !== "apiKey")
       );
@@ -313,7 +507,6 @@ const CheckEndpoint = () => {
       (authorization.basicAuth.username.length >= 1 ||
         authorization.basicAuth.password.length >= 1)
     ) {
-      console.log("mewow");
       const credentials = btoa(
         `${authorization.basicAuth.username}:${authorization.basicAuth.password}`
       );
@@ -395,18 +588,65 @@ const CheckEndpoint = () => {
       }
     }
   }, [authorization]);
+
+  useEffect(() => {
+    console.log(endpointInfo._id);
+  }, [endpointInfo]);
+  // const objToString = (obj) => {
+  // return obj.map(e=>{
+  //  return headersList.map(e=>{
+  //   return {key}} )
+  //  })
+  // };
+  const handleUpdateEndpointInfo = (typeOfEndpoint) => {
+    const authorizationContent =
+      authorization.typeOfAuth === "Basic Auth"
+        ? `${authorization.basicAuth.username}:${authorization.basicAuth.password}`
+        : authorization.typeOfAuth === "Api Key"
+        ? `${authorization.apiKey.key}:${authorization.apiKey.value}`
+        : authorization.typeOfAuth === "Bearer Token"
+        ? authorization.bearerToken
+        : "";
+    console.log(transformInfoForAxiosRequest(headersList));
+    updateEndpoint({
+      endpoint: url,
+      endpointId: endpointInfo._id,
+      authorizationContent,
+      authorizationMethod: authorization.typeOfAuth,
+      method: requestMethod,
+      period: peridField,
+      amount: amountField,
+      currency: currencyField,
+      headers: headersList && transformInfoForAxiosRequest(headersList),
+      configId,
+      typeOfEndpoint,
+    })
+      .then((e) => {
+        setResponseDataSave(e.data.message);
+        setTimeout(() => {
+          setResponseDataSave("");
+        }, 5000);
+      })
+      .catch((e) => setResponseDataSave(e.message));
+  };
+  useEffect(() => {
+    if (response) {
+      setError("");
+    }
+    if (error) {
+      setResponse("");
+    }
+  }, [response, error]);
+
   return (
     <div className="checkEndpoint-container">
+      <h2>{endpointTitle}</h2>
       <div className="checkEndpoint-input-container">
         <select
-          name=""
-          value={requestData.requestMethod}
+          name=" "
+          value={requestMethod}
           id=""
-          onChange={(e) =>
-            setRequestData((state) => {
-              return { ...state, requestMethod: e.target.value };
-            })
-          }
+          onChange={(e) => setRequestMethod(e.target.value)}
         >
           <option value="post">Post</option>
           <option value="get">Get</option>
@@ -420,6 +660,12 @@ const CheckEndpoint = () => {
         />
         <button type="submit" onClick={checkRequest}>
           send
+        </button>
+        <button
+          onClick={() => handleUpdateEndpointInfo(typeOfEndpoint)}
+          style={{ background: "rgba(138, 104, 42, 0.8)", marginLeft: 5 }}
+        >
+          save
         </button>
       </div>
       <nav className="option-list">
@@ -464,7 +710,7 @@ const CheckEndpoint = () => {
                   index={i}
                   keyValue={e.key}
                   value={e.value}
-                  option={"params"}
+                  option={"params" + endpointInfo._id}
                   array={paramsList}
                   setUrl={setUrl}
                 />
@@ -648,7 +894,7 @@ const CheckEndpoint = () => {
                   index={i}
                   keyValue={e.key}
                   value={e.value}
-                  option={"headers"}
+                  option={"headers" + endpointInfo._id}
                   array={headersList}
                   // setSelectedHeaders={setSelectedHeaders}
                 />
@@ -667,7 +913,48 @@ const CheckEndpoint = () => {
           }`}
         >
           <div className="body-raw">
-            <div className="body-raw__textarea-container">
+            <div className="body-raw-checkbox-container">
+              <div onClick={() => chooseFormatData("form-data", "form-data")}>
+                <input
+                  value="form-data"
+                  checked={typeBody === "form-data"}
+                  type="radio"
+                />
+                <span>form-data</span>
+              </div>
+              <div onClick={() => chooseFormatData("raw", formatData)}>
+                <input value="raw" checked={typeBody === "raw"} type="radio" />
+                <span>raw</span>
+              </div>
+            </div>
+            <div
+              style={{ display: typeBody === "form-data" ? "flex" : "none" }}
+              className="body-raw__form-data"
+            >
+              {formDataList &&
+                formDataList.map((e, i) => {
+                  return (
+                    <OptionList
+                      setState={setFormDataList}
+                      array={formDataList}
+                      keyValue={e.key}
+                      option={"formData" + endpointInfo._id}
+                      index={i}
+                      value={e.value}
+                    />
+                  );
+                })}
+              <button
+                className={"add-option-button"}
+                onClick={() => addOption(setFormDataList)}
+              >
+                add more
+              </button>
+            </div>
+            <div
+              style={{ display: typeBody === "raw" ? "flex" : "none" }}
+              className="body-raw__textarea-container"
+            >
               <div
                 className="count-lines"
                 ref={linesContainer}
@@ -711,13 +998,37 @@ const CheckEndpoint = () => {
           </div>
         </div>
       </div>
+      <div className="fields-container">
+        <div className="fields-item">
+          <span>Amount -</span>
+          <span>{amountField && amountField} </span>
+        </div>
+        <div className="fields-item">
+          <span>, Currency - </span>
+          <span>{currencyField && currencyField} </span>
+        </div>
+        <div className="fields-item">
+          <span>, Period - </span>
+          <span>{peridField && peridField}</span>
+        </div>
+      </div>
       <div>Response:</div>
-      <pre style={{}}>
-      {response && response}
-      </pre>
+      {/* <pre style={{}}>{response && response}</pre> */}
+      <div className="field-container">
+        <span>{"{"}</span>
+        {response && response.headerResponse === "json"
+          ? renderJsonFields(response.responseData)
+          : response && response.headerResponse === "xml"
+          ? renderXML(response.responseData)
+          : error
+          ? error
+          : ""}
+
+        <span>{"}"}</span>
+      </div>
+      {responseDataSave && <span>{responseDataSave}</span>}
     </div>
   );
 };
-{
-}
+
 export default CheckEndpoint;

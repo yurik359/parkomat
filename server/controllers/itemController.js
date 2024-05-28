@@ -101,7 +101,7 @@ module.exports = {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
           `${address}`
-        )}&key=AIzaSyB1Odbx682gqH7bH9t74j9zH9hFeZKxoZQ`
+        )}&key=AIzaSyBFm5wyb8X--xpXcS1p0zQ6u9g97tqJrrw`
       );
 
       res.send(response.data);
@@ -109,7 +109,7 @@ module.exports = {
   },
   getPlaceId: async (req, res) => {
     const placeId = req.params.placeId;
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=AIzaSyB1Odbx682gqH7bH9t74j9zH9hFeZKxoZQ`;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=AIzaSyBFm5wyb8X--xpXcS1p0zQ6u9g97tqJrrw`;
     axios
       .get(url)
       .then((response) => {

@@ -29,7 +29,7 @@ const OptionList = ({
           return state.replace(`${keyValue}=${value}&`, "");
         } else {
           let changeString2 = state.replace(`?${keyValue}=${value}`, "");
-          console.log(keyValue, value);
+          
           if (changeString2 !== state) {
             return changeString2;
           } else {
@@ -93,9 +93,7 @@ const OptionList = ({
       }
     }
   };
-  useEffect(() => {
-    console.log(array[index]);
-  }, [array]);
+  
   const changeOptionValue = (event, field) => {
     setState((state) =>
       state.map((item, i) => {

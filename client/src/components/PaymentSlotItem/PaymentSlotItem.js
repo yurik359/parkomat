@@ -19,7 +19,7 @@ const PaymentSlotItem = ({paymentsInfo,title,placeholder}) => {
     }
 
     useEffect(()=>{
-     
+     console.log(paymentsInfo)
         if(paymentsInfo&&paymentsInfo.paymentSystem){
           const paymentSystem = paymentsInfo.paymentSystem.filter(e=>e.paymentSystem===title)
           if(paymentSystem.length>=1){

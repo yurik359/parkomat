@@ -1,10 +1,11 @@
 const { User } = require("../models/user");
-const {Parkomat} = require("../models/parkomatItem")
+const { Parkomat } = require("../models/parkomatItem");
 const {
   Payments,
   ApprovedPaymentInfo,
   paymentsOurClients,
-  EndpointInfo,
+
+  ConfigInfo,
 } = require("../models/payments");
 const path = require("path");
 const stripe = require("stripe");
@@ -38,12 +39,11 @@ module.exports = {
       const { id } = req.decoded;
 
       const result = await Payments.find({ userId: id });
-      const endpointOptions = await EndpointInfo.find({userId: id })
+      // const endpointOptions = await EndpointInfo.find({userId: id })
 
-     
-        res.send({paymentSystem:result,endpointOptions});
-     
+      res.send({ paymentSystem: result });
     } catch (error) {
+      res.send(error);
       console.log(error);
     }
   },
@@ -318,7 +318,7 @@ module.exports = {
   howMuchToPay: async (req, res) => {
     try {
       const { id } = req.decoded;
-      console.log(id);
+     
       const resu = await paymentsOurClients.aggregate([
         {
           $match: {
@@ -411,81 +411,146 @@ module.exports = {
   saveEndpointInfo: async (req, res) => {
     try {
       const { id } = req.decoded;
-      const { period,endpointId, endpoint,contentType,autherizationMethodContent,autherizationMethod, amount, currency, method,parkomatsId } = req.query;
-      console.log(endpointId) 
-     const endPointId = endpointId||null;
-     const result= await EndpointInfo.updateOne({ _id: endPointId || { $exists: false } }, 
-       {$set: {
-          userId:id,
-          period,
-          endpoint,
-          contentType,
-          autherizationMethodContent,
-          autherizationMethod,
-          amount,
-          currency,
-          method
-        }
-      }
-      , { upsert: true });
+      const requestData = req.query;
+      const newItem = {
+        endpoint: " ",
+        method: "get",
+        headers: "",
+        authorizationContent: " ",
+        authorizationMethod: "Bearer Token",
+        amount: " ",
+        currency: " ",
+        period: " ",
+      };
 
-     
+      console.log(requestData);
+      const result = await ConfigInfo.create({
+        userId: id,
+        ticketRequest: newItem,
+        paymentStatusRequest: newItem,
+      });
+      //  const endPointId = endpointId||null;
+      //  const result= await EndpointInfo.updateOne({ _id: endPointId || { $exists: false } },
+      //    {$set: {
+      //       userId:id,
+      //       period,
+      //       endpoint,
+      //       contentType,
+      //       autherizationContent,
+      //       autherizationMethod,
+      //       amount,
+      //       currency,
+      //       method
+      //     }
+      //   }
+      //   , { upsert: true });
+
       // if(parkomatsId.length===0&&result.acknowledged){
       //   await Parkomat.updateMany({endpoint:endPointId})
       // }
-    console.log(result)
-      if(result.acknowledged) {
-        const newParkomatsIdArray =  parkomatsId?parkomatsId:[]
-      const arrayParkomats =  await Parkomat.find({userId:id,endpoint:endPointId});
+      console.log(result);
 
-        const uniqueArray = arrayParkomats.filter(element => !newParkomatsIdArray.includes(element._id)).map(e=>e._id)
-        
-        await Parkomat.updateMany({ _id: { $in: uniqueArray } }, {$set:{endpoint:''}});
-        const update = { $set: { endpoint: endPointId } }
-       await Parkomat.updateMany({ _id: { $in: parkomatsId } }, update);
+      if (result) {
+        res.send(result);
+        // const arrayParkomats = await Parkomat.find({userId:id,endpoint:endPointId});
 
-       
+        //   const uniqueArray = arrayParkomats.filter(element => !newParkomatsIdArray.includes(element._id)).map(e=>e._id)
 
-       if(result.modifiedCount===1) {
-        res.send('endpoint updated')
-       }
+        // await Parkomat.updateMany({ _id: { $in: uniqueArray } }, {$set:{endpoint:''}});
 
-       if(result.upsertedCount===1) {
-        res.send({message:'endpoint created',newItemData:{endpointId:result.upsertedId,userId:id}})
-       }
+        //  await Parkomat.updateMany({ _id: { $in: parkomatsId } }, update);
+
+        // const update = { $set: { endpoint: endPointId } }
+        // await Parkomat.updateMany({ _id: { $in: parkomatsId } }, update);
+
+        //    if(result.modifiedCount===1) {
+        //     res.send('endpoint updated')
+        //    }
+
+        //    if(result.upsertedCount===1) {
+        //     res.send({message:'endpoint created',newItemData:{endpointId:result.upsertedId,userId:id}})
+        //    }
+        //   }
+        //  if(result.upsertedCount===0&&result.modifiedCount===0){
+        //   res.send('endpoint updated')
+        //  }
       }
-     if(result.upsertedCount===0&&result.modifiedCount===0){
-      res.send('endpoint updated')
-     }
-
     } catch (error) {
-      console.log(error)
+      res.send(error);
+      console.log(error);
     }
   },
-  getEndpointData:async (req,res) => {
-      try {
-        const { userId}  = req.query
-        const endpointOptions = await EndpointInfo.find({userId})
-        console.log(userId,endpointOptions)
-        if(endpointOptions&&endpointOptions.length>=1) {
-         return res.send(endpointOptions[0])
-        }
-      res.send({message:'endpoint info not found'})
-      } catch (error) {
-        console.log(error)
-      }
-  },
-  getEndpointItems: async (req,res) => {
+  updateEndpoint: async (req, res) => {
     try {
       const { id } = req.decoded;
-     const endpointList = await EndpointInfo.find({userId:id});
-     if(endpointList&&endpointList.length>=1){
-      res.send(endpointList)
-     }
-     
+      const updateData = req.body;
+      console.log(updateData);
+      await ConfigInfo.findOneAndUpdate(
+        { _id: updateData.configId },
+        {
+          $set: {
+            [`${updateData.typeOfEndpoint}.period`]: updateData.period,
+            [`${updateData.typeOfEndpoint}.endpoint`]: updateData.endpoint,
+            [`${updateData.typeOfEndpoint}.contentType`]:
+              updateData.contentType,
+            [`${updateData.typeOfEndpoint}.autherizationContent`]:
+              updateData.autherizationContent,
+            [`${updateData.typeOfEndpoint}.autherizationMethod`]:
+              updateData.autherizationMethod,
+            [`${updateData.typeOfEndpoint}.amount`]: updateData.amount,
+            [`${updateData.typeOfEndpoint}.currency`]: updateData.currency,
+            [`${updateData.typeOfEndpoint}.method`]: updateData.method,
+            [`${updateData.typeOfEndpoint}.headers`]:updateData.headers
+          },
+        }
+      );
+      res.send({ message: "New data saved" });
     } catch (error) {
-      res.send(error)
-      console.log(error)
+      console.log(error);
     }
-  }
+  },
+  getEndpointData: async (req, res) => {
+    try {
+      const { configId } = req.query;
+      const endpointOptions = await ConfigInfo.find({ _id:configId });
+      console.log(endpointOptions)
+      if (endpointOptions && endpointOptions.length >= 1) {
+        return res.send(endpointOptions[0]);
+      }
+      res.send({ message: "endpoint info not found" });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getEndpointItems: async (req, res) => {
+    try {
+      const { id } = req.decoded;
+      const endpointList = await ConfigInfo.find({ userId: id });
+      if (endpointList && endpointList.length >= 1) {
+        res.send(endpointList);
+      }
+    } catch (error) {
+      res.send(error);
+      console.log(error);
+    }
+  },
+  addEndpointToParkomats: async (req, res) => {
+    try {
+      const { id } = req.decoded;
+      const {parkomatsId,configId} = req.body;
+      console.log(parkomatsId);
+      const arrayParkomats = await Parkomat.find({userId:id,endpoint:configId});
+      const newParkomatsIdArray =  parkomatsId?parkomatsId:[]
+          const uniqueArray = arrayParkomats.filter(element => !newParkomatsIdArray.includes(element._id)).map(e=>e._id)
+
+        await Parkomat.updateMany({ _id: { $in: uniqueArray } }, {$set:{endpoint:''}});
+      const update = { $set: { endpoint: configId } };
+      await Parkomat.updateMany({ _id: { $in: parkomatsId } }, update);
+      res.send({ message: "Endpoint added to parkomats" });
+    } catch (error) {
+      res.send(error);
+      console.log(error);
+    }
+  },
 };

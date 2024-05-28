@@ -46,7 +46,7 @@ const EndpointItem = ({ endpointInfo }) => {
       endpoint: e.target[0].value,
       method: e.target[1].value,
       contentType: e.target[2].value,
-      autherizationMethodContent: e.target[3].value,
+      autherizationContent: e.target[3].value,
       autherizationMethod: e.target[4].value,
       amount: e.target[5].value,
       currency: e.target[6].value,

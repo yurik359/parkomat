@@ -37,29 +37,8 @@ const Slots = () => {
   const [showQr,setShowQr] = useState(false)
 
 
-  const getParkomatList = async () => {
-    
-   try {
-    const response =await getListItems();
+ 
 
-
-    if (
-      response &&
-      response.data&&
-      response.data.length >= 1
-    ) {
-     
-      dispatch(addParkomats(response.data));
-
-    } else {
-      return;
-    }
-   } catch (error) {
-    console.log(error)
-   }
-
-  };
-  
 
   const filterSearch = (searchTerm, searchArr) => {
     if (!searchArr) return;
@@ -115,11 +94,7 @@ const Slots = () => {
   };
 
 
-  useEffect(() => {
-    
-    getParkomatList();
-  }, []);
-
+  
 
   const handleOpenAddModal = () => {
     dispatch(clearForm());
